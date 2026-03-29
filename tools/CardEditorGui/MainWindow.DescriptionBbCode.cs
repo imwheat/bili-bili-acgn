@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -11,6 +12,10 @@ public partial class MainWindow
     private int? _descriptionSavedSelStart;
     private int? _descriptionSavedSelLen;
 
+    /// <summary>打开「动态数值」模版窗口前保存的描述框选区；多次「添加」时在插入后更新。</summary>
+    private int? _descriptionTemplateInsertStart;
+    private int? _descriptionTemplateInsertLen;
+
     private void InitializeDescriptionBbCode()
     {
         RefreshDescriptionPreview();
@@ -23,7 +28,22 @@ public partial class MainWindow
 
     private void RefreshDescriptionPreview()
     {
-        RtbDescriptionPreview.Document = BbCodeFlowDocument.Parse(TxtDescription.Text);
+        RtbDescriptionPreview.Document = BbCodeFlowDocument.Parse(TxtDescription.Text, BuildDynamicVarPreviewLookup());
+    }
+
+    /// <summary>与打出效果一致：同 kind 取第一条的 <see cref="DynamicVarEntry.FinalValue"/>。</summary>
+    private Dictionary<string, decimal> BuildDynamicVarPreviewLookup()
+    {
+        var d = new Dictionary<string, decimal>(StringComparer.OrdinalIgnoreCase);
+        foreach (var v in _dynamicVars)
+        {
+            var k = v.Kind?.Trim() ?? "";
+            if (k.Length == 0)
+                continue;
+            if (!d.ContainsKey(k))
+                d[k] = v.FinalValue;
+        }
+        return d;
     }
 
     private void SaveDescriptionSelectionSnapshot()
@@ -81,6 +101,62 @@ public partial class MainWindow
         btn.ContextMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
         btn.ContextMenu.IsOpen = true;
         e.Handled = true;
+    }
+
+    private void BtnDescriptionDynamicTemplate_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if (e.ChangedButton != MouseButton.Left)
+            return;
+        _descriptionTemplateInsertStart = TxtDescription.SelectionStart;
+        _descriptionTemplateInsertLen = TxtDescription.SelectionLength;
+    }
+
+    private void BtnDescriptionDynamicTemplate_Click(object sender, RoutedEventArgs e)
+    {
+        if (!_descriptionTemplateInsertStart.HasValue)
+        {
+            _descriptionTemplateInsertStart = TxtDescription.SelectionStart;
+            _descriptionTemplateInsertLen = TxtDescription.SelectionLength;
+        }
+        var w = new DynamicVarTemplatePickerWindow(this);
+        w.ShowDialog();
+        ClearDescriptionTemplateInsertSnapshot();
+    }
+
+    /// <summary>在模版选择窗口中插入示例文本；可连续调用，光标随插入推进。</summary>
+    public void InsertDescriptionTemplateExample(string text)
+    {
+        var insert = text ?? "";
+        var txt = TxtDescription.Text ?? "";
+        int start;
+        int len;
+        if (_descriptionTemplateInsertStart.HasValue && _descriptionTemplateInsertLen.HasValue)
+        {
+            start = _descriptionTemplateInsertStart.Value;
+            len = _descriptionTemplateInsertLen.Value;
+        }
+        else
+        {
+            start = TxtDescription.SelectionStart;
+            len = TxtDescription.SelectionLength;
+        }
+        start = Math.Clamp(start, 0, txt.Length);
+        len = Math.Clamp(len, 0, txt.Length - start);
+        var newText = string.Concat(txt.AsSpan(0, start), insert, txt.AsSpan(start + len));
+        TxtDescription.Text = newText;
+        var caret = start + insert.Length;
+        _descriptionTemplateInsertStart = caret;
+        _descriptionTemplateInsertLen = 0;
+        TxtDescription.Focus();
+        TxtDescription.Select(caret, 0);
+        MarkDirty();
+        RefreshDescriptionPreview();
+    }
+
+    private void ClearDescriptionTemplateInsertSnapshot()
+    {
+        _descriptionTemplateInsertStart = null;
+        _descriptionTemplateInsertLen = null;
     }
 
     private void DescriptionColorMenu_Closed(object sender, RoutedEventArgs e) =>

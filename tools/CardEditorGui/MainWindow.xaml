@@ -244,6 +244,9 @@
                                         Click="DescriptionWrapTag_Click" Tag="font|font|[font=Arial]|[/font]" />
                                 <Button Content="字号" MinWidth="40" Margin="0,0,6,0" PreviewMouseDown="DescriptionToolbar_PreviewMouseDown"
                                         Click="DescriptionWrapTag_Click" Tag="size|size|[size=24]|[/size]" />
+                                <Button Content="动态数值" MinWidth="72" Margin="0,0,6,0"
+                                        PreviewMouseDown="BtnDescriptionDynamicTemplate_PreviewMouseDown"
+                                        Click="BtnDescriptionDynamicTemplate_Click" />
                             </StackPanel>
                         </ScrollViewer>
                         <Grid MinHeight="140">

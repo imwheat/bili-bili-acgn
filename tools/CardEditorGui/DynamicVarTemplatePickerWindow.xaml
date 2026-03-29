@@ -1,0 +1,31 @@
+<Window x:Class="CardEditorGui.DynamicVarTemplatePickerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="动态数值模版"
+        Height="440" Width="680"
+        MinHeight="320" MinWidth="520"
+        WindowStartupLocation="CenterOwner">
+    <DockPanel Margin="12">
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Foreground="Gray" FontSize="11" Margin="0,0,0,10"
+                   Text="数据来自 DynamicVarTemplate.json。选中一行后点「添加」，将把该行的「示例」文本插入到打开此窗口前卡牌描述框中的光标位置（若有选区则替换选区）。可多次添加，每次插入后光标会移到插入内容之后。" />
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+            <Button Content="管理模版…" MinWidth="96" Margin="0,0,8,0" Click="BtnManage_Click" />
+            <Button Content="关闭" MinWidth="72" IsCancel="True" Click="BtnClose_Click" />
+        </StackPanel>
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0,8,0,0">
+            <Button Content="添加" Width="88" Click="BtnAdd_Click" />
+        </StackPanel>
+        <DataGrid x:Name="GridTemplates"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  IsReadOnly="True"
+                  HeadersVisibility="Column"
+                  SelectionMode="Single">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="name (kind)" Binding="{Binding Name}" Width="*" />
+                <DataGridTextColumn Header="说明" Binding="{Binding Description}" Width="2*" />
+                <DataGridTextColumn Header="示例" Binding="{Binding ExampleText}" Width="2*" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</Window>

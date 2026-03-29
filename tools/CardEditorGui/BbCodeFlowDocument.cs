@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Documents;
 using WpfBrush = System.Windows.Media.Brush;
@@ -11,7 +12,8 @@ namespace CardEditorGui;
 /// <summary>将 BBCode 源码解析为 WPF <see cref="FlowDocument"/>，供卡牌描述只读预览。</summary>
 public static class BbCodeFlowDocument
 {
-    public static FlowDocument Parse(string? source)
+    /// <param name="dynamicVarFinalByKind">动态变量 kind → 预览数值（通常为 FinalValue）；存在时 <c>{Kind:diff()}</c> / <c>{Kind:Diff()}</c> 会显示为数值。</param>
+    public static FlowDocument Parse(string? source, IReadOnlyDictionary<string, decimal>? dynamicVarFinalByKind = null)
     {
         var doc = new FlowDocument
         {
@@ -24,18 +26,18 @@ public static class BbCodeFlowDocument
         if (string.IsNullOrEmpty(source))
             return doc;
         var pos = 0;
-        ParseContent(source, ref pos, para.Inlines, null);
+        ParseContent(source, ref pos, para.Inlines, null, dynamicVarFinalByKind);
         return doc;
     }
 
-    private static void ParseContent(string s, ref int pos, InlineCollection parent, string? untilClose)
+    private static void ParseContent(string s, ref int pos, InlineCollection parent, string? untilClose, IReadOnlyDictionary<string, decimal>? vars)
     {
         var sb = new StringBuilder();
         while (pos < s.Length)
         {
             if (s[pos] == '[')
             {
-                Flush(sb, parent);
+                Flush(sb, parent, vars);
                 if (!TryReadTag(s, ref pos, out var tag))
                 {
                     sb.Append('[');
@@ -52,14 +54,14 @@ public static class BbCodeFlowDocument
                 {
                     var span = new Span();
                     ApplyColor(span, tag.Value);
-                    ParseContent(s, ref pos, span.Inlines, "color");
+                    ParseContent(s, ref pos, span.Inlines, "color", vars);
                     parent.Add(span);
                     continue;
                 }
                 if (tag.Name.Equals("font", StringComparison.OrdinalIgnoreCase) && tag.Value != null)
                 {
                     var span = new Span { FontFamily = new System.Windows.Media.FontFamily(tag.Value) };
-                    ParseContent(s, ref pos, span.Inlines, "font");
+                    ParseContent(s, ref pos, span.Inlines, "font", vars);
                     parent.Add(span);
                     continue;
                 }
@@ -67,28 +69,28 @@ public static class BbCodeFlowDocument
                     double.TryParse(tag.Value.Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out var sz))
                 {
                     var span = new Span { FontSize = sz };
-                    ParseContent(s, ref pos, span.Inlines, "size");
+                    ParseContent(s, ref pos, span.Inlines, "size", vars);
                     parent.Add(span);
                     continue;
                 }
                 if (tag.Name.Equals("b", StringComparison.OrdinalIgnoreCase))
                 {
                     var span = new Span { FontWeight = FontWeights.Bold };
-                    ParseContent(s, ref pos, span.Inlines, "b");
+                    ParseContent(s, ref pos, span.Inlines, "b", vars);
                     parent.Add(span);
                     continue;
                 }
                 if (tag.Name.Equals("i", StringComparison.OrdinalIgnoreCase))
                 {
                     var span = new Span { FontStyle = FontStyles.Italic };
-                    ParseContent(s, ref pos, span.Inlines, "i");
+                    ParseContent(s, ref pos, span.Inlines, "i", vars);
                     parent.Add(span);
                     continue;
                 }
                 if (tag.Name.Equals("u", StringComparison.OrdinalIgnoreCase))
                 {
                     var span = new Span { TextDecorations = TextDecorations.Underline };
-                    ParseContent(s, ref pos, span.Inlines, "u");
+                    ParseContent(s, ref pos, span.Inlines, "u", vars);
                     parent.Add(span);
                     continue;
                 }
@@ -96,7 +98,7 @@ public static class BbCodeFlowDocument
                 {
                     var span = new Span();
                     span.Foreground = DescriptionExclusiveBbCode.BrushForNamedColor(tag.Name);
-                    ParseContent(s, ref pos, span.Inlines, tag.Name);
+                    ParseContent(s, ref pos, span.Inlines, tag.Name, vars);
                     parent.Add(span);
                     continue;
                 }
@@ -108,7 +110,7 @@ public static class BbCodeFlowDocument
                         Foreground = new System.Windows.Media.SolidColorBrush(WpfColor.FromRgb(0x6A, 0x5A, 0x8C))
                     };
                     span.TextDecorations = TextDecorations.Underline;
-                    ParseContent(s, ref pos, span.Inlines, tag.Name);
+                    ParseContent(s, ref pos, span.Inlines, tag.Name, vars);
                     parent.Add(span);
                     continue;
                 }
@@ -117,15 +119,57 @@ public static class BbCodeFlowDocument
             }
             sb.Append(s[pos++]);
         }
-        Flush(sb, parent);
+        Flush(sb, parent, vars);
     }
 
-    private static void Flush(StringBuilder sb, InlineCollection parent)
+    /// <summary>匹配 <c>{Kind:diff()}</c> 或 <c>{Kind:Diff()}</c>（与编辑器模版示例一致）。</summary>
+    private static readonly Regex DiffPlaceholderRegex = new(
+        @"\{([^{}:]+):([dD]iff)\(\)\}",
+        RegexOptions.Compiled);
+
+    private static void Flush(StringBuilder sb, InlineCollection parent, IReadOnlyDictionary<string, decimal>? vars)
     {
         if (sb.Length == 0)
             return;
-        parent.Add(new Run(sb.ToString()));
+        var chunk = sb.ToString();
         sb.Clear();
+        AppendPlainWithDynamicVarSubs(parent, chunk, vars);
+    }
+
+    private static void AppendPlainWithDynamicVarSubs(InlineCollection parent, string text, IReadOnlyDictionary<string, decimal>? vars)
+    {
+        if (vars == null || vars.Count == 0)
+        {
+            parent.Add(new Run(text));
+            return;
+        }
+        var last = 0;
+        foreach (Match m in DiffPlaceholderRegex.Matches(text))
+        {
+            if (m.Index > last)
+                parent.Add(new Run(text.Substring(last, m.Index - last)));
+            var kind = m.Groups[1].Value.Trim();
+            if (kind.Length > 0 && vars.TryGetValue(kind, out var val))
+            {
+                parent.Add(new Run(FormatDecimalForPreview(val))
+                {
+                    Foreground = WpfBrushes.DodgerBlue,
+                    ToolTip = m.Value
+                });
+            }
+            else
+                parent.Add(new Run(m.Value));
+            last = m.Index + m.Length;
+        }
+        if (last < text.Length)
+            parent.Add(new Run(text.Substring(last)));
+    }
+
+    private static string FormatDecimalForPreview(decimal d)
+    {
+        if (d == decimal.Truncate(d))
+            return decimal.ToInt64(d).ToString(CultureInfo.InvariantCulture);
+        return d.ToString(CultureInfo.InvariantCulture);
     }
 
     private static bool TagNamesMatch(string a, string b) =>

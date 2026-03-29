@@ -74,6 +74,7 @@ public partial class MainWindow : Window
     private void DynamicVars_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         RebuildPlayActionValueBindingOptions();
+        Dispatcher.BeginInvoke(RefreshDescriptionPreview, DispatcherPriority.Background);
     }
 
     /// <summary>
@@ -671,6 +672,7 @@ public partial class MainWindow : Window
             {
                 RebuildPlayActionValueBindingOptions();
                 MarkDirty();
+                RefreshDescriptionPreview();
             }, DispatcherPriority.Background);
         };
         GridCardPlayActions.CellEditEnding += (_, _) => MarkDirty();
