@@ -14,7 +14,8 @@
     {
       "kind": "Damage",
       "baseValue": 6,
-      "upgradeValue": 0
+      "upgradeValue": 0,
+      "valueProp": 1
     },
     {
       "kind": "Cards",

@@ -102,6 +102,10 @@
                                 <DataGridTextColumn Header="baseValue" Binding="{Binding BaseValue}" Width="90" />
                                 <DataGridTextColumn Header="upgradeValue" Binding="{Binding UpgradeValue}" Width="90" />
                                 <DataGridTextColumn Header="finalValue" Binding="{Binding FinalValue}" Width="90" IsReadOnly="True" />
+                                <DataGridCheckBoxColumn Header="Move" Binding="{Binding FlagMove, UpdateSourceTrigger=PropertyChanged}" Width="56" />
+                                <DataGridCheckBoxColumn Header="Unpowered" Binding="{Binding FlagUnpowered, UpdateSourceTrigger=PropertyChanged}" Width="84" />
+                                <DataGridCheckBoxColumn Header="Unblockable" Binding="{Binding FlagUnblockable, UpdateSourceTrigger=PropertyChanged}" Width="88" />
+                                <DataGridCheckBoxColumn Header="SkipHurtAnim" Binding="{Binding FlagSkipHurtAnim, UpdateSourceTrigger=PropertyChanged}" Width="96" />
                             </DataGrid.Columns>
                         </DataGrid>
                     </DockPanel>
@@ -110,7 +114,7 @@
                 <GroupBox Header="打出效果 (CardPlayAction)" Margin="0,0,0,10">
                     <DockPanel Margin="8">
                         <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Foreground="Gray" FontSize="11" Margin="0,0,0,8"
-                                   Text="按顺序执行。数值来源选「固定数值」可编辑 value；选某一 kind 则与上方动态变量表中同名字段绑定（取第一条）。可用上移/下移调整顺序。" />
+                                   Text="按顺序执行。数值来源选「固定数值」可编辑 value；选某一 kind 则与上方动态变量表中同名字段绑定。可用上移/下移调整顺序。" />
                         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0,8,0,0">
                             <Button Content="添加操作" Width="88" Margin="0,0,8,0" Click="BtnAddPlayAction_Click" />
                             <Button Content="删除选中" Width="88" Margin="0,0,8,0" Click="BtnRemovePlayAction_Click" />

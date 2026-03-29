@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using CardEditor.Shared.Models;
@@ -168,16 +170,37 @@ public static class CardCodeGenerator
     private static string EmitCanonicalVar(DynamicVarEntry v)
     {
         var kind = v.Kind.Trim();
+        var kl = kind.ToLowerInvariant();
         var bv = FormatDecimal(v.BaseValue);
-        return kind.ToLowerInvariant() switch
+        return kl switch
         {
-            "damage" => $"new DamageVar({bv}m, ValueProp.Move)",
-            "block" => $"new BlockVar({bv}m, ValueProp.Unpowered)",
+            "damage" => $"new DamageVar({bv}m, {FormatValuePropForEmit(v.ValueProp, "damage")})",
+            "block" => $"new BlockVar({bv}m, {FormatValuePropForEmit(v.ValueProp, "block")})",
             "cards" => $"new CardsVar({(int)v.BaseValue})",
             "repeat" => $"new DynamicVar(\"Repeat\", {bv}m)",
             "power" => $"new DynamicVar(\"Power\", {bv}m)",
             _ => $"new DynamicVar(\"{EscapeCSharpString(kind)}\", {bv}m)"
         };
+    }
+
+    /// <summary>生成源码中的 <c>ValueProp</c> 表达式；<paramref name="kindLower"/> 为 damage/block 时在未设置标志时沿用原默认。</summary>
+    private static string FormatValuePropForEmit(ValueProp p, string kindLower)
+    {
+        if (p == ValueProp.None)
+        {
+            return kindLower switch
+            {
+                "damage" => "ValueProp.Move",
+                "block" => "ValueProp.Unpowered",
+                _ => "ValueProp.None"
+            };
+        }
+        var parts = new List<string>();
+        if (p.HasFlag(ValueProp.Move)) parts.Add("ValueProp.Move");
+        if (p.HasFlag(ValueProp.Unpowered)) parts.Add("ValueProp.Unpowered");
+        if (p.HasFlag(ValueProp.Unblockable)) parts.Add("ValueProp.Unblockable");
+        if (p.HasFlag(ValueProp.SkipHurtAnim)) parts.Add("ValueProp.SkipHurtAnim");
+        return parts.Count == 0 ? "ValueProp.None" : string.Join(" | ", parts);
     }
 
     private static string FormatDecimal(decimal d) =>
@@ -190,6 +213,7 @@ public static class CardCodeGenerator
         var hasDamage = vars.Any(v => v.Kind.Trim().Equals("Damage", StringComparison.OrdinalIgnoreCase));
         var hasBlock = vars.Any(v => v.Kind.Trim().Equals("Block", StringComparison.OrdinalIgnoreCase));
         var hasCards = vars.Any(v => v.Kind.Trim().Equals("Cards", StringComparison.OrdinalIgnoreCase));
+        var blockEntry = vars.FirstOrDefault(v => v.Kind.Trim().Equals("Block", StringComparison.OrdinalIgnoreCase));
 
         var sb = new StringBuilder();
         if (hasDamage)
@@ -210,7 +234,8 @@ public static class CardCodeGenerator
         }
         if (hasBlock && !hasDamage && !hasCards)
         {
-            sb.AppendLine("        await CreatureCmd.GainBlock(base.Owner, base.DynamicVars.Block.BaseValue, ValueProp.Unpowered, null);");
+            var blockVp = FormatValuePropForEmit(blockEntry?.ValueProp ?? ValueProp.None, "block");
+            sb.AppendLine($"        await CreatureCmd.GainBlock(base.Owner, base.DynamicVars.Block.BaseValue, {blockVp}, null);");
         }
         if (!hasDamage && !hasCards && !hasBlock)
         {

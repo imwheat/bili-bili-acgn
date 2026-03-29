@@ -239,12 +239,19 @@ public partial class MainWindow : Window
         _poolOptions.Add(name);
     }
 
-    private static DynamicVarEntry CloneVar(DynamicVarEntry v) => new()
+    private static DynamicVarEntry CloneVar(DynamicVarEntry v)
     {
-        Kind = v.Kind,
-        BaseValue = v.BaseValue,
-        UpgradeValue = v.UpgradeValue
-    };
+        var vp = v.ValueProp;
+        if (vp == ValueProp.None && DynamicVarEntry.IsDamageOrBlockKind(v.Kind))
+            vp = ValueProp.Move;
+        return new DynamicVarEntry
+        {
+            Kind = v.Kind,
+            BaseValue = v.BaseValue,
+            UpgradeValue = v.UpgradeValue,
+            ValueProp = vp
+        };
+    }
 
     private static CardPlayAction ClonePlayAction(CardPlayAction a) => new()
     {
@@ -524,7 +531,13 @@ public partial class MainWindow : Window
             return false;
         if (_dynamicVars.Any(v => string.Equals(v.Kind?.Trim(), k, StringComparison.Ordinal)))
             return false;
-        _dynamicVars.Add(new DynamicVarEntry { Kind = k, BaseValue = 0m, UpgradeValue = 0m });
+        _dynamicVars.Add(new DynamicVarEntry
+        {
+            Kind = k,
+            BaseValue = 0m,
+            UpgradeValue = 0m,
+            ValueProp = DynamicVarEntry.DefaultValuePropForKind(k)
+        });
         MarkDirty();
         StatusText.Text = $"已添加动态变量: {k}";
         return true;

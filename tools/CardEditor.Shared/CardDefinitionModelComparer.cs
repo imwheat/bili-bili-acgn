@@ -26,7 +26,8 @@ public static class CardDefinitionModelComparer
             {
                 Kind = v.Kind,
                 BaseValue = v.BaseValue,
-                UpgradeValue = v.UpgradeValue
+                UpgradeValue = v.UpgradeValue,
+                ValueProp = v.ValueProp
             }).ToList(),
             CardPlayActions = m.CardPlayActions.Select(a => new CardPlayAction
             {
@@ -74,6 +75,7 @@ public static class CardDefinitionModelComparer
             if (!string.Equals(a[i].Kind, b[i].Kind, StringComparison.Ordinal)) return false;
             if (a[i].BaseValue != b[i].BaseValue) return false;
             if (a[i].UpgradeValue != b[i].UpgradeValue) return false;
+            if (a[i].ValueProp != b[i].ValueProp) return false;
         }
         return true;
     }
