@@ -1,6 +1,8 @@
 {
   "schemaVersion": 1,
   "className": "NewCard",
+  "title": "123",
+  "description": "123",
   "namespace": "BiliBiliACGN.BiliBiliACGNCode.Cards",
   "energyCost": 1,
   "cardType": "Attack",
@@ -15,11 +17,5 @@
       "upgradeValue": 0
     }
   ],
-  "cardPlayActions": [
-    {
-      "actionType": "DrawCards",
-      "valueBinding": "literal",
-      "value": 1
-    }
-  ]
+  "cardPlayActions": []
 }

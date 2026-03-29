@@ -39,6 +39,7 @@ public partial class MainWindow : Window
         LoadSettingsAndPools();
         NewDocument();
         HookFieldChanges();
+        InitializeDescriptionBbCode();
         RebuildPlayActionValueBindingOptions();
         Closing += (_, e) =>
         {
@@ -505,6 +506,27 @@ public partial class MainWindow : Window
             EnsurePoolInOptions(poolBefore);
         SelectCombo(CmbPoolType, poolBefore ?? "");
         StatusText.Text = "已更新设置";
+    }
+
+    private void BtnManageTemplates_Click(object sender, RoutedEventArgs e)
+    {
+        var w = new DynamicVarTemplatesWindow(this);
+        if (w.ShowDialog() == true)
+            StatusText.Text = $"模版已保存: {DynamicVarTemplateJson.GetDefaultFilePath()}";
+    }
+
+    /// <summary>按模版 name 向当前卡牌追加一行；已存在同 kind 返回 false。</summary>
+    public bool TryAddDynamicVarFromTemplateKind(string kind)
+    {
+        var k = kind.Trim();
+        if (k.Length == 0)
+            return false;
+        if (_dynamicVars.Any(v => string.Equals(v.Kind?.Trim(), k, StringComparison.Ordinal)))
+            return false;
+        _dynamicVars.Add(new DynamicVarEntry { Kind = k, BaseValue = 0m, UpgradeValue = 0m });
+        MarkDirty();
+        StatusText.Text = $"已添加动态变量: {k}";
+        return true;
     }
 
     private void SaveToPath(string path)
