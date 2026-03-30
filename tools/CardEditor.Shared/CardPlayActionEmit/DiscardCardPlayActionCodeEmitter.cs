@@ -10,7 +10,20 @@ public sealed class DiscardCardPlayActionCodeEmitter : CardPlayActionCodeEmitter
     {
         var indent = context.Indent;
         var v = CardPlayActionEmitSyntax.ValueExpression(action);
-        var inner = $"{indent}// TODO: Discard {v} 张牌（按项目 API 替换为实际弃牌指令）";
+        var inner =
+            $"{indent}var __discardCount = (int){v};\n" +
+            $"{indent}if (__discardCount > 0)\n" +
+            $"{indent}{{\n" +
+            $"{indent}    var __cardsToDiscard = new global::System.Collections.Generic.List<CardModel>();\n" +
+            $"{indent}    foreach (var __card in base.Owner.Hand.Cards)\n" +
+            $"{indent}    {{\n" +
+            $"{indent}        if (__cardsToDiscard.Count >= __discardCount)\n" +
+            $"{indent}            break;\n" +
+            $"{indent}        __cardsToDiscard.Add(__card);\n" +
+            $"{indent}    }}\n" +
+            $"{indent}    if (__cardsToDiscard.Count > 0)\n" +
+            $"{indent}        await CardCmd.DiscardAndDraw(choiceContext, __cardsToDiscard, 0);\n" +
+            $"{indent}}}";
         return CardPlayActionEmitSyntax.WrapWithRepeatLoop(action, inner, indent);
     }
 }
