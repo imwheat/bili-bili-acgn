@@ -9,18 +9,15 @@
     <!-- 改成你的杀戮尖塔2目录 -->
     <Sts2Dir>D:\SteamLibrary\steamapps\common\Slay the Spire 2</Sts2Dir>
     <Sts2DataDir>$(Sts2Dir)\data_sts2_windows_x86_64</Sts2DataDir>
+    <!-- 独立工具链（卡牌编辑器等）：整目录不参与默认 Compile / None / Content 等 SDK 通配 -->
+    <DefaultItemExcludes>$(DefaultItemExcludes);tools\**\*</DefaultItemExcludes>
   </PropertyGroup>
-  <!-- 独立工具链（卡牌编辑器等），不属于模组程序集 -->
-  <ItemGroup>
-    <Compile Remove="tools\**\*.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <Reference Include="sts2">
       <HintPath>$(Sts2DataDir)\sts2.dll</HintPath>
       <Private>false</Private>
     </Reference>
-
     <Reference Include="0Harmony">
       <HintPath>$(Sts2DataDir)\0Harmony.dll</HintPath>
       <Private>false</Private>
@@ -31,15 +28,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="BiliBiliACGN\images\card_portraits\big\test_card.png" />
-    <Content Include="BiliBiliACGN\images\card_portraits\test_card.png" />
-    <Content Include="BiliBiliACGN\localization\zhs\cards.json" />
-    <Content Include="BiliBiliACGN\localization\zhs\card_keywords.json" />
-    <Content Include="BiliBiliACGN\localization\zhs\powers.json" />
-    <Content Include="BiliBiliACGN\localization\zhs\relics.json" />
-    <Content Include="BiliBiliACGN\localization\zhs\static_hover_tips.json" />
+    <Content Include="BiliBiliACGN\localization\zhs\*.json" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="BiliBiliACGN\images\card_portraits\" />
     <Folder Include="BiliBiliACGN\images\powers\" />
     <Folder Include="BiliBiliACGN\images\relics\" />
   </ItemGroup>
