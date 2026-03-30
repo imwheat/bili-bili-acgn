@@ -61,6 +61,6 @@ public sealed class TestCard : CardBaseModel
     /// </summary>
     protected override void OnUpgrade()
     {
-        base.DynamicVars.Damage.UpgradeValueBy(1);
+        base.DynamicVars["Damage"].UpgradeValueBy(1);
     }
 }

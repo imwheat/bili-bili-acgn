@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "className": "NewCard",
-  "title": "123",
-  "description": "123",
+  "title": "\u6D4B\u8BD5\u65B0\u5361",
+  "description": "\u9020\u6210{Damage:diff()}\u70B9\u4F24\u5BB3\u3002",
   "namespace": "BiliBiliACGN.BiliBiliACGNCode.Cards",
   "energyCost": 1,
   "cardType": "Attack",
@@ -14,8 +14,17 @@
     {
       "kind": "Damage",
       "baseValue": 6,
-      "upgradeValue": 0
+      "upgradeValue": 0,
+      "valueProp": 1
     }
   ],
-  "cardPlayActions": []
+  "cardPlayActions": [
+    {
+      "actionType": "Damage",
+      "valueBinding": "Damage",
+      "value": 0,
+      "repeatCountBinding": "literal",
+      "repeatCountValue": 1
+    }
+  ]
 }

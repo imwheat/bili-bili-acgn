@@ -75,7 +75,7 @@ public sealed class DamageCardPlayActionCodeEmitter : CardPlayActionCodeEmitterB
     /// <param name="valueExpr"></param>
     /// <param name="repeatCount"></param>
     /// <returns></returns>
-    private string BuildRandomEnemyDamage(string indent, string valueExpr, string repeatCount)
+    private static string BuildRandomEnemyDamage(string indent, string valueExpr, string repeatCount)
     {
         var inner = new StringBuilder();
         inner.AppendLine($"{indent}if (cardPlay.Target != null)");
