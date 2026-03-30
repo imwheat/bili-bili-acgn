@@ -1,6 +1,8 @@
-﻿{
+{
   "BILIBILIACGN-TEST_CARD.title": "测试牌1",
   "BILIBILIACGN-TEST_CARD.description": "随机造成12次{Damage:diff()}点伤害。\n并[gold]抽取[/gold]1张牌\nCiallo～\n(∠・ ω ＜ )⌒★",
   "BILIBILIACGN-TEST_POWER_CARD.title": "测试能力牌",
-  "BILIBILIACGN-TEST_POWER_CARD.description": "获得力量"
+  "BILIBILIACGN-TEST_POWER_CARD.description": "获得力量",
+  "BILIBILIACGN-NEW_CARD.title": "测试新卡",
+  "BILIBILIACGN-NEW_CARD.description": "造成{Damage:diff()}点伤害。123"
 }

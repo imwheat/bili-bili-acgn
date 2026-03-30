@@ -12,11 +12,12 @@ public static class CardDefinitionJson
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
         ReadCommentHandling = JsonCommentHandling.Skip,
-        AllowTrailingCommas = true
+        AllowTrailingCommas = true,
+        Encoder = JsonUnicodeEncoder.ForWritableJson
     };
 
     public static string Serialize(CardDefinition definition) =>
-        JsonSerializer.Serialize(definition, Options);
+        JsonUnicodeEncoder.ExpandJsonUnicodeEscapes(JsonSerializer.Serialize(definition, Options));
 
     public static CardDefinition Deserialize(string json) =>
         JsonSerializer.Deserialize<CardDefinition>(json, Options)

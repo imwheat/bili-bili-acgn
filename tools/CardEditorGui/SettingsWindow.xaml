@@ -34,7 +34,7 @@
 
             <TextBlock Text="卡牌信息 JSON 路径（cards.json）" FontWeight="SemiBold" Margin="0,0,0,4" />
             <TextBlock TextWrapping="Wrap" Foreground="Gray" FontSize="11" Margin="0,0,0,4"
-                       Text="与游戏内本地化一致，通常为 BiliBiliACGN\localization\zhs\cards.json；用于对照或后续同步 title/description。" />
+                       Text="与游戏内本地化一致，通常为 BiliBiliACGN\localization\zhs\cards.json。保存时若名称/描述有变会写入；键为「命名空间第一段大写-类名大写 SNAKE_CASE」.title/.description。" />
             <DockPanel LastChildFill="True" Margin="0,0,0,12">
                 <Button x:Name="BtnBrowseCardLocalizationJson" DockPanel.Dock="Right" Content="浏览…" Width="80" Margin="8,0,0,0" Click="BtnBrowseCardLocalizationJson_Click" />
                 <TextBox x:Name="TxtCardLocalizationJsonPath" />

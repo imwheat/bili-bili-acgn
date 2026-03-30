@@ -12,7 +12,8 @@ public static class EditorSettingsJson
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
         ReadCommentHandling = JsonCommentHandling.Skip,
-        AllowTrailingCommas = true
+        AllowTrailingCommas = true,
+        Encoder = JsonUnicodeEncoder.ForWritableJson
     };
 
     public static string GetDefaultSettingsPath()
@@ -25,7 +26,7 @@ public static class EditorSettingsJson
     }
 
     public static string Serialize(EditorSettings settings) =>
-        JsonSerializer.Serialize(settings, Options);
+        JsonUnicodeEncoder.ExpandJsonUnicodeEscapes(JsonSerializer.Serialize(settings, Options));
 
     public static EditorSettings Deserialize(string json) =>
         JsonSerializer.Deserialize<EditorSettings>(json, Options)

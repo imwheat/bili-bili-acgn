@@ -24,7 +24,8 @@ public static class DynamicVarTemplateJson
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
         ReadCommentHandling = JsonCommentHandling.Skip,
-        AllowTrailingCommas = true
+        AllowTrailingCommas = true,
+        Encoder = JsonUnicodeEncoder.ForWritableJson
     };
 
     /// <summary>与 CardEditorGui.exe 同目录。</summary>
@@ -32,7 +33,7 @@ public static class DynamicVarTemplateJson
         Path.Combine(AppContext.BaseDirectory, FileName);
 
     public static string Serialize(DynamicVarTemplateFile file) =>
-        JsonSerializer.Serialize(file, Options);
+        JsonUnicodeEncoder.ExpandJsonUnicodeEscapes(JsonSerializer.Serialize(file, Options));
 
     public static DynamicVarTemplateFile Deserialize(string json) =>
         JsonSerializer.Deserialize<DynamicVarTemplateFile>(json, Options)

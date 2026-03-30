@@ -477,11 +477,19 @@ public partial class MainWindow : Window
         var current = CollectModelFromUi();
         var snap = _persistedSnapshot;
 
+        var outDir = _settings.DefaultCardScriptOutputDirectory?.Trim() ?? "";
+        var sanitizedClass = CardCodeGenerator.SanitizeClassName(current.ClassName.Trim());
+        var expectedCsPath = string.IsNullOrEmpty(outDir)
+            ? null
+            : Path.Combine(Path.GetFullPath(outDir), $"{sanitizedClass}.cs");
+        var csMissing = expectedCsPath != null && !File.Exists(expectedCsPath);
+
         var onlyNotes = CardDefinitionModelComparer.OnlyTopLevelNotesChanged(current, snap);
         var locDirty = !CardDefinitionModelComparer.LocalizationSliceEquals(current, snap);
         var codeDirty = !CardDefinitionModelComparer.CodeSliceEquals(current, snap);
+        var needCsGenerate = codeDirty || csMissing;
 
-        if (onlyNotes)
+        if (onlyNotes && !csMissing)
         {
             try
             {
@@ -504,7 +512,6 @@ public partial class MainWindow : Window
         }
 
         var locPath = _settings.CardLocalizationJsonPath?.Trim() ?? "";
-        var outDir = _settings.DefaultCardScriptOutputDirectory?.Trim() ?? "";
 
         if (locDirty && string.IsNullOrEmpty(locPath))
         {
@@ -516,10 +523,10 @@ public partial class MainWindow : Window
             return;
         }
 
-        if (codeDirty && string.IsNullOrEmpty(outDir))
+        if (needCsGenerate && string.IsNullOrEmpty(outDir))
         {
             System.Windows.MessageBox.Show(
-                "脚本相关字段已变更，请先在「工具 → 设置」中配置「默认卡牌脚本（.cs）生成目录」。",
+                "需要生成或更新 C# 脚本（含目标 .cs 尚不存在时），请先在「工具 → 设置」中配置「默认卡牌脚本（.cs）生成目录」。",
                 "保存并生成",
                 MessageBoxButton.OK,
                 MessageBoxImage.Warning);
@@ -536,12 +543,12 @@ public partial class MainWindow : Window
 
             if (locDirty)
             {
-                CardLocalizationJsonMerger.MergeTitleAndDescription(locPath, current.ClassName, current.Title, current.Description);
+                CardLocalizationJsonMerger.MergeTitleAndDescription(locPath, current.ClassName, current.Namespace, current.Title, current.Description);
                 lines.Add($"已更新卡牌信息：{Path.GetFullPath(locPath)}");
             }
 
             string? csPath = null;
-            if (codeDirty)
+            if (needCsGenerate)
                 csPath = CardCodeGenerator.WriteGeneratedFile(current, outDir);
 
             if (csPath != null)
@@ -625,9 +632,16 @@ public partial class MainWindow : Window
         try
         {
             var model = CollectModelFromUi();
+            var locUnchanged = CardDefinitionModelComparer.LocalizationSliceEquals(model, _persistedSnapshot);
             CardDefinitionJson.SaveToFile(model, path);
             _dirty = false;
             UpdateTitle();
+
+            var settings = EditorSettingsJson.LoadOrCreateDefault();
+            var locPath = settings.CardLocalizationJsonPath?.Trim() ?? "";
+            if (!locUnchanged && !string.IsNullOrEmpty(locPath))
+                CardLocalizationJsonMerger.MergeTitleAndDescription(locPath, model.ClassName, model.Namespace, model.Title, model.Description);
+
             RefreshPersistedSnapshot();
             StatusText.Text = $"已保存: {path}";
         }
