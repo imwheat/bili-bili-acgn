@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using CardEditor.Shared;
 using CardEditor.Shared.Models;
@@ -157,9 +158,17 @@ public partial class SettingsWindow : Window
         try
         {
             var settings = CollectFromUi();
+            var missing = new List<string>();
             if (string.IsNullOrEmpty(settings.DefaultNamespace))
+                missing.Add("默认命名空间");
+            if (missing.Count > 0)
             {
-                System.Windows.MessageBox.Show("请填写默认命名空间。", "设置", MessageBoxButton.OK, MessageBoxImage.Warning);
+                var body = string.Join("\n", missing.Select(line => "• " + line));
+                System.Windows.MessageBox.Show(
+                    "请补全以下必填项：\n\n" + body,
+                    "设置",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
                 return;
             }
             var dir = settings.DefaultSaveDirectory;

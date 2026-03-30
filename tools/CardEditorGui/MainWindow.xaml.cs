@@ -464,9 +464,13 @@ public partial class MainWindow : Window
 
     private void MenuSaveAndGenerate_Click(object sender, RoutedEventArgs e)
     {
+        var missing = new List<string>();
         if (string.IsNullOrWhiteSpace(TxtClassName.Text))
+            missing.Add("类名（Class name）");
+
+        if (missing.Count > 0)
         {
-            System.Windows.MessageBox.Show("请先填写类名。", "保存并生成", MessageBoxButton.OK, MessageBoxImage.Warning);
+            ShowMissingRequiredFields("保存并生成", missing);
             return;
         }
 
@@ -513,23 +517,17 @@ public partial class MainWindow : Window
 
         var locPath = _settings.CardLocalizationJsonPath?.Trim() ?? "";
 
+        missing.Clear();
+        if (locDirty && string.IsNullOrWhiteSpace(current.Title))
+            missing.Add("卡牌名称（标题），用于写入 cards.json");
         if (locDirty && string.IsNullOrEmpty(locPath))
-        {
-            System.Windows.MessageBox.Show(
-                "卡牌名称或描述已变更，请在「工具 → 设置」中配置「卡牌信息 JSON 路径」（如 localization/zhs/cards.json）。",
-                "保存并生成",
-                MessageBoxButton.OK,
-                MessageBoxImage.Warning);
-            return;
-        }
-
+            missing.Add("「工具 → 设置」中的「卡牌信息 JSON 路径」（名称或描述相对上次保存有变更）");
         if (needCsGenerate && string.IsNullOrEmpty(outDir))
+            missing.Add("「工具 → 设置」中的「默认卡牌脚本（.cs）生成目录」（需生成或更新 C#，或目标 .cs 尚不存在）");
+
+        if (missing.Count > 0)
         {
-            System.Windows.MessageBox.Show(
-                "需要生成或更新 C# 脚本（含目标 .cs 尚不存在时），请先在「工具 → 设置」中配置「默认卡牌脚本（.cs）生成目录」。",
-                "保存并生成",
-                MessageBoxButton.OK,
-                MessageBoxImage.Warning);
+            ShowMissingRequiredFields("保存并生成", missing);
             return;
         }
 
@@ -627,11 +625,30 @@ public partial class MainWindow : Window
         return true;
     }
 
+    /// <summary>在必填项未填时弹出提示，列出具体缺项（每条一行，前缀「•」）。</summary>
+    private static void ShowMissingRequiredFields(string dialogTitle, IReadOnlyList<string> items)
+    {
+        if (items.Count == 0)
+            return;
+        var body = string.Join("\n", items.Select(line => "• " + line));
+        System.Windows.MessageBox.Show(
+            "请补全以下必填项：\n\n" + body,
+            dialogTitle,
+            MessageBoxButton.OK,
+            MessageBoxImage.Warning);
+    }
+
     private void SaveToPath(string path)
     {
         try
         {
             var model = CollectModelFromUi();
+            if (string.IsNullOrWhiteSpace(model.ClassName))
+            {
+                ShowMissingRequiredFields("保存", ["类名（Class name）"]);
+                return;
+            }
+
             var locUnchanged = CardDefinitionModelComparer.LocalizationSliceEquals(model, _persistedSnapshot);
             CardDefinitionJson.SaveToFile(model, path);
             _dirty = false;
