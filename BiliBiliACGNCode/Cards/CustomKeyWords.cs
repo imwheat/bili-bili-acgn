@@ -12,9 +12,9 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
-public static class CustomKeyWords
+public class CustomKeyWords
 {
     [CustomEnum("YYSY")]
     [KeywordProperties(AutoKeywordPosition.Before)]
-    public static readonly CardKeyword YYSY;
+    public static CardKeyword YYSY;
 }

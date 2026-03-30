@@ -1,46 +1,109 @@
 <Project Sdk="Godot.NET.Sdk/4.5.1">
+
   <PropertyGroup>
+
     <TargetFramework>net9.0</TargetFramework>
+
     <ImplicitUsings>true</ImplicitUsings>
+
     <LangVersion>12.0</LangVersion>
+
     <Nullable>enable</Nullable>
+
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 
+
+
     <!-- 改成你的杀戮尖塔2目录 -->
+
     <Sts2Dir>D:\SteamLibrary\steamapps\common\Slay the Spire 2</Sts2Dir>
+
     <Sts2DataDir>$(Sts2Dir)\data_sts2_windows_x86_64</Sts2DataDir>
-    <!-- 独立工具链（卡牌编辑器等）：整目录不参与默认 Compile / None / Content 等 SDK 通配 -->
+
+
+
+    <!--
+
+      排除整个 tools：不参与 Compile / None / Content 等 SDK 默认通配，不引用工具链代码与资源。
+
+      BiliBiliACGNCode 下 *.cs 仍由 SDK 默认 Compile 包含；BiliBiliACGN 下资源见下方显式 Content。
+
+    -->
+
     <DefaultItemExcludes>$(DefaultItemExcludes);tools\**\*</DefaultItemExcludes>
+
   </PropertyGroup>
 
+
+
   <ItemGroup>
+
     <Reference Include="sts2">
+
       <HintPath>$(Sts2DataDir)\sts2.dll</HintPath>
+
       <Private>false</Private>
+
     </Reference>
+
     <Reference Include="0Harmony">
+
       <HintPath>$(Sts2DataDir)\0Harmony.dll</HintPath>
+
       <Private>false</Private>
+
     </Reference>
+
     <Reference Include="BaseLib">
+
       <HintPath>$(Sts2Dir)/mods/BaseLib/BaseLib.dll</HintPath>
+
       <Private>false</Private>
+
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="BiliBiliACGN\localization\zhs\*.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="BiliBiliACGN\images\card_portraits\" />
-    <Folder Include="BiliBiliACGN\images\powers\" />
-    <Folder Include="BiliBiliACGN\images\relics\" />
+
   </ItemGroup>
 
-  <!-- 自动复制dll和json -->
+
+
+  <!-- 模组资源（res://BiliBiliACGN）：与 tools 无关 -->
+
+  <ItemGroup>
+
+    <Content Include="BiliBiliACGN\localization\zhs\*.json" />
+
+    <Content Include="BiliBiliACGN\images\**\*" />
+
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+
+    <Folder Include="BiliBiliACGN\images\card_portraits\" />
+
+    <Folder Include="BiliBiliACGN\images\powers\" />
+
+    <Folder Include="BiliBiliACGN\images\relics\" />
+
+  </ItemGroup>
+
+
+
+  <!-- 自动复制 dll 与模组 json -->
+
   <Target Name="Copy Mod" AfterTargets="PostBuildEvent">
+
     <Message Text="Copying mod to Slay the Spire 2 mods folder..." Importance="high" />
+
     <MakeDir Directories="$(Sts2Dir)\mods\" />
+
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(Sts2Dir)\mods\$(MSBuildProjectName)\" />
+
     <Copy SourceFiles="$(MSBuildProjectName).json" DestinationFolder="$(Sts2Dir)/mods/$(MSBuildProjectName)/" />
+
   </Target>
+
 </Project>
+
+

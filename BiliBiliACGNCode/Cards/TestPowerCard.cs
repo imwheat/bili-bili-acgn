@@ -13,7 +13,6 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.CardPools;
-using MegaCrit.Sts2.Core.Models.Powers;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -29,7 +28,7 @@ public sealed class TestPowerCard : CardBaseModel
     /// 卡牌基础动态变量：施加能力的层数。
     /// </summary>
     protected override IEnumerable<DynamicVar> CanonicalVars => [new DynamicVar("Power", 3m)];
-    protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.Static(StaticHoverTip.Block)];
+    protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromKeyword(CustomKeyWords.YYSY)];
 
 
     // 卡牌稀有度
