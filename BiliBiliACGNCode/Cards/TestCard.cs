@@ -10,13 +10,13 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Models.CardPools;
 using MegaCrit.Sts2.Core.ValueProps;
+using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
 // 加入哪个卡池
-[Pool(typeof(ColorlessCardPool))]
+[Pool(typeof(BottleCardPool))]
 public sealed class TestCard : CardBaseModel
 {
     // 基础耗能

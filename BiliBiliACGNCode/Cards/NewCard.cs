@@ -10,13 +10,13 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Models.CardPools;
+using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
-[Pool(typeof(ColorlessCardPool))]
-public sealed class NewCard : BiliBiliACGN.BiliBiliACGNCode.Cards.CardBaseModel
+[Pool(typeof(BottleCardPool))]
+public sealed class NewCard : CardBaseModel
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CustomKeyWords.YYSY];
     #region 卡牌属性配置

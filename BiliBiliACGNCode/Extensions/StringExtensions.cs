@@ -31,10 +31,14 @@ public static class StringExtensions
     {
         return Path.Join(MainFile.ModId, "images", "powers", path);
     }
-
+    
     public static string BigPowerImagePath(this string path)
     {
         return Path.Join(MainFile.ModId, "images", "powers", "big", path);
+    }
+    public static string EnergyIconImagePath(this string path)
+    {
+        return Path.Join(MainFile.ModId, "images", "energy", path);
     }
 
     public static string RelicImagePath(this string path)

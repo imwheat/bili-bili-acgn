@@ -12,11 +12,11 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Models.CardPools;
+using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
-[Pool(typeof(ColorlessCardPool))]
+[Pool(typeof(BottleCardPool))]
 public sealed class TestPowerCard : CardBaseModel
 {
     // 基础耗能

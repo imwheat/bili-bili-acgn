@@ -13,11 +13,12 @@ namespace BiliBiliACGN.BiliBiliACGNCode.Powers;
 
 public abstract class PowerBaseModel : CustomPowerModel
 {
+    protected virtual string customIconPath=>Id.Entry.RemovePrefix().ToLowerInvariant();
     public override string CustomPackedIconPath
     {
         get
         {
-            var path = $"{Id.Entry.RemovePrefix().ToLowerInvariant()}.png".PowerImagePath();
+            var path = $"{customIconPath}.png".PowerImagePath();
             return ResourceLoader.Exists(path) ? path : "power.png".PowerImagePath();
         }
     }
@@ -26,7 +27,7 @@ public abstract class PowerBaseModel : CustomPowerModel
     {
         get
         {
-            var path = $"{Id.Entry.RemovePrefix().ToLowerInvariant()}.png".BigPowerImagePath();
+            var path = $"{customIconPath}.png".BigPowerImagePath();
             return ResourceLoader.Exists(path) ? path : "power.png".BigPowerImagePath();
         }
     }

@@ -79,13 +79,7 @@
 
 
   <ItemGroup>
-
-    <Folder Include="BiliBiliACGN\images\card_portraits\" />
-
-    <Folder Include="BiliBiliACGN\images\powers\" />
-
-    <Folder Include="BiliBiliACGN\images\relics\" />
-
+    <Folder Include="BiliBiliACGN\images\" />
   </ItemGroup>
 
 

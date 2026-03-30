@@ -23,6 +23,8 @@ namespace BiliBiliACGN.BiliBiliACGNCode.Powers;
 
 public sealed class YYSYPower : PowerBaseModel
 {
+    protected override string customIconPath => "yysy";
+
     public override PowerType Type => PowerType.Buff;
 
     public override PowerStackType StackType => PowerStackType.Counter;
