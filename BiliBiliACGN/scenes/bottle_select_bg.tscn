@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=3 uid="uid://dsw74317ak0q6"]
+
+[ext_resource type="Texture2D" uid="uid://u1au0i8mtp1n" path="res://BiliBiliACGN/images/characters/bottle_bg.png" id="1_wnmbg"]
+
+[node name="BottleBg" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 768.0
+offset_bottom = 432.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 208.0
+offset_top = 45.999996
+offset_right = 208.0
+offset_bottom = 46.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.05, 1.05)
+texture = ExtResource("1_wnmbg")
+stretch_mode = 2

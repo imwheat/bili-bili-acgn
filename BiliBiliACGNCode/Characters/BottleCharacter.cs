@@ -45,6 +45,7 @@ public sealed class BottleCharacter : PlaceholderCharacterModel
     public override string CustomCharacterSelectLockedIconPath => "res://BiliBiliACGN/images/characters/bottle_select_locked_icon.png";
     // 过渡音效。这个不能删。
     public override string CharacterTransitionSfx => "event:/sfx/ui/wipe_ironclad";
+    public override string CustomCharacterSelectTransitionPath => "res://BiliBiliACGN/materials/transitions/" + PlaceholderID + "_transition_mat.tres";
 
     public override IEnumerable<CardModel> StartingDeck => [
         ModelDb.Card<BottleStrike>(),
