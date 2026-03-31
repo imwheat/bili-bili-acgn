@@ -40,5 +40,11 @@
   "BILIBILIACGN-US_GREEN_CARD.title": "美国绿卡",
   "BILIBILIACGN-US_GREEN_CARD.description": "自动打出手牌中所有带[gold]有一说一[/gold]的牌，并抽相同数量的牌。",
   "BILIBILIACGN-WIT_PEAK.title": "智斗巅峰",
-  "BILIBILIACGN-WIT_PEAK.description": "获得{Energy:diff()}点能量，并抽取 2 张牌，同时为这些牌赋予[gold]有一说一[/gold]。"
+  "BILIBILIACGN-WIT_PEAK.description": "获得{Energy:diff()}点能量，并抽取 2 张牌，同时为这些牌赋予[gold]有一说一[/gold]。",
+  "BILIBILIACGN-BOTTLE_STRIKE.title": "打击",
+  "BILIBILIACGN-BOTTLE_STRIKE.description": "造成{Damage:diff()}点伤害。",
+  "BILIBILIACGN-BOTTLE_BLOCK.title": "防御",
+  "BILIBILIACGN-BOTTLE_BLOCK.description": "获得{Block:diff()}点格挡。",
+  "BILIBILIACGN-ANGRY_STRIKE.title": "红温打击",
+  "BILIBILIACGN-ANGRY_STRIKE.description": "造成{Damage:diff()}点伤害。\r\n获得{Power:diff()}层红温值。"
 }

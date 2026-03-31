@@ -40,10 +40,28 @@ public sealed class BottleCardPool : CustomCardPoolModel
 
     protected override CardModel[] GenerateAllCards()
     {
+        // 所有[Pool(typeof(BottleCardPool))]的卡牌
         return [
-            ModelDb.Card<TestCard>(),
-            ModelDb.Card<TestPowerCard>(),
-            ModelDb.Card<NewCard>()
+            ModelDb.Card<AngryStrike>(),
+            ModelDb.Card<BottleStrike>(),
+            ModelDb.Card<BottleBlock>(),
+            ModelDb.Card<BullStab>(),
+            ModelDb.Card<BusinessExpansion>(),
+            ModelDb.Card<CornSyndrome>(),
+            ModelDb.Card<Creep>(),
+            ModelDb.Card<Day0>(),
+            ModelDb.Card<DeepThink>(),
+            ModelDb.Card<HairGrowth>(),
+            ModelDb.Card<IAmTheMaggot>(),
+            ModelDb.Card<InfiniteBullness>(),
+            ModelDb.Card<MacroDomain>(),
+            ModelDb.Card<NeverDie>(),
+            ModelDb.Card<OffFieldPlay>(),
+            ModelDb.Card<ReadingRadio>(),
+            ModelDb.Card<UsGreenCard>(),
+            ModelDb.Card<WitPeak>(),
+            ModelDb.Card<WildBuffaloStrike>(),
+            ModelDb.Card<ZhuangTang>(),
         ];
     }
 }

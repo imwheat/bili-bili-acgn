@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "className": "AngryStrike",
+  "title": "红温打击",
+  "description": "造成{Damage:diff()}点伤害。\r\n获得{Power:diff()}层红温值。",
+  "namespace": "BiliBiliACGN.BiliBiliACGNCode.Cards",
+  "energyCost": 2,
+  "cardType": "Attack",
+  "rarity": "Common",
+  "targetType": "AnyEnemy",
+  "showInCardLibrary": true,
+  "poolTypeName": "BottleCardPool",
+  "canonicalKeywordFields": [],
+  "extraHoverTipKeywordFields": [
+    "CustomKeyWords.Anger"
+  ],
+  "dynamicVars": [
+    {
+      "kind": "Power",
+      "baseValue": 2,
+      "upgradeValue": 1,
+      "valueProp": 0
+    },
+    {
+      "kind": "Damage",
+      "baseValue": 6,
+      "upgradeValue": 3,
+      "valueProp": 1
+    }
+  ],
+  "cardPlayActions": [
+    {
+      "actionType": "Damage",
+      "valueBinding": "Damage",
+      "value": 1,
+      "repeatCountBinding": "literal",
+      "repeatCountValue": 1
+    },
+    {
+      "actionType": "Buff",
+      "valueBinding": "Power",
+      "value": 1,
+      "repeatCountBinding": "literal",
+      "repeatCountValue": 1,
+      "buffType": "CardEditor.Shared.Models.BuffOptionEntry"
+    }
+  ],
+  "upgradeEffects": []
+}

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "className": "BottleStrike",
+  "title": "打击",
+  "description": "造成{Damage:diff()}点伤害。",
+  "namespace": "BiliBiliACGN.BiliBiliACGNCode.Cards",
+  "energyCost": 1,
+  "cardType": "Attack",
+  "rarity": "Common",
+  "targetType": "AnyEnemy",
+  "showInCardLibrary": true,
+  "poolTypeName": "BottleCardPool",
+  "canonicalKeywordFields": [],
+  "extraHoverTipKeywordFields": [],
+  "dynamicVars": [
+    {
+      "kind": "Damage",
+      "baseValue": 6,
+      "upgradeValue": 3,
+      "valueProp": 1
+    }
+  ],
+  "cardPlayActions": [
+    {
+      "actionType": "Damage",
+      "valueBinding": "Damage",
+      "value": 1,
+      "repeatCountBinding": "literal",
+      "repeatCountValue": 1
+    }
+  ],
+  "upgradeEffects": []
+}

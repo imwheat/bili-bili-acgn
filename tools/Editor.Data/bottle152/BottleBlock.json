@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "className": "BottleBlock",
+  "title": "防御",
+  "description": "获得{Block:diff()}点格挡。",
+  "namespace": "BiliBiliACGN.BiliBiliACGNCode.Cards",
+  "energyCost": 1,
+  "cardType": "Attack",
+  "rarity": "Common",
+  "targetType": "AnyEnemy",
+  "showInCardLibrary": true,
+  "poolTypeName": "BottleCardPool",
+  "canonicalKeywordFields": [],
+  "extraHoverTipKeywordFields": [],
+  "dynamicVars": [
+    {
+      "kind": "Block",
+      "baseValue": 5,
+      "upgradeValue": 3,
+      "valueProp": 1
+    }
+  ],
+  "cardPlayActions": [
+    {
+      "actionType": "Block",
+      "valueBinding": "Block",
+      "value": 1,
+      "repeatCountBinding": "literal",
+      "repeatCountValue": 1
+    }
+  ],
+  "upgradeEffects": []
+}
