@@ -4,5 +4,9 @@
   "BILIBILIACGN-TEST_POWER_CARD.title": "测试能力牌",
   "BILIBILIACGN-TEST_POWER_CARD.description": "获得{Power:diff()}点[gold]有一说一[/gold]",
   "BILIBILIACGN-NEW_CARD.title": "测试新卡",
-  "BILIBILIACGN-NEW_CARD.description": "造成{Damage:diff()}点伤害。123"
+  "BILIBILIACGN-NEW_CARD.description": "造成{Damage:diff()}点伤害。123",
+  "BILIBILIACGN-BULL_EYE_OPEN.title": "牛眼开",
+  "BILIBILIACGN-BULL_EYE_OPEN.description": "造成等同于你本回合抽到过的[gold]有一说一[/gold]次数的{CalculatedDamage:diff()}伤害。",
+  "BILIBILIACGN-BULL_STAB.title": "牛刺",
+  "BILIBILIACGN-BULL_STAB.description": "造成{Damage:diff()}点伤害。自动打出手牌中{Cards:diff()}张带[gold]有一说一[/gold]的牌。"
 }

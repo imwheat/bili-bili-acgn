@@ -61,6 +61,7 @@ public static class CardCodeGenerator
         sb.AppendLine("using MegaCrit.Sts2.Core.GameActions.Multiplayer;");
         sb.AppendLine("using MegaCrit.Sts2.Core.Localization.DynamicVars;");
         sb.AppendLine("using MegaCrit.Sts2.Core.Models.CardPools;");
+        sb.AppendLine("using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;");
         sb.AppendLine("using MegaCrit.Sts2.Core.ValueProps;");
         sb.AppendLine();
         sb.AppendLine($"namespace {ns};");

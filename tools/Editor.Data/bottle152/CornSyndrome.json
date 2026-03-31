@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "className": "CornSyndrome",
+  "title": "玉米症",
+  "description": "获得{Block:diff()}点格挡。本回合给你手牌的一张牌添加[gold]有一说一[/gold]。",
+  "namespace": "BiliBiliACGN.BiliBiliACGNCode.Cards",
+  "energyCost": 1,
+  "cardType": "Skill",
+  "rarity": "Uncommon",
+  "targetType": "Self",
+  "showInCardLibrary": true,
+  "poolTypeName": "BottleCardPool",
+  "dynamicVars": [
+    {
+      "kind": "Block",
+      "baseValue": 7,
+      "upgradeValue": 3,
+      "valueProp": 1
+    }
+  ],
+  "cardPlayActions": [
+    {
+      "actionType": "Block",
+      "valueBinding": "Block",
+      "value": 0,
+      "repeatCountBinding": "literal",
+      "repeatCountValue": 1,
+      "notes": "7/10 格挡"
+    }
+  ],
+  "notes": "关键词：有一说一。给单张手牌贴关键词需手写。"
+}

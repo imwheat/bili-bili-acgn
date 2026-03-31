@@ -10,6 +10,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 using BaseLib.Extensions;
 using BiliBiliACGN.BiliBiliACGNCode.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.Entities.Cards;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Powers;
 
@@ -37,5 +38,23 @@ public sealed class YYSYPower : PowerBaseModel
         }
         return 0m;
     }
+    public override decimal ModifyBlockAdditive(Creature target, decimal block, ValueProp props, CardModel? cardSource, CardPlay? cardPlay)
+    {
+
+        if (cardSource == null)
+		{
+			return 0m;
+		}
+		if (!props.IsPoweredAttack_())
+		{
+			return 0m;
+		}
+        if(cardSource.Keywords.Contains(CustomKeyWords.YYSY))
+        {
+            return base.Amount;
+        }
+        return 0m;
+    }
+
 
 }

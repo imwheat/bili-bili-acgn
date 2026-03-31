@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "className": "Creep",
+  "title": "蠕动",
+  "description": "在本回合获得{Power:diff()}点[gold]有一说一[/gold]。",
+  "namespace": "BiliBiliACGN.BiliBiliACGNCode.Cards",
+  "energyCost": 0,
+  "cardType": "Skill",
+  "rarity": "Common",
+  "targetType": "Self",
+  "showInCardLibrary": true,
+  "poolTypeName": "BottleCardPool",
+  "dynamicVars": [
+    {
+      "kind": "Power",
+      "baseValue": 2,
+      "upgradeValue": 1,
+      "valueProp": 0
+    }
+  ],
+  "cardPlayActions": [
+    {
+      "actionType": "Buff",
+      "valueBinding": "Power",
+      "value": 0,
+      "repeatCountBinding": "literal",
+      "repeatCountValue": 1,
+      "buffType": "CardEditor.Shared.Models.BuffOptionEntry",
+      "notes": "本回合层数；若需「仅本回合」请在 Power 侧实现"
+    }
+  ],
+  "notes": "关键词：有一说一。"
+}

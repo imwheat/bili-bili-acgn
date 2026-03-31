@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "className": "BusinessExpansion",
+  "title": "业务拓展",
+  "description": "在本场战斗中，为手牌中{Cards:diff()}张牌添加[gold]有一说一[/gold]。",
+  "namespace": "BiliBiliACGN.BiliBiliACGNCode.Cards",
+  "energyCost": 1,
+  "cardType": "Skill",
+  "rarity": "Common",
+  "targetType": "Self",
+  "showInCardLibrary": true,
+  "poolTypeName": "BottleCardPool",
+  "dynamicVars": [
+    {
+      "kind": "Damage",
+      "baseValue": 1,
+      "upgradeValue": 0,
+      "valueProp": 1
+    }
+  ],
+  "cardPlayActions": [],
+  "notes": "关键词：有一说一、消耗（打出后 Exhaust）。需在 OnPlay 中手写：选牌/为多张牌附加关键词等；CardDefinition 无法表达 Exhaust，请在 CardBaseModel 或特性中配置。"
+}

@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "className": "MacroDomain",
+  "title": "宏观领域",
+  "description": "本回合你抽到的所有带[gold]有一说一[/gold]的手牌自动打出。",
+  "namespace": "BiliBiliACGN.BiliBiliACGNCode.Cards",
+  "energyCost": 1,
+  "cardType": "Skill",
+  "rarity": "Rare",
+  "targetType": "Self",
+  "showInCardLibrary": true,
+  "poolTypeName": "BottleCardPool",
+  "dynamicVars": [
+    { "kind": "Repeat", "baseValue": 1, "upgradeValue": 0, "valueProp": 0 }
+  ],
+  "cardPlayActions": [],
+  "notes": "费用 1→0：升级降费请手写。关键词：有一说一、固有。本回合抽牌触发自动打出需状态标记 + 抽牌 Hook，非单行模板。"
+}

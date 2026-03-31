@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "className": "HairGrowth",
+  "title": "生发",
+  "description": "抽取一张带[gold]有一说一[/gold]的牌。",
+  "namespace": "BiliBiliACGN.BiliBiliACGNCode.Cards",
+  "energyCost": 1,
+  "cardType": "Skill",
+  "rarity": "Uncommon",
+  "targetType": "Self",
+  "showInCardLibrary": true,
+  "poolTypeName": "BottleCardPool",
+  "dynamicVars": [
+    { "kind": "Cards", "baseValue": 1, "upgradeValue": 0, "valueProp": 0 }
+  ],
+  "cardPlayActions": [],
+  "notes": "费用 1→0（升级降费）：CardDefinition 仅 energyCost=1，降费请在 OnUpgrade 手写 base 费用或自定义逻辑。效果「抽一张带 YYSY 的牌」需检索牌堆/抽牌管线，非纯 DrawCards。"
+}

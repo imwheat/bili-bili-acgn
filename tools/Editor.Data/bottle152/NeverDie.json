@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "className": "NeverDie",
+  "title": "永远不死",
+  "description": "每当你打出带[gold]有一说一[/gold]的牌时，获得{Block:diff()}点格挡。",
+  "namespace": "BiliBiliACGN.BiliBiliACGNCode.Cards",
+  "energyCost": 1,
+  "cardType": "Power",
+  "rarity": "Rare",
+  "targetType": "Self",
+  "showInCardLibrary": true,
+  "poolTypeName": "BottleCardPool",
+  "dynamicVars": [
+    { "kind": "Block", "baseValue": 2, "upgradeValue": 1, "valueProp": 1 }
+  ],
+  "cardPlayActions": [],
+  "notes": "关键词：有一说一、固有。触发「打出 YYSY 牌时」需在 Hook/Power 中实现；固有需在卡牌类配置。"
+}

@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "className": "UsGreenCard",
+  "title": "美国绿卡",
+  "description": "自动打出手牌中所有带[gold]有一说一[/gold]的牌，并抽相同数量的牌。",
+  "namespace": "BiliBiliACGN.BiliBiliACGNCode.Cards",
+  "energyCost": 2,
+  "cardType": "Skill",
+  "rarity": "Rare",
+  "targetType": "Self",
+  "showInCardLibrary": true,
+  "poolTypeName": "BottleCardPool",
+  "dynamicVars": [
+    { "kind": "Repeat", "baseValue": 1, "upgradeValue": 0, "valueProp": 0 }
+  ],
+  "cardPlayActions": [],
+  "notes": "费用 2→1：升级降费请手写。关键词：有一说一。需枚举手牌 YYSY、Autoplay + 等量 Draw；数量非固定变量。"
+}

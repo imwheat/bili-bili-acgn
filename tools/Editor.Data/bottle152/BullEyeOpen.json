@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "className": "BullEyeOpen",
+  "title": "牛眼开",
+  "description": "造成等同于你本回合抽到过的[gold]有一说一[/gold]次数的{CalculatedDamage:diff()}伤害。",
+  "namespace": "BiliBiliACGN.BiliBiliACGNCode.Cards",
+  "energyCost": 3,
+  "cardType": "Attack",
+  "rarity": "Rare",
+  "targetType": "AnyEnemy",
+  "showInCardLibrary": true,
+  "poolTypeName": "BottleCardPool",
+  "dynamicVars": [
+    {
+      "kind": "Damage",
+      "baseValue": 0,
+      "upgradeValue": 0,
+      "valueProp": 1
+    }
+  ],
+  "cardPlayActions": [
+    {
+      "actionType": "Damage",
+      "valueBinding": "Damage",
+      "value": 0,
+      "repeatCountBinding": "literal",
+      "repeatCountValue": 1
+    }
+  ],
+  "notes": "费用 3→2：升级降费请手写。关键词：有一说一。真实伤害应来自战斗内计数器/历史，非固定 Damage 变量；生成后需重写 OnPlay。"
+}

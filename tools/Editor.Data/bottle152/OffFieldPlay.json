@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "className": "OffFieldPlay",
+  "title": "就玩场外",
+  "description": "抽取{Cards:diff()}张牌；若抽到带[gold]有一说一[/gold]的牌则自动打出。",
+  "namespace": "BiliBiliACGN.BiliBiliACGNCode.Cards",
+  "energyCost": 1,
+  "cardType": "Skill",
+  "rarity": "Uncommon",
+  "targetType": "Self",
+  "showInCardLibrary": true,
+  "poolTypeName": "BottleCardPool",
+  "dynamicVars": [
+    { "kind": "Cards", "baseValue": 2, "upgradeValue": 1, "valueProp": 0 }
+  ],
+  "cardPlayActions": [
+    {
+      "actionType": "DrawCards",
+      "valueBinding": "Cards",
+      "value": 0,
+      "repeatCountBinding": "literal",
+      "repeatCountValue": 1,
+      "notes": "2/3 张；条件自动打出需 Hook 或自定义抽牌流程"
+    }
+  ],
+  "notes": "关键词：有一说一。条件自动打出见 tools/卡牌打出效果书写规范.md 中 AutoPlay 段落。"
+}

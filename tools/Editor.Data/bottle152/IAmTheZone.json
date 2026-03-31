@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "className": "IAmTheZone",
+  "title": "我是区",
+  "description": "每回合随机赋予一张手牌[gold]有一说一[/gold]。",
+  "namespace": "BiliBiliACGN.BiliBiliACGNCode.Cards",
+  "energyCost": 1,
+  "cardType": "Power",
+  "rarity": "Rare",
+  "targetType": "Self",
+  "showInCardLibrary": true,
+  "poolTypeName": "BottleCardPool",
+  "dynamicVars": [
+    { "kind": "Repeat", "baseValue": 1, "upgradeValue": 0, "valueProp": 0 }
+  ],
+  "cardPlayActions": [],
+  "notes": "关键词：有一说一、固有（Innate）。每回合触发需在 Power 或回合开始 Hook 中实现；固有需在卡牌类上配置。"
+}

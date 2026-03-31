@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "className": "ReadingRadio",
+  "title": "读书电台",
+  "description": "每当你抽到一张带[gold]有一说一[/gold]的牌，随机对一名敌人造成{Damage:diff()}点伤害。",
+  "namespace": "BiliBiliACGN.BiliBiliACGNCode.Cards",
+  "energyCost": 2,
+  "cardType": "Power",
+  "rarity": "Uncommon",
+  "targetType": "Self",
+  "showInCardLibrary": true,
+  "poolTypeName": "BottleCardPool",
+  "dynamicVars": [
+    { "kind": "Damage", "baseValue": 3, "upgradeValue": 1, "valueProp": 1 }
+  ],
+  "cardPlayActions": [],
+  "notes": "费用 2→1：升级降费请手写 OnUpgrade。关键词：有一说一。触发「抽牌时」需在 Power 或 Hook 中实现，非 OnPlay 模板。"
+}

@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "className": "DeepThink",
+  "title": "深度思考",
+  "description": "获得{Power:diff()}点[gold]有一说一[/gold]。",
+  "namespace": "BiliBiliACGN.BiliBiliACGNCode.Cards",
+  "energyCost": 1,
+  "cardType": "Power",
+  "rarity": "Uncommon",
+  "targetType": "Self",
+  "showInCardLibrary": true,
+  "poolTypeName": "BottleCardPool",
+  "dynamicVars": [
+    { "kind": "Power", "baseValue": 2, "upgradeValue": 1, "valueProp": 0 }
+  ],
+  "cardPlayActions": [
+    {
+      "actionType": "Buff",
+      "valueBinding": "Power",
+      "value": 0,
+      "repeatCountBinding": "literal",
+      "repeatCountValue": 1,
+      "buffType": "YYSYPower",
+      "notes": "能力牌：常驻层数"
+    }
+  ],
+  "notes": "关键词：有一说一。罕见。"
+}

@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "className": "BullStab",
+  "title": "牛刺",
+  "description": "造成{Damage:diff()}点伤害。自动打出手牌中{Cards:diff()}张带[gold]有一说一[/gold]的牌。",
+  "namespace": "BiliBiliACGN.BiliBiliACGNCode.Cards",
+  "energyCost": 1,
+  "cardType": "Attack",
+  "rarity": "Uncommon",
+  "targetType": "AnyEnemy",
+  "showInCardLibrary": true,
+  "poolTypeName": "BottleCardPool",
+  "dynamicVars": [
+    {
+      "kind": "Damage",
+      "baseValue": 7,
+      "upgradeValue": 3,
+      "valueProp": 1
+    },
+    {
+      "kind": "Cards",
+      "baseValue": 1,
+      "upgradeValue": 1,
+      "valueProp": 0
+    }
+  ],
+  "cardPlayActions": [
+    {
+      "actionType": "Damage",
+      "valueBinding": "Damage",
+      "value": 0,
+      "repeatCountBinding": "literal",
+      "repeatCountValue": 1,
+      "notes": "7/10 伤害"
+    },
+    {
+      "actionType": "DrawCards",
+      "valueBinding": "Cards",
+      "value": 0,
+      "repeatCountBinding": "literal",
+      "repeatCountValue": 1
+    }
+  ],
+  "notes": "关键词：有一说一。自动打出 YYSY 牌需手写（筛选手牌、AutoplayingCards + CardCmd.AutoPlay）。Cards 变量可用于表示 1/2 张目标张数。"
+}
