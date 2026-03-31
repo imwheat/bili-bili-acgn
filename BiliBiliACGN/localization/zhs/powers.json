@@ -1,7 +1,10 @@
 ﻿{
   "BILIBILIACGN-Y_YS_Y_POWER.title": "有一说一",
-  "BILIBILIACGN-Y_YS_Y_POWER.description": "提高1点伤害",
-  "BILIBILIACGN-Y_YS_Y_POWER.smartDescription": "提高[blue]{Amount}[/blue]点伤害",
+  "BILIBILIACGN-Y_YS_Y_POWER.description": "提高带有[gold]有一说一[/gold]的牌1点[gold]数值[/gold]",
+  "BILIBILIACGN-Y_YS_Y_POWER.smartDescription": "提高带有[gold]有一说一[/gold]的牌[blue]{Amount}[/blue]点[gold]数值[/gold]",
+  "BILIBILIACGN-Y_YS_Y_LOSS_POWER.title": "有一说一损失",
+  "BILIBILIACGN-Y_YS_Y_LOSS_POWER.description": "回合结束时失去[gold]有一说一[/gold]",
+  "BILIBILIACGN-Y_YS_Y_LOSS_POWER.smartDescription": "回合结束时失去[blue]{Amount}[/blue]点[gold]有一说一[/gold]",
   "BILIBILIACGN-AngerPower.title": "红温值",
   "BILIBILIACGN-AngerPower.description": "提供[red]红温[/red]相关加成。",
   "BILIBILIACGN-AngerPower.smartDescription": "提供[red]红温[/red]相关加成。"
