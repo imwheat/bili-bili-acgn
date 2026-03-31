@@ -1,0 +1,39 @@
+[gd_scene load_steps=2 format=3 uid="uid://dmka8cskuyp6h"]
+
+[ext_resource type="Texture2D" uid="uid://d3i4dd1nfq8se" path="res://BiliBiliACGN/images/energy/bottle152_energy_big.png" id="1_obvvq"]
+
+[node name="BottleEnergyCounter" type="Node2D"]
+
+[node name="EnergyVfxBack" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Layers" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Layer1" type="TextureRect" parent="Layers"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_obvvq")
+
+[node name="RotationLayers" type="Control" parent="Layers"]
+unique_name_in_owner = true
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="EnergyVfxFront" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Label" type="Label" parent="."]
+offset_left = 2.0
+offset_top = 23.0
+offset_right = 70.0
+offset_bottom = 50.0
+text = "3/3"
+horizontal_alignment = 1
+vertical_alignment = 1
