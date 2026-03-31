@@ -10,7 +10,7 @@ public partial class KeywordEditorSettingsWindow : Window
     public KeywordEditorSettingsWindow()
     {
         InitializeComponent();
-        TxtSettingsPath.Text = KeywordEditorSettingsJson.GetDefaultFilePath();
+        TxtSettingsPath.Text = $"合并配置 settings.json（keywordEditorSettings 段）: {ExeBundledSettingsJson.GetDefaultFilePath()}";
         Loaded += (_, _) => LoadIntoUi(KeywordEditorSettingsJson.LoadOrCreateDefault());
     }
 

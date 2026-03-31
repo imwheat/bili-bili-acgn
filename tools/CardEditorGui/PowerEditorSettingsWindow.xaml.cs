@@ -12,7 +12,7 @@ public partial class PowerEditorSettingsWindow : Window
     public PowerEditorSettingsWindow()
     {
         InitializeComponent();
-        TxtSettingsPath.Text = PowerEditorSettingsJson.GetDefaultFilePath();
+        TxtSettingsPath.Text = $"合并配置 settings.json（powerEditorSettings 段）: {ExeBundledSettingsJson.GetDefaultFilePath()}";
         Loaded += (_, _) => LoadIntoUi(PowerEditorSettingsJson.LoadOrCreateDefault());
     }
 

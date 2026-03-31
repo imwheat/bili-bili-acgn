@@ -40,7 +40,7 @@
                 <TextBox x:Name="TxtCardLocalizationJsonPath" />
             </DockPanel>
 
-            <TextBlock Text="卡池（CardPool.json，与 exe 同目录）" FontWeight="SemiBold" Margin="0,0,0,4" />
+            <TextBlock Text="卡池（保存在 exe 同目录 settings.json 内）" FontWeight="SemiBold" Margin="0,0,0,4" />
             <TextBlock TextWrapping="Wrap" Foreground="Gray" FontSize="11" Margin="0,0,0,8"
                        Text="「类型名」写入卡牌 JSON 与生成代码（[Pool(typeof(...))]）；「显示名称」仅用于编辑器下拉，留空则下拉显示类型名。" />
         </StackPanel>
@@ -78,7 +78,7 @@
                     <Button Grid.Column="3" Content="删除选中" Width="88" Click="BtnRemovePool_Click" />
                 </Grid>
                 <TextBlock Grid.Row="2" Foreground="Gray" FontSize="11" TextWrapping="Wrap"
-                           Text="默认含 ColorlessCardPool（无色牌）、CurseCardPool（诅咒牌）、StatusCardPool（状态牌）；首次运行会在 exe 同目录生成 CardPool.json。" />
+                           Text="默认含 ColorlessCardPool（无色牌）、CurseCardPool（诅咒牌）、StatusCardPool（状态牌）；与 BUFF/关键字选项/模版等一并写入同目录 settings.json。" />
             </Grid>
         </GroupBox>
 

@@ -29,13 +29,15 @@ public static class BuffOptionsJson
     };
 
     public static string GetDefaultFilePath() =>
-        Path.Combine(AppContext.BaseDirectory, FileName);
+        ExeBundledSettingsJson.GetDefaultFilePath();
 
     public static string Serialize(BuffOptionsFile file) =>
         JsonUnicodeEncoder.ExpandJsonUnicodeEscapes(JsonSerializer.Serialize(file, Options));
 
     public static BuffOptionsFile Deserialize(string json) =>
         JsonSerializer.Deserialize<BuffOptionsFile>(json, Options) ?? new BuffOptionsFile();
+
+    internal static BuffOptionsFile DeserializeFile(string json) => Deserialize(json);
 
     public static List<BuffOptionEntry> LoadFromFile(string path)
     {
@@ -62,9 +64,13 @@ public static class BuffOptionsJson
     }
 
     public static List<BuffOptionEntry> LoadOrCreateDefault() =>
-        LoadFromFile(GetDefaultFilePath());
+        ExeBundledSettingsJson.LoadOrCreateDefault().BuffOptions;
 
-    public static void SaveDefault(List<BuffOptionEntry> options) =>
-        SaveToFile(options, GetDefaultFilePath());
+    public static void SaveDefault(List<BuffOptionEntry> options)
+    {
+        var root = ExeBundledSettingsJson.LoadOrCreateDefault();
+        root.BuffOptions = options;
+        ExeBundledSettingsJson.SaveDefault(root);
+    }
 }
 

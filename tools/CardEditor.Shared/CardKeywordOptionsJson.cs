@@ -29,13 +29,15 @@ public static class CardKeywordOptionsJson
     };
 
     public static string GetDefaultFilePath() =>
-        Path.Combine(AppContext.BaseDirectory, FileName);
+        ExeBundledSettingsJson.GetDefaultFilePath();
 
     public static string Serialize(CardKeywordOptionsFile file) =>
         JsonUnicodeEncoder.ExpandJsonUnicodeEscapes(JsonSerializer.Serialize(file, Options));
 
     public static CardKeywordOptionsFile Deserialize(string json) =>
         JsonSerializer.Deserialize<CardKeywordOptionsFile>(json, Options) ?? new CardKeywordOptionsFile();
+
+    internal static CardKeywordOptionsFile DeserializeFile(string json) => Deserialize(json);
 
     public static List<KeywordOptionEntry> LoadFromFile(string path)
     {
@@ -63,20 +65,23 @@ public static class CardKeywordOptionsJson
 
     public static List<KeywordOptionEntry> LoadOrCreateDefault()
     {
-        var path = GetDefaultFilePath();
-        if (!File.Exists(path))
-        {
-            var d = CloneDefaultOptions();
-            SaveToFile(d, path);
-            return d;
-        }
-        var list = LoadFromFile(path);
-        return list.Count > 0 ? list : CloneDefaultOptions();
+        var root = ExeBundledSettingsJson.LoadOrCreateDefault();
+        var list = root.CardKeywordOptions;
+        if (list.Count > 0)
+            return list;
+        var d = CloneDefaultOptions();
+        root.CardKeywordOptions = d;
+        ExeBundledSettingsJson.SaveDefault(root);
+        return d;
     }
 
     public static List<KeywordOptionEntry> CloneDefaultOptions() =>
         CardKeywordCatalog.CloneDefault().Select(k => new KeywordOptionEntry { Name = k.Name, Notes = k.Notes }).ToList();
 
-    public static void SaveDefault(List<KeywordOptionEntry> options) =>
-        SaveToFile(options, GetDefaultFilePath());
+    public static void SaveDefault(List<KeywordOptionEntry> options)
+    {
+        var root = ExeBundledSettingsJson.LoadOrCreateDefault();
+        root.CardKeywordOptions = options;
+        ExeBundledSettingsJson.SaveDefault(root);
+    }
 }

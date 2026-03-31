@@ -20,7 +20,7 @@ public static class KeywordEditorSettingsJson
     };
 
     public static string GetDefaultFilePath() =>
-        Path.Combine(AppContext.BaseDirectory, FileName);
+        ExeBundledSettingsJson.GetDefaultFilePath();
 
     public static string Serialize(KeywordEditorSettings settings) =>
         JsonUnicodeEncoder.ExpandJsonUnicodeEscapes(JsonSerializer.Serialize(settings, Options));
@@ -28,6 +28,8 @@ public static class KeywordEditorSettingsJson
     public static KeywordEditorSettings Deserialize(string json) =>
         JsonSerializer.Deserialize<KeywordEditorSettings>(json, Options)
         ?? new KeywordEditorSettings();
+
+    internal static KeywordEditorSettings DeserializeSettings(string json) => Deserialize(json);
 
     public static KeywordEditorSettings LoadFromFile(string path)
     {
@@ -53,9 +55,13 @@ public static class KeywordEditorSettingsJson
     }
 
     public static KeywordEditorSettings LoadOrCreateDefault() =>
-        LoadFromFile(GetDefaultFilePath());
+        ExeBundledSettingsJson.LoadOrCreateDefault().KeywordEditorSettings;
 
-    public static void SaveDefault(KeywordEditorSettings settings) =>
-        SaveToFile(settings, GetDefaultFilePath());
+    public static void SaveDefault(KeywordEditorSettings settings)
+    {
+        var root = ExeBundledSettingsJson.LoadOrCreateDefault();
+        root.KeywordEditorSettings = settings;
+        ExeBundledSettingsJson.SaveDefault(root);
+    }
 }
 

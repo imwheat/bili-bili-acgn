@@ -28,9 +28,8 @@ public static class DynamicVarTemplateJson
         Encoder = JsonUnicodeEncoder.ForWritableJson
     };
 
-    /// <summary>与 CardEditorGui.exe 同目录。</summary>
     public static string GetDefaultFilePath() =>
-        Path.Combine(AppContext.BaseDirectory, FileName);
+        ExeBundledSettingsJson.GetDefaultFilePath();
 
     public static string Serialize(DynamicVarTemplateFile file) =>
         JsonUnicodeEncoder.ExpandJsonUnicodeEscapes(JsonSerializer.Serialize(file, Options));
@@ -38,6 +37,8 @@ public static class DynamicVarTemplateJson
     public static DynamicVarTemplateFile Deserialize(string json) =>
         JsonSerializer.Deserialize<DynamicVarTemplateFile>(json, Options)
         ?? new DynamicVarTemplateFile();
+
+    internal static DynamicVarTemplateFile DeserializeFile(string json) => Deserialize(json);
 
     public static void SaveToFile(List<DynamicVarTemplate> templates, string path)
     {
@@ -66,9 +67,22 @@ public static class DynamicVarTemplateJson
         }
     }
 
-    public static List<DynamicVarTemplate> LoadOrCreateDefault() =>
-        LoadFromFile(GetDefaultFilePath());
+    public static List<DynamicVarTemplate> LoadOrCreateDefault()
+    {
+        var root = ExeBundledSettingsJson.LoadOrCreateDefault();
+        var list = root.DynamicVarTemplates;
+        if (list.Count > 0)
+            return list;
+        var d = DynamicVarTemplateCatalog.CloneDefaultTemplates();
+        root.DynamicVarTemplates = d;
+        ExeBundledSettingsJson.SaveDefault(root);
+        return d;
+    }
 
-    public static void SaveDefault(List<DynamicVarTemplate> templates) =>
-        SaveToFile(templates, GetDefaultFilePath());
+    public static void SaveDefault(List<DynamicVarTemplate> templates)
+    {
+        var root = ExeBundledSettingsJson.LoadOrCreateDefault();
+        root.DynamicVarTemplates = templates;
+        ExeBundledSettingsJson.SaveDefault(root);
+    }
 }

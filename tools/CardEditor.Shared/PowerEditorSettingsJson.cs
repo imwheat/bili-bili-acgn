@@ -20,7 +20,7 @@ public static class PowerEditorSettingsJson
     };
 
     public static string GetDefaultFilePath() =>
-        Path.Combine(AppContext.BaseDirectory, FileName);
+        ExeBundledSettingsJson.GetDefaultFilePath();
 
     public static string Serialize(PowerEditorSettings settings) =>
         JsonUnicodeEncoder.ExpandJsonUnicodeEscapes(JsonSerializer.Serialize(settings, Options));
@@ -28,6 +28,8 @@ public static class PowerEditorSettingsJson
     public static PowerEditorSettings Deserialize(string json) =>
         JsonSerializer.Deserialize<PowerEditorSettings>(json, Options)
         ?? new PowerEditorSettings();
+
+    internal static PowerEditorSettings DeserializeSettings(string json) => Deserialize(json);
 
     public static PowerEditorSettings LoadFromFile(string path)
     {
@@ -53,9 +55,13 @@ public static class PowerEditorSettingsJson
     }
 
     public static PowerEditorSettings LoadOrCreateDefault() =>
-        LoadFromFile(GetDefaultFilePath());
+        ExeBundledSettingsJson.LoadOrCreateDefault().PowerEditorSettings;
 
-    public static void SaveDefault(PowerEditorSettings settings) =>
-        SaveToFile(settings, GetDefaultFilePath());
+    public static void SaveDefault(PowerEditorSettings settings)
+    {
+        var root = ExeBundledSettingsJson.LoadOrCreateDefault();
+        root.PowerEditorSettings = settings;
+        ExeBundledSettingsJson.SaveDefault(root);
+    }
 }
 

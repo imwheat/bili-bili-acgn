@@ -16,7 +16,7 @@ public partial class SettingsWindow : Window
         InitializeComponent();
         GridPools.ItemsSource = _poolRows;
         TxtSettingsPath.Text = EditorSettingsJson.GetDefaultSettingsPath();
-        TxtCardPoolPath.Text = CardPoolJson.GetDefaultFilePath();
+        TxtCardPoolPath.Text = "exe 合并配置: " + ExeBundledSettingsJson.GetDefaultFilePath();
         Loaded += (_, _) => LoadIntoUi(EditorSettingsJson.LoadOrCreateDefault());
     }
 

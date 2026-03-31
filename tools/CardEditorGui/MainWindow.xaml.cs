@@ -89,9 +89,6 @@ public partial class MainWindow : Window
         CmbPoolType.DisplayMemberPath = nameof(CardPoolEntry.DisplayLabel);
         CmbPoolType.SelectedValuePath = nameof(CardPoolEntry.Name);
 
-        if (!File.Exists(CardPoolJson.GetDefaultFilePath()))
-            CardPoolJson.SaveDefault(_poolEntries.Select(e => new CardPoolEntry { Name = e.Name, DisplayName = e.DisplayName }).ToList());
-
         _buffOptions.Clear();
         foreach (var b in BuffOptionsJson.LoadOrCreateDefault())
             _buffOptions.Add(new BuffOptionEntry { Name = b.Name, Notes = b.Notes });

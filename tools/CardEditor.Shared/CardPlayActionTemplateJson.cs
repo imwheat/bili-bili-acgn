@@ -28,9 +28,8 @@ public static class CardPlayActionTemplateJson
         Encoder = JsonUnicodeEncoder.ForWritableJson
     };
 
-    /// <summary>与 CardEditorGui.exe 同目录。</summary>
     public static string GetDefaultFilePath() =>
-        Path.Combine(AppContext.BaseDirectory, FileName);
+        ExeBundledSettingsJson.GetDefaultFilePath();
 
     public static string Serialize(CardPlayActionTemplateFile file) =>
         JsonUnicodeEncoder.ExpandJsonUnicodeEscapes(JsonSerializer.Serialize(file, Options));
@@ -38,6 +37,8 @@ public static class CardPlayActionTemplateJson
     public static CardPlayActionTemplateFile Deserialize(string json) =>
         JsonSerializer.Deserialize<CardPlayActionTemplateFile>(json, Options)
         ?? new CardPlayActionTemplateFile();
+
+    internal static CardPlayActionTemplateFile DeserializeFile(string json) => Deserialize(json);
 
     public static void SaveToFile(List<CardPlayActionTemplate> templates, string path)
     {
@@ -66,9 +67,22 @@ public static class CardPlayActionTemplateJson
         }
     }
 
-    public static List<CardPlayActionTemplate> LoadOrCreateDefault() =>
-        LoadFromFile(GetDefaultFilePath());
+    public static List<CardPlayActionTemplate> LoadOrCreateDefault()
+    {
+        var root = ExeBundledSettingsJson.LoadOrCreateDefault();
+        var list = root.CardPlayActionTemplates;
+        if (list.Count > 0)
+            return list;
+        var d = CardPlayActionTemplateCatalog.CloneDefaultTemplates();
+        root.CardPlayActionTemplates = d;
+        ExeBundledSettingsJson.SaveDefault(root);
+        return d;
+    }
 
-    public static void SaveDefault(List<CardPlayActionTemplate> templates) =>
-        SaveToFile(templates, GetDefaultFilePath());
+    public static void SaveDefault(List<CardPlayActionTemplate> templates)
+    {
+        var root = ExeBundledSettingsJson.LoadOrCreateDefault();
+        root.CardPlayActionTemplates = templates;
+        ExeBundledSettingsJson.SaveDefault(root);
+    }
 }

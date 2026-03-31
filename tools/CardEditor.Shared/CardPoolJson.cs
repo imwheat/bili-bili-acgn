@@ -28,9 +28,9 @@ public static class CardPoolJson
         Encoder = JsonUnicodeEncoder.ForWritableJson
     };
 
-    /// <summary>与 CardEditorGui.exe 同目录。</summary>
+    /// <summary>与 CardEditorGui.exe 同目录的合并配置 <c>settings.json</c>（卡池数据存于其中）。</summary>
     public static string GetDefaultFilePath() =>
-        Path.Combine(AppContext.BaseDirectory, FileName);
+        ExeBundledSettingsJson.GetDefaultFilePath();
 
     public static string Serialize(CardPoolFile file) =>
         JsonUnicodeEncoder.ExpandJsonUnicodeEscapes(JsonSerializer.Serialize(file, Options));
@@ -38,6 +38,10 @@ public static class CardPoolJson
     public static CardPoolFile Deserialize(string json) =>
         JsonSerializer.Deserialize<CardPoolFile>(json, Options)
         ?? new CardPoolFile();
+
+    /// <summary>卡池为空或文件缺失时使用的默认/迁移逻辑（供合并版 settings.json 使用）。</summary>
+    public static List<CardPoolEntry> LoadPoolsWithFallback() =>
+        MigrateFromLegacySettingsOrDefaults();
 
     public static void SaveToFile(List<CardPoolEntry> pools, string path)
     {
@@ -95,8 +99,12 @@ public static class CardPoolJson
     }
 
     public static List<CardPoolEntry> LoadOrCreateDefault() =>
-        LoadFromFile(GetDefaultFilePath());
+        ExeBundledSettingsJson.LoadOrCreateDefault().CardPools;
 
-    public static void SaveDefault(List<CardPoolEntry> pools) =>
-        SaveToFile(pools, GetDefaultFilePath());
+    public static void SaveDefault(List<CardPoolEntry> pools)
+    {
+        var root = ExeBundledSettingsJson.LoadOrCreateDefault();
+        root.CardPools = pools;
+        ExeBundledSettingsJson.SaveDefault(root);
+    }
 }
