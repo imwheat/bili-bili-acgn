@@ -15,6 +15,7 @@ using MegaCrit.Sts2.Core.Models;
 using BiliBiliACGN.BiliBiliACGNCode.Cards;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Logging;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Powers;
 
@@ -52,6 +53,7 @@ public sealed class InfiniteBullnessPower : PowerBaseModel
     }
     public override async Task AfterCardDrawn(PlayerChoiceContext choiceContext, CardModel card, bool fromHandDraw)
     {
+        Log.Info($"无量牛处触发：当前数量{currentAmount}，最大数量{base.Amount}");
         if(currentAmount < base.Amount){
             currentAmount++;
             // 自动打出有一说一的卡牌

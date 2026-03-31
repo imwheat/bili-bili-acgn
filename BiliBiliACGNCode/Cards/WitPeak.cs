@@ -46,7 +46,10 @@ public sealed class WitPeak : CardBaseModel
     {
         #region 卡牌打出效果
         await PlayerCmd.GainEnergy(base.DynamicVars["Energy"].BaseValue, base.Owner);
-        await CardPileCmd.Draw(choiceContext, 2m, base.Owner);
+        var drawCards = await CardPileCmd.Draw(choiceContext, 2m, base.Owner);
+        foreach(var card in drawCards){
+            card.AddKeyword(CustomKeyWords.YYSY);
+        }
         #endregion
     }
 

@@ -58,7 +58,6 @@ public sealed class WildBuffaloStrike : CardBaseModel
         await PowerCmd.Apply<YYSYPower>(base.Owner.Creature, base.DynamicVars["Power"].BaseValue, base.Owner.Creature, this);
         await PowerCmd.Apply<YYSYLossPower>(base.Owner.Creature, base.DynamicVars["Power"].BaseValue, base.Owner.Creature, this);
 
-        await CardPileCmd.Draw(choiceContext, base.DynamicVars["Power"].BaseValue, base.Owner);
         #endregion
     }
 

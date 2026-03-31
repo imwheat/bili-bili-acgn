@@ -23,13 +23,12 @@ public sealed class BusinessExpansion : CardBaseModel
     private const CardRarity rarity = CardRarity.Common;
     private const TargetType targetType = TargetType.Self;
     private const bool shouldShowInCardLibrary = true;
-
     /// <summary>
     /// 牌面动态变量配置。
     /// </summary>
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(1m, ValueProp.Move)
+        new CardsVar(2)
     ];
 
     public BusinessExpansion() : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary) { }
@@ -53,6 +52,7 @@ public sealed class BusinessExpansion : CardBaseModel
     {
         #region 升级效果
         // 无升级数值（upgradeValue 均为 0）
+        base.DynamicVars["Cards"].UpgradeValueBy(1);
 
         #endregion
     }

@@ -11,6 +11,10 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
 using MegaCrit.Sts2.Core.HoverTips;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Entities.Creatures;
+using BiliBiliACGN.BiliBiliACGNCode.Powers;
+using MegaCrit.Sts2.Core.Commands;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -32,7 +36,11 @@ public sealed class HairGrowth : CardBaseModel
     /// </summary>
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new CardsVar(1)
+        new CalculationBaseVar(0m),
+        new CalculatedVar("DrawCards").WithMultiplier((CardModel card, Creature? target)=>
+		{
+			return target?.GetPowerAmount<YYSYPower>() ?? 0;
+		})
     ];
 
     public HairGrowth() : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary) { }
@@ -45,7 +53,7 @@ public sealed class HairGrowth : CardBaseModel
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         #region 卡牌打出效果
-        await Task.CompletedTask;
+        await CardPileCmd.Draw(choiceContext, ((CalculatedVar)base.DynamicVars["DrawCards"]).Calculate(cardPlay.Target), base.Owner);
         #endregion
     }
 

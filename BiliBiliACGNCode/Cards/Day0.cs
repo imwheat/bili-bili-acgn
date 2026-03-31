@@ -19,7 +19,8 @@ namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 public sealed class Day0 : CardBaseModel
 {
     #region 卡牌关键词与悬停
-    // 未配置 CanonicalKeywords / ExtraHoverTips
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CustomKeyWords.YYSY];
+
     #endregion
     #region 卡牌属性配置
     private const int energyCost = 2;

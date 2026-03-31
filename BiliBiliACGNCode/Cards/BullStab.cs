@@ -49,7 +49,17 @@ public sealed class BullStab : CardBaseModel
             .Targeting(cardPlay.Target)
             .Execute(choiceContext);
 
-        await CardPileCmd.Draw(choiceContext, base.DynamicVars.Cards.BaseValue, base.Owner);
+        // 获取所有带[gold]有一说一[/gold]的手牌
+        var pile = PileType.Hand.GetPile(base.Owner);
+        int cnt = 0;int limit = (int)base.DynamicVars.Cards.BaseValue;
+        // 遍历所有卡牌，自动打出带[gold]有一说一[/gold]的卡牌
+        foreach(var card in pile.Cards){
+            if(card.Keywords.Contains(CustomKeyWords.YYSY)){
+                await CardCmd.AutoPlay(choiceContext, card, null);
+                if(++cnt >= limit)
+                    break;
+            }
+        }
         #endregion
     }
 

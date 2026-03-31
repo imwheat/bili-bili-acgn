@@ -56,7 +56,8 @@ public sealed class BullEyeOpen : CardBaseModel
     protected override void OnUpgrade()
     {
         #region 升级效果
-        // 无升级数值（upgradeValue 均为 0）
+        // 降费
+        base.EnergyCost.UpgradeBy(-1);
 
         #endregion
     }
