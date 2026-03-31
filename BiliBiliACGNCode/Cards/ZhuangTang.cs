@@ -1,23 +1,23 @@
 ﻿//****************** 代码文件申明 ***********************
-//* 文件：CornSyndrome
+//* 文件：ZhuangTang
 //* 作者：wheat
-//* 创建时间：2026/03/31 08:55:49 星期二
-//* 描述：获得{Block:diff()}点格挡。随机给你手牌中的一张牌添加[gold]有一说一[/gold]。
+//* 创建时间：2026/03/31 10:25:35 星期二
+//* 描述：获得{Block:diff()}点格挡。随机打出手牌中一张带[gold]有一说一[/gold]的牌。
 //*******************************************************
 
 using BaseLib.Utils;
-using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
-using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
 using MegaCrit.Sts2.Core.ValueProps;
+using MegaCrit.Sts2.Core.HoverTips;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
 [Pool(typeof(BottleCardPool))]
-public sealed class CornSyndrome : CardBaseModel
+public sealed class ZhuangTang : CardBaseModel
 {
     #region 卡牌关键词与悬停
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromKeyword(CustomKeyWords.YYSY)];
@@ -25,7 +25,7 @@ public sealed class CornSyndrome : CardBaseModel
     #region 卡牌属性配置
     private const int energyCost = 1;
     private const CardType type = CardType.Skill;
-    private const CardRarity rarity = CardRarity.Uncommon;
+    private const CardRarity rarity = CardRarity.Common;
     private const TargetType targetType = TargetType.Self;
     private const bool shouldShowInCardLibrary = true;
 
@@ -34,10 +34,10 @@ public sealed class CornSyndrome : CardBaseModel
     /// </summary>
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(7m, ValueProp.Move)
+        new BlockVar(5m, ValueProp.Move)
     ];
 
-    public CornSyndrome() : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary) { }
+    public ZhuangTang() : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary) { }
 
     #endregion
 
@@ -49,15 +49,12 @@ public sealed class CornSyndrome : CardBaseModel
         #region 卡牌打出效果
         await CreatureCmd.GainBlock(base.Owner.Creature, base.DynamicVars.Block.BaseValue, ValueProp.Move, null);
         #endregion
+        // 随机打出手牌中一张带[gold]有一说一[/gold]的牌
         var pile = PileType.Hand.GetPile(base.Owner);
         if (pile != null){
-            // 获取所有没有有一说一的手牌
-            foreach(var card in pile.Cards){
-                if(!card.Keywords.Contains(CustomKeyWords.YYSY)){
-                    card.AddKeyword(CustomKeyWords.YYSY);
-                    break;
-                }
-            }
+            // 随机打出手牌中一张带[gold]有一说一[/gold]的牌
+            var randomCard = base.Owner.RunState.Rng.CombatCardSelection.NextItem(pile.Cards);
+            await CardCmd.AutoPlay(choiceContext, randomCard, null);
         }
     }
 
@@ -67,8 +64,7 @@ public sealed class CornSyndrome : CardBaseModel
     protected override void OnUpgrade()
     {
         #region 升级效果
-        base.DynamicVars["Block"].UpgradeValueBy(3m);
-
+        base.DynamicVars["Block"].UpgradeValueBy(2m);
         #endregion
     }
 }

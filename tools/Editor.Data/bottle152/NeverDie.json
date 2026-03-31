@@ -10,9 +10,17 @@
   "targetType": "Self",
   "showInCardLibrary": true,
   "poolTypeName": "BottleCardPool",
+  "canonicalKeywordFields": [],
+  "extraHoverTipKeywordFields": [],
   "dynamicVars": [
-    { "kind": "Block", "baseValue": 2, "upgradeValue": 1, "valueProp": 1 }
+    {
+      "kind": "Block",
+      "baseValue": 2,
+      "upgradeValue": 1,
+      "valueProp": 1
+    }
   ],
   "cardPlayActions": [],
+  "upgradeEffects": [],
   "notes": "关键词：有一说一、固有。触发「打出 YYSY 牌时」需在 Hook/Power 中实现；固有需在卡牌类配置。"
 }

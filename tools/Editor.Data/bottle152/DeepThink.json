@@ -10,8 +10,15 @@
   "targetType": "Self",
   "showInCardLibrary": true,
   "poolTypeName": "BottleCardPool",
+  "canonicalKeywordFields": [],
+  "extraHoverTipKeywordFields": [],
   "dynamicVars": [
-    { "kind": "Power", "baseValue": 2, "upgradeValue": 1, "valueProp": 0 }
+    {
+      "kind": "Power",
+      "baseValue": 2,
+      "upgradeValue": 1,
+      "valueProp": 0
+    }
   ],
   "cardPlayActions": [
     {
@@ -24,5 +31,6 @@
       "notes": "能力牌：常驻层数"
     }
   ],
+  "upgradeEffects": [],
   "notes": "关键词：有一说一。罕见。"
 }

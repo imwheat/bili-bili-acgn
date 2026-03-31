@@ -10,9 +10,17 @@
   "targetType": "Self",
   "showInCardLibrary": true,
   "poolTypeName": "BottleCardPool",
+  "canonicalKeywordFields": [],
+  "extraHoverTipKeywordFields": [],
   "dynamicVars": [
-    { "kind": "Repeat", "baseValue": 1, "upgradeValue": 0, "valueProp": 0 }
+    {
+      "kind": "Repeat",
+      "baseValue": 1,
+      "upgradeValue": 0,
+      "valueProp": 0
+    }
   ],
   "cardPlayActions": [],
+  "upgradeEffects": [],
   "notes": "费用 2→1：升级降费请手写。关键词：有一说一。需枚举手牌 YYSY、Autoplay + 等量 Draw；数量非固定变量。"
 }

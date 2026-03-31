@@ -10,8 +10,17 @@
   "targetType": "Self",
   "showInCardLibrary": true,
   "poolTypeName": "BottleCardPool",
+  "canonicalKeywordFields": [
+    "Exhaust"
+  ],
+  "extraHoverTipKeywordFields": [],
   "dynamicVars": [
-    { "kind": "Energy", "baseValue": 1, "upgradeValue": 1, "valueProp": 0 }
+    {
+      "kind": "Energy",
+      "baseValue": 1,
+      "upgradeValue": 1,
+      "valueProp": 0
+    }
   ],
   "cardPlayActions": [
     {
@@ -23,5 +32,6 @@
       "notes": "固定抽 2 张"
     }
   ],
+  "upgradeEffects": [],
   "notes": "关键词：有一说一、消耗。DynamicVar「Energy」用于本地化 {Energy:diff()}（1/2 费）；实际出牌需 PlayerCmd.GainEnergy、贴关键词与 Exhaust，请手写 OnPlay。"
 }

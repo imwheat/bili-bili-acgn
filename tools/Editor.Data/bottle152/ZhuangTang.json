@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "className": "ZhuangTang",
   "title": "装唐",
-  "description": "获得{Block:diff()}点格挡。随机或选择打出手牌中一张带[gold]有一说一[/gold]的牌。",
+  "description": "获得{Block:diff()}点格挡。随机打出手牌中一张带[gold]有一说一[/gold]的牌。",
   "namespace": "BiliBiliACGN.BiliBiliACGNCode.Cards",
   "energyCost": 1,
   "cardType": "Skill",
@@ -10,8 +10,15 @@
   "targetType": "Self",
   "showInCardLibrary": true,
   "poolTypeName": "BottleCardPool",
+  "canonicalKeywordFields": [],
+  "extraHoverTipKeywordFields": [],
   "dynamicVars": [
-    { "kind": "Block", "baseValue": 5, "upgradeValue": 2, "valueProp": 1 }
+    {
+      "kind": "Block",
+      "baseValue": 5,
+      "upgradeValue": 2,
+      "valueProp": 1
+    }
   ],
   "cardPlayActions": [
     {
@@ -23,5 +30,6 @@
       "notes": "5/7 格挡"
     }
   ],
+  "upgradeEffects": [],
   "notes": "关键词：有一说一。后半句选牌+打出需手写（CardSelectCmd / CardCmd）。"
 }

@@ -1,31 +1,33 @@
 ﻿//****************** 代码文件申明 ***********************
-//* 文件：CornSyndrome
+//* 文件：IAmTheMaggot(我是蛆)
 //* 作者：wheat
-//* 创建时间：2026/03/31 08:55:49 星期二
-//* 描述：获得{Block:diff()}点格挡。随机给你手牌中的一张牌添加[gold]有一说一[/gold]。
+//* 创建时间：2026/03/31 10:20:49 星期二
+//* 描述：每回合随机赋予一张手牌[gold]有一说一[/gold]。
 //*******************************************************
 
 using BaseLib.Utils;
-using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
-using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models.CardPools;
+using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
 using MegaCrit.Sts2.Core.ValueProps;
+using MegaCrit.Sts2.Core.HoverTips;
+using BiliBiliACGN.BiliBiliACGNCode.Powers;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
 [Pool(typeof(BottleCardPool))]
-public sealed class CornSyndrome : CardBaseModel
+public sealed class IAmTheMaggot : CardBaseModel
 {
     #region 卡牌关键词与悬停
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromKeyword(CustomKeyWords.YYSY)];
     #endregion
     #region 卡牌属性配置
     private const int energyCost = 1;
-    private const CardType type = CardType.Skill;
-    private const CardRarity rarity = CardRarity.Uncommon;
+    private const CardType type = CardType.Power;
+    private const CardRarity rarity = CardRarity.Rare;
     private const TargetType targetType = TargetType.Self;
     private const bool shouldShowInCardLibrary = true;
 
@@ -34,10 +36,10 @@ public sealed class CornSyndrome : CardBaseModel
     /// </summary>
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(7m, ValueProp.Move)
+        new DynamicVar("Power", 1m)
     ];
 
-    public CornSyndrome() : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary) { }
+    public IAmTheMaggot() : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary) { }
 
     #endregion
 
@@ -47,18 +49,9 @@ public sealed class CornSyndrome : CardBaseModel
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         #region 卡牌打出效果
-        await CreatureCmd.GainBlock(base.Owner.Creature, base.DynamicVars.Block.BaseValue, ValueProp.Move, null);
+        await CreatureCmd.TriggerAnim(base.Owner.Creature, "Cast", base.Owner.Character.CastAnimDelay);
+        await PowerCmd.Apply<IAmTheMaggotPower>(base.Owner.Creature, base.DynamicVars["Power"].BaseValue, base.Owner.Creature, this);
         #endregion
-        var pile = PileType.Hand.GetPile(base.Owner);
-        if (pile != null){
-            // 获取所有没有有一说一的手牌
-            foreach(var card in pile.Cards){
-                if(!card.Keywords.Contains(CustomKeyWords.YYSY)){
-                    card.AddKeyword(CustomKeyWords.YYSY);
-                    break;
-                }
-            }
-        }
     }
 
     /// <summary>
@@ -67,8 +60,9 @@ public sealed class CornSyndrome : CardBaseModel
     protected override void OnUpgrade()
     {
         #region 升级效果
-        base.DynamicVars["Block"].UpgradeValueBy(3m);
+        // 无升级效果（动态变量 upgradeValue 均为 0，且未配置 upgradeEffects）
 
         #endregion
+        AddKeyword(CardKeyword.Innate);
     }
 }

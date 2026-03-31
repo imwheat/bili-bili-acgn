@@ -14,7 +14,7 @@ public sealed class BlockCardPlayActionCodeEmitter : CardPlayActionCodeEmitterBa
         var blockEntry = context.CanonicalVars?.FirstOrDefault(x =>
             x.Kind.Trim().Equals("Block", StringComparison.OrdinalIgnoreCase));
         var vp = CardPlayActionEmitSyntax.FormatValuePropForEmit(blockEntry?.ValueProp ?? ValueProp.None, "block");
-        var inner = $"{indent}await CreatureCmd.GainBlock(base.Owner, {v}, {vp}, null);";
+        var inner = $"{indent}await CreatureCmd.GainBlock(base.Owner.Creature, {v}, {vp}, null);";
         return CardPlayActionEmitSyntax.WrapWithRepeatLoop(action, inner, indent);
     }
 }

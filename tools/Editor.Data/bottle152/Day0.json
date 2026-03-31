@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "className": "Day0",
   "title": "Day0",
-  "description": "获得{Block:diff()}点格挡。抽取{Cards:diff()}张牌。",
+  "description": "获得{Block:diff()}点格挡。\r\n抽取{Cards:diff()}张牌。",
   "namespace": "BiliBiliACGN.BiliBiliACGNCode.Cards",
   "energyCost": 2,
   "cardType": "Skill",
@@ -10,9 +10,21 @@
   "targetType": "Self",
   "showInCardLibrary": true,
   "poolTypeName": "BottleCardPool",
+  "canonicalKeywordFields": [],
+  "extraHoverTipKeywordFields": [],
   "dynamicVars": [
-    { "kind": "Block", "baseValue": 8, "upgradeValue": 3, "valueProp": 1 },
-    { "kind": "Cards", "baseValue": 2, "upgradeValue": 1, "valueProp": 0 }
+    {
+      "kind": "Block",
+      "baseValue": 8,
+      "upgradeValue": 3,
+      "valueProp": 1
+    },
+    {
+      "kind": "Cards",
+      "baseValue": 2,
+      "upgradeValue": 1,
+      "valueProp": 0
+    }
   ],
   "cardPlayActions": [
     {
@@ -32,5 +44,6 @@
       "notes": "2/3 抽牌"
     }
   ],
+  "upgradeEffects": [],
   "notes": "关键词：有一说一。"
 }

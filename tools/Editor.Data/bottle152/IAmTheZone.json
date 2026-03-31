@@ -10,9 +10,17 @@
   "targetType": "Self",
   "showInCardLibrary": true,
   "poolTypeName": "BottleCardPool",
+  "canonicalKeywordFields": [],
+  "extraHoverTipKeywordFields": [],
   "dynamicVars": [
-    { "kind": "Repeat", "baseValue": 1, "upgradeValue": 0, "valueProp": 0 }
+    {
+      "kind": "Damage",
+      "baseValue": 1,
+      "upgradeValue": 0,
+      "valueProp": 1
+    }
   ],
   "cardPlayActions": [],
+  "upgradeEffects": [],
   "notes": "关键词：有一说一、固有（Innate）。每回合触发需在 Power 或回合开始 Hook 中实现；固有需在卡牌类上配置。"
 }

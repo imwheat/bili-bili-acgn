@@ -10,9 +10,17 @@
   "targetType": "Self",
   "showInCardLibrary": true,
   "poolTypeName": "BottleCardPool",
+  "canonicalKeywordFields": [],
+  "extraHoverTipKeywordFields": [],
   "dynamicVars": [
-    { "kind": "Repeat", "baseValue": 1, "upgradeValue": 0, "valueProp": 0 }
+    {
+      "kind": "Repeat",
+      "baseValue": 1,
+      "upgradeValue": 0,
+      "valueProp": 0
+    }
   ],
   "cardPlayActions": [],
+  "upgradeEffects": [],
   "notes": "费用 1→0：升级降费请手写。关键词：有一说一、固有。本回合抽牌触发自动打出需状态标记 + 抽牌 Hook，非单行模板。"
 }

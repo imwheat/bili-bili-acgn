@@ -8,5 +8,15 @@
   "BILIBILIACGN-BULL_EYE_OPEN.title": "牛眼开",
   "BILIBILIACGN-BULL_EYE_OPEN.description": "造成等同于你本回合抽到过的[gold]有一说一[/gold]次数的{CalculatedDamage:diff()}伤害。",
   "BILIBILIACGN-BULL_STAB.title": "牛刺",
-  "BILIBILIACGN-BULL_STAB.description": "造成{Damage:diff()}点伤害。自动打出手牌中{Cards:diff()}张带[gold]有一说一[/gold]的牌。"
+  "BILIBILIACGN-BULL_STAB.description": "造成{Damage:diff()}点伤害。自动打出手牌中{Cards:diff()}张带[gold]有一说一[/gold]的牌。",
+  "BILIBILIACGN-DAY0.title": "Day0",
+  "BILIBILIACGN-DAY0.description": "获得{Block:diff()}点格挡。\r\n抽取{Cards:diff()}张牌。",
+  "BILIBILIACGN-HAIR_GROWTH.title": "生发",
+  "BILIBILIACGN-HAIR_GROWTH.description": "抽取[gold]有一说一[/gold]张牌{CalculatedAmount}。",
+  "BILIBILIACGN-OFF_FIELD_PLAY.title": "就玩场外",
+  "BILIBILIACGN-OFF_FIELD_PLAY.description": "抽取{Cards:diff()}张牌，若抽到带[gold]有一说一[/gold]的牌则自动打出。",
+  "BILIBILIACGN-WILD_BUFFALO_STRIKE.title": "野牛打击",
+  "BILIBILIACGN-WILD_BUFFALO_STRIKE.description": "造成{Damage:diff()}点伤害。\r\n本回合获得{Power:diff()}点[gold]有一说一[/gold]。",
+  "BILIBILIACGN-ZHUANG_TANG.title": "装唐",
+  "BILIBILIACGN-ZHUANG_TANG.description": "获得{Block:diff()}点格挡。随机打出手牌中一张带[gold]有一说一[/gold]的牌。"
 }

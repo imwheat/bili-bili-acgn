@@ -10,9 +10,17 @@
   "targetType": "Self",
   "showInCardLibrary": true,
   "poolTypeName": "BottleCardPool",
+  "canonicalKeywordFields": [],
+  "extraHoverTipKeywordFields": [],
   "dynamicVars": [
-    { "kind": "Cards", "baseValue": 2, "upgradeValue": 0, "valueProp": 0 }
+    {
+      "kind": "Cards",
+      "baseValue": 2,
+      "upgradeValue": 0,
+      "valueProp": 0
+    }
   ],
   "cardPlayActions": [],
+  "upgradeEffects": [],
   "notes": "费用 2→1：升级降费请手写。关键词：有一说一。每回合自动打出需在 Power 回合开始/结束逻辑中实现。"
 }

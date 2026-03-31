@@ -10,9 +10,17 @@
   "targetType": "Self",
   "showInCardLibrary": true,
   "poolTypeName": "BottleCardPool",
+  "canonicalKeywordFields": [],
+  "extraHoverTipKeywordFields": [],
   "dynamicVars": [
-    { "kind": "Damage", "baseValue": 3, "upgradeValue": 1, "valueProp": 1 }
+    {
+      "kind": "Damage",
+      "baseValue": 3,
+      "upgradeValue": 1,
+      "valueProp": 1
+    }
   ],
   "cardPlayActions": [],
+  "upgradeEffects": [],
   "notes": "费用 2→1：升级降费请手写 OnUpgrade。关键词：有一说一。触发「抽牌时」需在 Power 或 Hook 中实现，非 OnPlay 模板。"
 }

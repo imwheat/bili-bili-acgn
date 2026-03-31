@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "className": "WildBuffaloStrike",
   "title": "野牛打击",
-  "description": "造成{Damage:diff()}点伤害。本回合获得{Power:diff()}点[gold]有一说一[/gold]。",
+  "description": "造成{Damage:diff()}点伤害。\r\n本回合获得{Power:diff()}点[gold]有一说一[/gold]。",
   "namespace": "BiliBiliACGN.BiliBiliACGNCode.Cards",
   "energyCost": 1,
   "cardType": "Attack",
@@ -10,9 +10,21 @@
   "targetType": "AnyEnemy",
   "showInCardLibrary": true,
   "poolTypeName": "BottleCardPool",
+  "canonicalKeywordFields": [],
+  "extraHoverTipKeywordFields": [],
   "dynamicVars": [
-    { "kind": "Damage", "baseValue": 9, "upgradeValue": 3, "valueProp": 1 },
-    { "kind": "Power", "baseValue": 1, "upgradeValue": 1, "valueProp": 0 }
+    {
+      "kind": "Damage",
+      "baseValue": 9,
+      "upgradeValue": 3,
+      "valueProp": 1
+    },
+    {
+      "kind": "Power",
+      "baseValue": 1,
+      "upgradeValue": 1,
+      "valueProp": 0
+    }
   ],
   "cardPlayActions": [
     {
@@ -31,7 +43,16 @@
       "repeatCountValue": 1,
       "buffType": "YYSYPower",
       "notes": "本回合有一说一 +1/+2（需在 YYSYPower 中按回合逻辑核对）"
+    },
+    {
+      "actionType": "DrawCards",
+      "valueBinding": "Power",
+      "value": 1,
+      "repeatCountBinding": "literal",
+      "repeatCountValue": 1,
+      "buffType": "CardEditor.Shared.Models.BuffOptionEntry"
     }
   ],
+  "upgradeEffects": [],
   "notes": "关键词：有一说一。生成 .cs 后需 CanonicalKeywords / HoverTips 接入 CustomKeyWords.YYSY。"
 }
