@@ -1,7 +1,7 @@
 //****************** 代码文件申明 ***********************
 //* 文件：StrangeMurmur
 //* 作者：wheat
-//* 创建时间：2026/04/01 10:00:00 星期二
+//* 创建时间：2026/04/01 18:43:00 星期三
 //* 描述：奇怪的低语
 //*******************************************************
 
@@ -17,6 +17,7 @@ public sealed class StrangeMurmur : EventBaseModel
     public override bool IsShared => true;
     public override IReadOnlySet<Type> OwnerActTypes => new HashSet<Type> {};
     public override EventLayoutType LayoutType => EventLayoutType.Default;
+    public override EncounterModel? CanonicalEncounter => ModelDb.Encounter<StrangeMurmurEncounter>();
 	protected override IReadOnlyList<EventOption> GenerateInitialOptions()
 	{
 		return [
@@ -26,14 +27,11 @@ public sealed class StrangeMurmur : EventBaseModel
 	}
     private Task Combat()
 	{
-        SetEventFinished(L10NLookup("STRANGE_MURMUR.pages.LEAVE.description"));
-        /*
         // TODO 奖励龟壳，之后在做
 		EnterCombatWithoutExitingEvent<StrangeMurmurEncounter>([
             new RelicReward(base.Owner),
             new PotionReward(base.Owner)
         ], false);
-        */
 
 		return Task.CompletedTask;
 	}

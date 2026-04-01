@@ -1,3 +1,9 @@
+//****************** 代码文件申明 ***********************
+//* PureGoldCardEvents
+//* 作者：wheat
+//* 创建时间：2026/04/01 18:43:00 星期三
+//* 描述：纯金卡牌事件
+//*******************************************************
 using MegaCrit.Sts2.Core.Events;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Events;

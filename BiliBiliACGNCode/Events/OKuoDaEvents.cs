@@ -1,3 +1,9 @@
+//****************** 代码文件申明 ***********************
+//* OKuoDaEvents
+//* 作者：wheat
+//* 创建时间：2026/04/01 10:00:00 星期二
+//* 描述：哦跨哒事件(Pop子与Pipi美)
+//*******************************************************
 using MegaCrit.Sts2.Core.Events;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Events;

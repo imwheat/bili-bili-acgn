@@ -1,3 +1,9 @@
+//****************** 代码文件申明 ***********************
+//* DesperateDailyEvents
+//* 作者：wheat
+//* 创建时间：2026/04/01 18:43:00 星期三
+//* 描述：绝望日常事件
+//*******************************************************
 using MegaCrit.Sts2.Core.Events;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Events;
