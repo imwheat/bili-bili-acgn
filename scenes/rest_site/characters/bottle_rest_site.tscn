@@ -1,19 +1,19 @@
 [gd_scene load_steps=4 format=3 uid="uid://cvtdsx5v7l4b4"]
 
-[ext_resource type="PackedScene" uid="uid://bgy88bk44xxvk" path="res://BiliBiliACGN/scenes/selection_reticle.tscn" id="1_6ppwx"]
-[ext_resource type="Texture2D" uid="uid://dpdv8s74xdyw7" path="res://BiliBiliACGN/images/characters/bottle_chracter.png" id="1_7lhxv"]
-[ext_resource type="Script" uid="uid://cw2eetl8f1ubk" path="res://BiliBiliACGNCode/Nodes/SNRestStieCharacter.cs" id="1_q2r7x"]
+[ext_resource type="Script" uid="uid://bllvg4nxopi4a" path="res://BiliBiliACGNCode/Nodes/SNRestSiteCharacter.cs" id="1_awmq8"]
+[ext_resource type="Texture2D" uid="uid://dpdv8s74xdyw7" path="res://BiliBiliACGN/images/characters/bottle_chracter.png" id="2_qkqdf"]
+[ext_resource type="PackedScene" uid="uid://bgy88bk44xxvk" path="res://BiliBiliACGN/scenes/selection_reticle.tscn" id="3_evojs"]
 
-[node name="bottle_character_rest_site" type="Node2D"]
+[node name="RegentRestSite" type="Node2D"]
 scale = Vector2(0.760006, 0.760006)
-script = ExtResource("1_q2r7x")
+script = ExtResource("1_awmq8")
 
 [node name="SpineSprite" type="TextureRect" parent="."]
-offset_left = -135.52524
-offset_top = -439.4702
-offset_right = 120.47476
-offset_bottom = 72.529785
-texture = ExtResource("1_7lhxv")
+offset_left = -142.10413
+offset_top = -436.83865
+offset_right = 113.895874
+offset_bottom = 75.16135
+texture = ExtResource("2_qkqdf")
 expand_mode = 1
 flip_h = true
 
@@ -25,7 +25,7 @@ offset_top = 24.999802
 offset_right = 17.105127
 offset_bottom = 24.999802
 
-[node name="SelectionReticle" parent="ControlRoot" instance=ExtResource("1_6ppwx")]
+[node name="SelectionReticle" parent="ControlRoot" instance=ExtResource("3_evojs")]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = -174.99863

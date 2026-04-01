@@ -7,8 +7,8 @@ metadata/_edit_vertical_guides_ = [-1036.0]
 
 [node name="Visuals" type="Sprite2D" parent="."]
 unique_name_in_owner = true
-position = Vector2(0, -154)
-scale = Vector2(0.3, 0.3)
+position = Vector2(0, -251)
+scale = Vector2(0.25, 0.25)
 texture = ExtResource("1_agfs1")
 
 [node name="Bounds" type="Control" parent="."]

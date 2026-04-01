@@ -6,8 +6,11 @@
 //*******************************************************
 
 using BaseLib.Utils;
+using BiliBiliACGN.BiliBiliACGNCode.Core.Entities.RestSite;
 using BiliBiliACGN.BiliBiliACGNCode.Relics.RelicPool;
+using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Relics;
+using MegaCrit.Sts2.Core.Entities.RestSite;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Relics;
 
@@ -15,4 +18,13 @@ namespace BiliBiliACGN.BiliBiliACGNCode.Relics;
 public sealed class Alzheimer : RelicBaseModel
 {
     public override RelicRarity Rarity => RelicRarity.Starter;
+    public override bool TryModifyRestSiteOptions(Player player, ICollection<RestSiteOption> options)
+	{
+		if (player != base.Owner)
+		{
+			return false;
+		}
+		options.Add(new AlzheimerRestSiteOption(player));
+		return true;
+	}
 }
