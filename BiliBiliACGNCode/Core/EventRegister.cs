@@ -5,7 +5,6 @@
 //* 描述：事件注册器
 //*******************************************************
 using BiliBiliACGN.BiliBiliACGNCode.Events;
-using MegaCrit.Sts2.Core.Events;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 
@@ -16,7 +15,7 @@ public static class EventRegister
     private static readonly Dictionary<Type, List<EventModel>> ExtraEventsByActType = [];
     private static readonly List<EventModel> ExtraSharedEvents = [];
     private static bool _initialized;
-    private static readonly List<EventModel> _events = [ModelDb.Event<StrangeMurmur>()];
+    private static readonly List<EventModel> _events = [ModelDb.Event<StrangeMurmur>(), ModelDb.Event<SherryEvents>()];
 
     public static void RegisterEvents()
     {

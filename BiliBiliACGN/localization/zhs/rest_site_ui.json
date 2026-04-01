@@ -1,4 +1,6 @@
 {
     "OPTION_Alzheimer.name": "阿尔茨海默症",
-    "OPTION_Alzheimer.description": "选择[gold]移除[/gold]你[gold]手牌[/gold]中的1张牌"
+    "OPTION_Alzheimer.description": "选择[gold]移除[/gold]你[gold]手牌[/gold]中的1张牌",
+    "OPTION_HealSherry.name": "治疗雪莉",
+    "OPTION_HealSherry.description": "治疗[gold]受伤的雪莉[/gold]，同时你可以选择[gold]移除[/gold]你[gold]手牌[/gold]中的2张牌"
 }

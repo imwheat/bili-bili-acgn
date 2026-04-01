@@ -40,5 +40,7 @@
   "BILIBILIACGN-BOTTLE_BLOCK.title": "防御",
   "BILIBILIACGN-BOTTLE_BLOCK.description": "获得{Block:diff()}点格挡。",
   "BILIBILIACGN-ANGRY_STRIKE.title": "红温打击",
-  "BILIBILIACGN-ANGRY_STRIKE.description": "造成{Damage:diff()}点伤害。\r\n获得{Power:diff()}层红温值。"
+  "BILIBILIACGN-ANGRY_STRIKE.description": "造成{Damage:diff()}点伤害。\r\n获得{Power:diff()}层红温值。",
+  "BILIBILIACGN-A_SHERRY.title": "啊~雪莉",
+  "BILIBILIACGN-A_SHERRY.description": "造成{Damage:diff()}点伤害。\r\n抽取{Cards:diff()}张牌。"
 }
