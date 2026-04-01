@@ -53,11 +53,10 @@ public sealed class InfiniteBullnessPower : PowerBaseModel
     }
     public override async Task AfterCardDrawn(PlayerChoiceContext choiceContext, CardModel card, bool fromHandDraw)
     {
-        Log.Info($"无量牛处触发：当前数量{currentAmount}，最大数量{base.Amount}");
         if(currentAmount < base.Amount){
-            currentAmount++;
             // 自动打出有一说一的卡牌
             if(card.Keywords.Contains(CustomKeyWords.YYSY) && !AutoplayingCards.Contains(card)){
+                currentAmount++;
                 AutoplayingCards.Add(card);
                 await CardCmd.AutoPlay(choiceContext, card, null);
                 AutoplayingCards.Remove(card);
