@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=3 uid="uid://chym25uvc4woa"]
+
+[ext_resource type="Script" uid="uid://cp1h2s6onqcyh" path="res://BiliBiliACGNCode/Nodes/Combat/SNCreatureVisuals.cs" id="1_htqon"]
+[ext_resource type="Texture2D" uid="uid://bajbm14ahidfn" path="res://BiliBiliACGN/images/monsters/poppipi.png" id="1_l43vx"]
+
+[node name="pop_pipi" type="Node2D"]
+script = ExtResource("1_htqon")
+metadata/_edit_vertical_guides_ = [-1036.0]
+
+[node name="Visuals" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -216)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("1_l43vx")
+
+[node name="Bounds" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_left = -159.0
+offset_top = -431.0
+offset_right = 65.0
+offset_bottom = -131.0
+scale = Vector2(1.44, 1.44)
+
+[node name="IntentPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -381)
+
+[node name="CenterPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -133)
