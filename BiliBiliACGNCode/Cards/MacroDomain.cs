@@ -34,7 +34,7 @@ public sealed class MacroDomain : CardBaseModel
     /// </summary>
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DynamicVar("Repeat", 1m)
+        new DynamicVar("Power", 1m)
     ];
 
     public MacroDomain() : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary) { }

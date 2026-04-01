@@ -35,7 +35,7 @@ public sealed class ReadingRadio : CardBaseModel
     /// </summary>
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(3m, ValueProp.Move)
+        new DynamicVar("Power", 3m)
     ];
 
     public ReadingRadio() : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary) { }
@@ -59,7 +59,7 @@ public sealed class ReadingRadio : CardBaseModel
     protected override void OnUpgrade()
     {
         #region 升级效果
-        base.DynamicVars["Damage"].UpgradeValueBy(1m);
+        base.DynamicVars["Power"].UpgradeValueBy(1m);
 
         #endregion
     }

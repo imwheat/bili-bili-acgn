@@ -38,9 +38,9 @@ public sealed class HairGrowth : CardBaseModel
     [
         new CalculationBaseVar(0m),
         new CalculationExtraVar(1m),
-        new CalculatedVar("CalculatedCard").WithMultiplier((CardModel card, Creature? target)=>
+        new CalculatedVar("CalculatedCard").WithMultiplier((CardModel card, Creature? _)=>
 		{
-			return target?.GetPowerAmount<YYSYPower>() ?? 0;
+			return card.Owner.Creature?.GetPowerAmount<YYSYPower>() ?? 0;
 		})
     ];
 
@@ -54,8 +54,8 @@ public sealed class HairGrowth : CardBaseModel
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         #region 卡牌打出效果
-        await CardPileCmd.Draw(choiceContext, ((CalculatedVar)base.DynamicVars["CalculatedCard"]).Calculate(cardPlay.Target), base.Owner);
         #endregion
+        await CardPileCmd.Draw(choiceContext, ((CalculatedVar)base.DynamicVars["CalculatedCard"]).Calculate(base.Owner.Creature), base.Owner);
     }
 
     /// <summary>

@@ -7,6 +7,7 @@
 
 using BaseLib.Utils;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -54,7 +55,7 @@ public sealed class BullStab : CardBaseModel
         if (pile != null && pile.Cards.Count() > 0){
             // 如果升级了，那就选择一张带[gold]有一说一[/gold]的牌
             if(base.IsUpgraded){
-                var card = (await CardSelectCmd.FromHand(choiceContext, base.Owner, MCardSelectorPrefs.YYSY, MCardSelectorPrefs.YYSYFilter, this)).FirstOrDefault();
+                var card = (await CardSelectCmd.FromHand(choiceContext, base.Owner, new CardSelectorPrefs(MCardSelectorPrefs.TO_YYSY, 1), MCardSelectorPrefs.YYSYFilter, this)).FirstOrDefault();
                 if(card != null)
                 await CardCmd.AutoPlay(choiceContext, card, null);
             }else{

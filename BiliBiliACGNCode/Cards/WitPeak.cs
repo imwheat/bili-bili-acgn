@@ -11,6 +11,7 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using BiliBiliACGN.BiliBiliACGNCode.Powers;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -46,6 +47,7 @@ public sealed class WitPeak : CardBaseModel
     {
         #region 卡牌打出效果
         await PlayerCmd.GainEnergy(base.DynamicVars["Energy"].BaseValue, base.Owner);
+        await PowerCmd.Apply<AddYYSYTempPower>(base.Owner.Creature, 2, base.Owner.Creature, null);
         var drawCards = await CardPileCmd.Draw(choiceContext, 2m, base.Owner);
         foreach(var card in drawCards){
             card.AddKeyword(CustomKeyWords.YYSY);

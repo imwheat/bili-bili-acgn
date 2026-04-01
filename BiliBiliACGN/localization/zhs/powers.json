@@ -5,6 +5,9 @@
   "BILIBILIACGN-Y_YS_Y_LOSS_POWER.title": "有一说一损失",
   "BILIBILIACGN-Y_YS_Y_LOSS_POWER.description": "回合结束时失去[gold]有一说一[/gold]",
   "BILIBILIACGN-Y_YS_Y_LOSS_POWER.smartDescription": "回合结束时失去[blue]{Amount}[/blue]点[gold]有一说一[/gold]",
+  "BILIBILIACGN-ADD_YY_SY_TEMP_POWER.title": "临时添加有一说一",
+  "BILIBILIACGN-ADD_YY_SY_TEMP_POWER.description": "为一张手牌添加[gold]有一说一[/gold]。",
+  "BILIBILIACGN-ADD_YY_SY_TEMP_POWER.smartDescription": "为[blue]{Amount}[/blue]张手牌添加[gold]有一说一[/gold]。",
   "BILIBILIACGN-ANGER_POWER.title": "红温值",
   "BILIBILIACGN-ANGER_POWER.description": "提供[red]红温[/red]相关加成。",
   "BILIBILIACGN-ANGER_POWER.smartDescription": "提供[red]红温[/red]相关加成。",
@@ -21,6 +24,6 @@
   "BILIBILIACGN-NEVER_DIE_POWER.description": "每当你打出带[gold]有一说一[/gold]的牌时，获得1点格挡。",
   "BILIBILIACGN-NEVER_DIE_POWER.smartDescription": "每当你打出带[gold]有一说一[/gold]的牌时，获得[blue]{Amount}[/blue]点格挡。",
   "BILIBILIACGN-READING_RADIO_POWER.title": "读书电台",
-  "BILIBILIACGN-READING_RADIO_POWER.description": "每当你抽到1张带[gold]有一说一[/gold]的牌，随机对一名敌人造成1点伤害。",
-  "BILIBILIACGN-READING_RADIO_POWER.smartDescription": "每当你抽到1张带[gold]有一说一[/gold]的牌，随机对一名敌人造成[blue]{Amount}[/blue]点伤害。"
+  "BILIBILIACGN-READING_RADIO_POWER.description": "每当你抽到1张带[gold]有一说一[/gold]的牌，对所有敌人造成{Damage:diff()}点伤害。",
+  "BILIBILIACGN-READING_RADIO_POWER.smartDescription": "每当你抽到1张带[gold]有一说一[/gold]的牌，对所有敌人造成[blue]{Amount}[/blue]点伤害。"
 }

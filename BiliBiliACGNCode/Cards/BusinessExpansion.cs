@@ -7,6 +7,8 @@
 
 using BaseLib.Utils;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using MegaCrit.Sts2.Core.CardSelection;
+using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
@@ -17,6 +19,8 @@ namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 [Pool(typeof(BottleCardPool))]
 public sealed class BusinessExpansion : CardBaseModel
 {
+    // 消耗
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
     #region 卡牌属性配置
     private const int energyCost = 1;
     private const CardType type = CardType.Skill;
@@ -41,8 +45,12 @@ public sealed class BusinessExpansion : CardBaseModel
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         #region 卡牌打出效果
-        await Task.CompletedTask;
+
         #endregion
+        var cards = await CardSelectCmd.FromHand(choiceContext, base.Owner, new CardSelectorPrefs(MCardSelectorPrefs.TO_ADD_YYSY, 0, (int)base.DynamicVars.Cards.BaseValue), MCardSelectorPrefs.NoYYSYFilter, this);
+        foreach(var card in cards){
+            card.AddKeyword(CustomKeyWords.YYSY);
+        }
     }
 
     /// <summary>
@@ -51,7 +59,6 @@ public sealed class BusinessExpansion : CardBaseModel
     protected override void OnUpgrade()
     {
         #region 升级效果
-        // 无升级数值（upgradeValue 均为 0）
         base.DynamicVars["Cards"].UpgradeValueBy(1);
 
         #endregion

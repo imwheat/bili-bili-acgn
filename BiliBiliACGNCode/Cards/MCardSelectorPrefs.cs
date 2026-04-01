@@ -13,8 +13,8 @@ namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
 public static class MCardSelectorPrefs
 {
-    public static CardSelectorPrefs AddYYSY = new CardSelectorPrefs(new LocString("card_selection", "TO_Add_YYSY"), 1);
-    public static CardSelectorPrefs YYSY = new CardSelectorPrefs(new LocString("card_selection", "TO_YYSY"), 1);
+    public static LocString TO_ADD_YYSY = new LocString("card_selection", "TO_ADD_YYSY");
+    public static LocString TO_YYSY = new LocString("card_selection", "TO_YYSY");
     public static Func<CardModel, bool> YYSYFilter = (card) => card.Keywords.Contains(CustomKeyWords.YYSY);
     public static Func<CardModel, bool> NoYYSYFilter = (card) => !card.Keywords.Contains(CustomKeyWords.YYSY);
 

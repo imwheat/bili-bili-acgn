@@ -7,10 +7,14 @@
 
 using BaseLib.Utils;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using MegaCrit.Sts2.Core.Combat;
+using MegaCrit.Sts2.Core.Combat.History.Entries;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
@@ -18,6 +22,7 @@ namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 [Pool(typeof(BottleCardPool))]
 public sealed class BullEyeOpen : CardBaseModel
 {
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CustomKeyWords.YYSY];
     #region 卡牌属性配置
     private const int energyCost = 3;
     private const CardType type = CardType.Attack;
@@ -30,7 +35,11 @@ public sealed class BullEyeOpen : CardBaseModel
     /// </summary>
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(0m, ValueProp.Move)
+        new CalculationBaseVar(1m),
+		new ExtraDamageVar(1m),
+		new CalculatedDamageVar(ValueProp.Move).WithMultiplier((CardModel card, Creature? _) => 
+        CombatManager.Instance.History.Entries.OfType<CardDrawnEntry>().Count(
+            (CardDrawnEntry e) => e.Actor == card.Owner.Creature && e.Card.CanonicalKeywords.Contains(CustomKeyWords.YYSY)))
     ];
 
     public BullEyeOpen() : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary) { }
@@ -43,9 +52,10 @@ public sealed class BullEyeOpen : CardBaseModel
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         #region 卡牌打出效果
-        await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue)
+        await DamageCmd.Attack(base.DynamicVars.CalculatedDamage)
             .FromCard(this)
             .Targeting(cardPlay.Target)
+            .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
         #endregion
     }
