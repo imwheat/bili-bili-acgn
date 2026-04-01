@@ -47,19 +47,24 @@ public sealed class BullStab : CardBaseModel
             .FromCard(this)
             .Targeting(cardPlay.Target)
             .Execute(choiceContext);
-
-        // 获取所有带[gold]有一说一[/gold]的手牌
-        var pile = PileType.Hand.GetPile(base.Owner);
-        int cnt = 0;int limit = (int)base.DynamicVars.Cards.BaseValue;
-        // 遍历所有卡牌，自动打出带[gold]有一说一[/gold]的卡牌
-        foreach(var card in pile.Cards){
-            if(card.Keywords.Contains(CustomKeyWords.YYSY)){
-                await CardCmd.AutoPlay(choiceContext, card, null);
-                if(++cnt >= limit)
-                    break;
-            }
-        }
+       
         #endregion
+        // 获取所有手牌
+        var pile = PileType.Hand.GetPile(base.Owner);
+        if (pile != null && pile.Cards.Count() > 0){
+            // 如果升级了，那就选择一张带[gold]有一说一[/gold]的牌
+            if(base.IsUpgraded){
+                var card = (await CardSelectCmd.FromHand(choiceContext, base.Owner, MCardSelectorPrefs.YYSY, MCardSelectorPrefs.YYSYFilter, this)).FirstOrDefault();
+                if(card != null)
+                await CardCmd.AutoPlay(choiceContext, card, null);
+            }else{
+                // 随机打出手牌中一张带[gold]有一说一[/gold]的牌
+                var randomCard = base.Owner.RunState.Rng.CombatCardSelection.NextItem(pile.Cards.Where(MCardSelectorPrefs.YYSYFilter));
+                if(randomCard != null)
+                await CardCmd.AutoPlay(choiceContext, randomCard, null);
+            }
+            
+        }
     }
 
     /// <summary>

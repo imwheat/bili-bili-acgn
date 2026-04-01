@@ -59,7 +59,7 @@ public sealed class ZhuangTang : CardBaseModel
                 await CardCmd.AutoPlay(choiceContext, card, null);
             }else{
                 // 随机打出手牌中一张带[gold]有一说一[/gold]的牌
-                var randomCard = base.Owner.RunState.Rng.CombatCardSelection.NextItem(pile.Cards);
+                var randomCard = base.Owner.RunState.Rng.CombatCardSelection.NextItem(pile.Cards.Where(MCardSelectorPrefs.YYSYFilter));
                 if(randomCard != null)
                 await CardCmd.AutoPlay(choiceContext, randomCard, null);
             }

@@ -3,6 +3,6 @@
   "BILIBILIACGN-YYSY.description": "这张牌享受[gold]有一说一[/gold]的加成",
   "BILIBILIACGN-YYSYLoss.title": "有一说一损失",
   "BILIBILIACGN-YYSYLoss.description": "回合结束时失去[gold]有一说一[/gold]",
-  "BILIBILIACGN-Anger.title": "Anger",
-  "BILIBILIACGN-Anger.description": "提供[red]红温[/red]相关加成。"
+  "BILIBILIACGN-ANGER.title": "红温",
+  "BILIBILIACGN-ANGER.description": "提供[red]红温[/red]相关加成。"
 }

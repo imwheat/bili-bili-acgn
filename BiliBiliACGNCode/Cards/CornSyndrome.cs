@@ -57,12 +57,12 @@ public sealed class CornSyndrome : CardBaseModel
             if(base.IsUpgraded){
             var card = (await CardSelectCmd.FromHand(choiceContext, base.Owner, MCardSelectorPrefs.AddYYSY, MCardSelectorPrefs.NoYYSYFilter, this)).FirstOrDefault();
                 if(card != null)
-                await CardCmd.AutoPlay(choiceContext, card, null);
+                    card.AddKeyword(CustomKeyWords.YYSY);
             }else{
                 // 随机给你手牌中的一张牌添加[gold]有一说一[/gold]
-                var randomCard = base.Owner.RunState.Rng.CombatCardSelection.NextItem(pile.Cards);
+                var randomCard = base.Owner.RunState.Rng.CombatCardSelection.NextItem(pile.Cards.Where(MCardSelectorPrefs.NoYYSYFilter));
                 if(randomCard != null)
-                    await CardCmd.AutoPlay(choiceContext, randomCard, null);
+                    randomCard.AddKeyword(CustomKeyWords.YYSY);
             }
         }   
     }
