@@ -20,6 +20,7 @@ public static class EventRegister
         ModelDb.Event<BagaMegami>(),
         ModelDb.Event<DesperateDaily>(),
         ModelDb.Event<PureGoldCardEvent>(),
+        ModelDb.Event<Nuke>(),
         ModelDb.Event<EHeiJiang>(),
         ModelDb.Event<EvaEvents>(),
         ModelDb.Event<HaKaSeInvention>(),

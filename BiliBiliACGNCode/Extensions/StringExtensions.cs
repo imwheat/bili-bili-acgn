@@ -31,7 +31,10 @@ public static class StringExtensions
     {
         return Path.Join(MainFile.ModId, "images", "powers", path);
     }
-    
+    public static string PotionImagePath(this string path)
+    {
+        return Path.Join(MainFile.ModId, "images", "potions", path);
+    }
     public static string BigPowerImagePath(this string path)
     {
         return Path.Join(MainFile.ModId, "images", "powers", "big", path);

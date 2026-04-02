@@ -6,7 +6,7 @@
     "STRANGE_MURMUR.pages.INITIAL.options.IGNORE.title": "视而不见",
     "STRANGE_MURMUR.pages.INITIAL.options.IGNORE.description": "无视并离开",
     "STRANGE_MURMUR.pages.LEAVE.description": "你选择无视了奇怪的低语。",
-    "STRANGE_MURMUR.pages.LOOK.description": "你深入查看发出声音的地方，发现了一个奇怪的生物，他看起来好像套着一个龟壳，但是又有点像是人类？他看起来很痛苦，他似乎在说：“甚而为龟，我很抱歉”",
+    "STRANGE_MURMUR.pages.LOOK.description": "你深入查看发出声音的地方，发现了一个奇怪的生物，他看起来好像套着一个龟壳，但是又有点像是人类？他看起来很痛苦，他一直在重复：“甚而为龟，我很抱歉”",
     "STRANGE_MURMUR.pages.LOOK.options.COMBAT.title": "战斗",
     "STRANGE_MURMUR.pages.LOOK.options.COMBAT.description": "战斗并获得[gold]龟壳[/gold]",
 
@@ -81,6 +81,15 @@
     "PURE_GOLD_CARD.pages.PARK.options.REFUSE.description": "你决定把卡牌还给海马濑人。",
     "PURE_GOLD_CARD.pages.PARK.LEAVE.description": "海马濑人看起来对你十分失望，直接离开了。",
 
+    "Nuke.title": "核武器！",
+    "Nuke.pages.INITIAL.description": "这是一个贫穷的下城区——阴暗潮湿，空气里弥漫着腐朽与化学制剂混合的怪味。贫穷、强化剂、性与暴力，是这里日复一日的常态。\n不远处，黑道火并刚刚爆发，枪声和惨叫撕裂了沉闷的空气。人群惊叫着四散逃离，混乱中，你却注意到四个小孩正逆着人流，缓慢地向冲突中心靠近。",
+    "Nuke.pages.INITIAL.options.FOLLOW.title": "决定跟上去看看",
+    "Nuke.pages.INITIAL.options.FOLLOW.description": "那四个孩子正逆着人流靠近冲突中心。获得诅咒[red]核辐射[/red]，并[gold]移除[/gold]2张牌",
+    "Nuke.pages.INITIAL.options.STOP.title": "拉住小孩不要过去",
+    "Nuke.pages.INITIAL.options.STOP.description": "拦下他们，没收危险物。获得药水【海克斯炸弹】",
+    "Nuke.pages.FOLLOW.description": "那四个孩子试图趁乱插手帮其中一方，最小的女孩怀里不知抱着什么，摇摇晃晃地跑在最前面。突然，她脚下一滑，手里的爆炸物直直掉进了旁边的下水道。\n下一秒，沼气被点燃——剧烈的爆炸声瞬间压过所有枪响。下水道口喷出冲天火光，史如烟花般炸向夜空，又在半空如天女散花般洒落。\n等你反应过来时，已经来不及了。染上了他们的味道，你知道身上的一些东西不能要了。\n\n（获得诅咒 核辐射，并移除2张牌）",
+    "Nuke.pages.STOP.description": "你猛地冲上前，伸手死死拽住最后面那个孩子的衣领，把他们往巷子里拖。\n“别过去！”你压低声音吼道。\n这个危险的东西，我就没收了。\n\n（获得药水【海克斯炸弹】）",
+
 
     "O_KUO_DA.title": "哦扩达",
     "O_KUO_DA.pages.INITIAL.description": "你看到两个造型诡异的小学生（？）在吵架。“嘿嘿，哦扩达？”“没有——” “哦扩达？”“没有——” “那就是生气了！””",
@@ -90,10 +99,6 @@
     "O_KUO_DA.pages.INITIAL.options.NAIYO.description": "你选择了另一边",
     "O_KUO_DA.pages.INITIAL.options.COMBAT.title": "那就全都揍一顿",
     "O_KUO_DA.pages.INITIAL.options.COMBAT.description": "你受不了了"
-
-
-
-
 
 
 }
