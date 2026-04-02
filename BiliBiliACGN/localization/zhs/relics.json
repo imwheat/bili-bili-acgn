@@ -27,7 +27,7 @@
     "BILIBILIACGN-MILLENNIUM_PUZZLE.description": "第一回合，可以指定一张卡牌加入[gold]手牌[/gold]",
     "BILIBILIACGN-MILLENNIUM_PUZZLE.flavor": "还没想好",
     "BILIBILIACGN-ELAINAS_BROOM.title": "伊蕾娜的扫帚",
-    "BILIBILIACGN-ELAINAS_BROOM.description": "可以在楼层中[gold]飞行[/gold]，每层充能[blue]{Amount}[/blue]次",
+    "BILIBILIACGN-ELAINAS_BROOM.description": "可以在楼层中[gold]飞行[/gold]",
     "BILIBILIACGN-ELAINAS_BROOM.flavor": "还没想好",
     "BILIBILIACGN-TURTLE_SHELL.title": "龟壳",
     "BILIBILIACGN-TURTLE_SHELL.description": "在每场战斗开始时，获得[blue]{DexterityPower}[/blue]点[gold]敏捷[/gold]",

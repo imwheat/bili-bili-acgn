@@ -6,8 +6,8 @@
 //*******************************************************
 
 using BaseLib.Utils;
+using BiliBiliACGN.BiliBiliACGNCode.Core.Patches;
 using MegaCrit.Sts2.Core.Entities.Relics;
-using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.RelicPools;
 using MegaCrit.Sts2.Core.Saves.Runs;
 
@@ -17,27 +17,28 @@ namespace BiliBiliACGN.BiliBiliACGNCode.Relics;
 public sealed class ElainasBroom : RelicBaseModel
 {
     public override RelicRarity Rarity => RelicRarity.Event;
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new DynamicVar("Amount", 2m)];
     public override bool ShowCounter => true;
-    public override int DisplayAmount => Charge;
-    private int _charge = 2;
+    public override int DisplayAmount => Active;
+    private int _active = 1;
     [SavedProperty]
-	public int Charge
+	public int Active
 	{
 		get
 		{
-			return _charge;
+			return _active;
 		}
 		private set
 		{
 			AssertMutable();
-            _charge = value;
+            _active = value;
 			UpdateDisplay();
 		}
 	}
     private void UpdateDisplay()
 	{
-        base.Status = Charge == 0 ? RelicStatus.Disabled : RelicStatus.Normal;
-		InvokeDisplayAmountChanged();
+        // 开启飞行
+        NMapScreenRecalculateTravelabilityPatch.UseFlightStyleNextRow = true;
 	}
+
+
 }
