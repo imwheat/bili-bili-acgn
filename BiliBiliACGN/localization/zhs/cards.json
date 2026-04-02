@@ -48,5 +48,7 @@
   "BILIBILIACGN-EVA_FORM_STRIKE.title": "我以EVA形态出击",
   "BILIBILIACGN-EVA_FORM_STRIKE.description": "对所有敌人造成{Damage:diff()}点伤害。\r\n给予{Power:diff()}层[gold]易伤[/gold]和{Power:diff()}层[gold]虚弱[/gold]。",
   "BILIBILIACGN-FOURTH_BLUE_EYES_WHITE_DRAGON.title": "第四张青眼白龙",
-  "BILIBILIACGN-FOURTH_BLUE_EYES_WHITE_DRAGON.description": "对所有敌人造成{Damage:diff()}点伤害。"
+  "BILIBILIACGN-FOURTH_BLUE_EYES_WHITE_DRAGON.description": "对所有敌人造成{Damage:diff()}点伤害。",
+  "BILIBILIACGN-BLOODY_BITE.title": "嗜血啃咬",
+  "BILIBILIACGN-BLOODY_BITE.description": "造成{Damage:diff()}点伤害。\r\n回复{Heal:diff()}点生命值。"
 }
