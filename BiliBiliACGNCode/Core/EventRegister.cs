@@ -15,21 +15,31 @@ public static class EventRegister
     private static readonly Dictionary<Type, List<EventModel>> ExtraEventsByActType = [];
     private static readonly List<EventModel> ExtraSharedEvents = [];
     private static bool _initialized;
-    private static readonly List<EventModel> _events = [
-        ModelDb.Event<AnimeTimeMachine>(),
-        ModelDb.Event<BagaMegami>(),
-        ModelDb.Event<DesperateDaily>(),
-        ModelDb.Event<PureGoldCardEvent>(),
-        ModelDb.Event<Nuke>(),
-        ModelDb.Event<EHeiJiang>(),
-        ModelDb.Event<EvaEvents>(),
-        ModelDb.Event<HaKaSeInvention>(),
-        ModelDb.Event<OKuoDa>(),
-        ModelDb.Event<PureGoldCardEvent>(),
-        ModelDb.Event<SherryEvent>(),
-        ModelDb.Event<StrangeMurmur>()
-     ];
-
+    private static readonly IReadOnlyList<Type> _eventTypes = [
+        typeof(AnimeTimeMachine),
+        typeof(BagaMegami),
+        typeof(DesperateDaily),
+        typeof(PureGoldCardEvent),
+        typeof(Nuke),
+        typeof(EHeiJiang),
+        typeof(EvaEvents),
+        typeof(HaKaSeInvention),
+        typeof(OKuoDa),
+        typeof(PureGoldCardEvent),
+        typeof(SherryEvent),
+        typeof(StrangeMurmur)
+    ];
+    /// <summary>
+    /// 注入事件
+    /// </summary>
+    public static void InjectEvents()
+    {
+        foreach (var e in _eventTypes)
+            ModelDb.Inject(e);
+    }
+    /// <summary>
+    /// 注册事件
+    /// </summary>
     public static void RegisterEvents()
     {
         if (_initialized)
@@ -37,7 +47,22 @@ public static class EventRegister
         _initialized = true;
 
         Log.Info($"[B站动画区Mod] 事件注册开始：AllEvents={ModelDb.AllEvents.Count()}");
-        foreach (var e in _events)
+        InjectEvents();
+        var events = new List<EventModel>(){
+            ModelDb.Event<AnimeTimeMachine>(),
+            ModelDb.Event<BagaMegami>(),
+            ModelDb.Event<DesperateDaily>(),
+            ModelDb.Event<PureGoldCardEvent>(),
+            ModelDb.Event<Nuke>(),
+            ModelDb.Event<EHeiJiang>(),
+            ModelDb.Event<EvaEvents>(),
+            ModelDb.Event<HaKaSeInvention>(),
+            ModelDb.Event<OKuoDa>(),
+            ModelDb.Event<PureGoldCardEvent>(),
+            ModelDb.Event<SherryEvent>(),
+            ModelDb.Event<StrangeMurmur>()
+        };
+        foreach (var e in events)
             Register(e);
         Log.Info($"[B站动画区Mod] 事件注册完成：按 Act 注入={ExtraEventsByActType.Sum(x => x.Value.Count)}，共享事件={ExtraSharedEvents.Count}");
     }
