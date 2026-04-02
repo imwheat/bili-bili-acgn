@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "className": "EvaFormStrike",
+  "title": "我以eva形态出击",
+  "description": "对所有敌人造成{Damage:diff()}点伤害。\r\n给予{VulnerablePower:diff()}层易伤和{WeakPower:diff()}层虚弱。",
+  "namespace": "BiliBiliACGN.BiliBiliACGNCode.Cards",
+  "energyCost": 0,
+  "cardType": "Attack",
+  "rarity": "Common",
+  "targetType": "AnyEnemy",
+  "showInCardLibrary": true,
+  "poolTypeName": "EventCardPool",
+  "canonicalKeywordFields": [
+    "CardKeyword.Exhaust"
+  ],
+  "extraHoverTipKeywordFields": [],
+  "dynamicVars": [
+    {
+      "kind": "Damage",
+      "baseValue": 25,
+      "upgradeValue": 5,
+      "valueProp": 1
+    },
+    {
+      "kind": "VulnerablePower",
+      "baseValue": 2,
+      "upgradeValue": 2,
+      "valueProp": 0
+    },
+    {
+      "kind": "WeakPower",
+      "baseValue": 2,
+      "upgradeValue": 2,
+      "valueProp": 0
+    }
+  ],
+  "cardPlayActions": [
+    {
+      "actionType": "Damage",
+      "valueBinding": "Damage",
+      "value": 0,
+      "repeatCountBinding": "literal",
+      "repeatCountValue": 1,
+      "notes": "25/30 全体伤害；易伤/虚弱需在 OnPlay 中对全体敌人 PowerCmd.Apply（编辑器 Buff 打出效果仅指向自身）"
+    }
+  ],
+  "upgradeEffects": [],
+  "notes": "事件牌。消耗：CardKeyword.Exhaust。易伤/虚弱层数见动态变量 VulnerablePower、WeakPower；实现时对每个敌人 Apply，勿使用本卡 JSON 的 Buff actionType 直接生成。"
+}

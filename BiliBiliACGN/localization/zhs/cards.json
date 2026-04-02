@@ -42,5 +42,11 @@
   "BILIBILIACGN-ANGRY_STRIKE.title": "红温打击",
   "BILIBILIACGN-ANGRY_STRIKE.description": "造成{Damage:diff()}点伤害。\r\n获得{Power:diff()}层红温值。",
   "BILIBILIACGN-A_SHERRY.title": "啊~雪莉",
-  "BILIBILIACGN-A_SHERRY.description": "造成{Damage:diff()}点伤害。\r\n抽取{Cards:diff()}张牌。"
+  "BILIBILIACGN-A_SHERRY.description": "造成{Damage:diff()}点伤害。\r\n抽取{Cards:diff()}张牌。",
+  "BILIBILIACGN-AKUAS_BLESSING.title": "阿库娅的祝福",
+  "BILIBILIACGN-AKUAS_BLESSING.description": "获得{Power:diff()}点力量和{Power:diff()}点敏捷。但有{Probility:diff()}%几率你获得[red]1[/red]层[red]脆弱[/red]和[red]易伤[/red]。",
+  "BILIBILIACGN-EVA_FORM_STRIKE.title": "我以EVA形态出击",
+  "BILIBILIACGN-EVA_FORM_STRIKE.description": "对所有敌人造成{Damage:diff()}点伤害。\r\n给予{Power:diff()}层[gold]易伤[/gold]和{Power:diff()}层[gold]虚弱[/gold]。",
+  "BILIBILIACGN-FOURTH_BLUE_EYES_WHITE_DRAGON.title": "第四张青眼白龙",
+  "BILIBILIACGN-FOURTH_BLUE_EYES_WHITE_DRAGON.description": "对所有敌人造成{Damage:diff()}点伤害。"
 }

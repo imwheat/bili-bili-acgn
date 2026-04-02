@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "className": "FourthBlueEyesWhiteDragon",
+  "title": "第四张青眼白龙",
+  "description": "对所有敌人造成{Damage:diff()}点伤害。",
+  "namespace": "BiliBiliACGN.BiliBiliACGNCode.Cards",
+  "energyCost": 2,
+  "cardType": "Attack",
+  "rarity": "Common",
+  "targetType": "AnyEnemy",
+  "showInCardLibrary": true,
+  "poolTypeName": "EventCardPool",
+  "canonicalKeywordFields": [],
+  "extraHoverTipKeywordFields": [],
+  "dynamicVars": [
+    {
+      "kind": "Damage",
+      "baseValue": 30,
+      "upgradeValue": 15,
+      "valueProp": 1
+    }
+  ],
+  "cardPlayActions": [
+    {
+      "actionType": "Damage",
+      "valueBinding": "Damage",
+      "value": 0,
+      "repeatCountBinding": "literal",
+      "repeatCountValue": 1,
+      "notes": "30/45 全体伤害"
+    }
+  ],
+  "upgradeEffects": [],
+  "notes": "事件牌。未配置消耗关键词；若需 Exhaust 请补 canonicalKeywordFields: CardKeyword.Exhaust。"
+}

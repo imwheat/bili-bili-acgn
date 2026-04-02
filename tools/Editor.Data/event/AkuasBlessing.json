@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "className": "AkuasBlessing",
+  "title": "阿库娅的祝福",
+  "description": "获得{StrengthPower:diff()}点力量和{DexterityPower:diff()}点敏捷。但有30%几率你获得1层脆弱。",
+  "namespace": "BiliBiliACGN.BiliBiliACGNCode.Cards",
+  "energyCost": 1,
+  "cardType": "Power",
+  "rarity": "Common",
+  "targetType": "Self",
+  "showInCardLibrary": true,
+  "poolTypeName": "EventCardPool",
+  "canonicalKeywordFields": [
+    "CardKeyword.Exhaust"
+  ],
+  "extraHoverTipKeywordFields": [],
+  "dynamicVars": [
+    {
+      "kind": "StrengthPower",
+      "baseValue": 2,
+      "upgradeValue": 1,
+      "valueProp": 0
+    },
+    {
+      "kind": "DexterityPower",
+      "baseValue": 2,
+      "upgradeValue": 1,
+      "valueProp": 0
+    }
+  ],
+  "cardPlayActions": [
+    {
+      "actionType": "Buff",
+      "valueBinding": "StrengthPower",
+      "value": 0,
+      "repeatCountBinding": "literal",
+      "repeatCountValue": 1,
+      "buffType": "StrengthPower",
+      "notes": "2/3 点力量"
+    },
+    {
+      "actionType": "Buff",
+      "valueBinding": "DexterityPower",
+      "value": 0,
+      "repeatCountBinding": "literal",
+      "repeatCountValue": 1,
+      "buffType": "DexterityPower",
+      "notes": "2/3 点敏捷"
+    }
+  ],
+  "upgradeEffects": [],
+  "notes": "事件牌。消耗：CardKeyword.Exhaust。30% 获得 1 层脆弱需在 OnPlay 中手写随机分支（如 FrailPower / 基类对应 Power）；当前 JSON 仅编排力量与敏捷。"
+}
