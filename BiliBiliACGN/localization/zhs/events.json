@@ -26,6 +26,11 @@
 
     "E_HEI_JIANG.title": "奇怪的面具",
     "E_HEI_JIANG.pages.INITIAL.description": "一个奇怪的面具引起了你的注意，不禁觉得有点诡异，仿佛[sine]它在注视着你？[/sine]",
+    "E_HEI_JIANG.pages.INITIAL.options.WEARMASK.title": "戴上奇怪的面具",
+    "E_HEI_JIANG.pages.INITIAL.options.WEARMASK.description": "获得[gold]诶嘿酱的面具[/gold]，也许有什么特殊作用？",
+    "E_HEI_JIANG.pages.INITIAL.options.LEAVE.title": "离开",
+    "E_HEI_JIANG.pages.INITIAL.options.LEAVE.description": "...",
+    "E_HEI_JIANG.pages.LEAVE.description": "你离开了，面具似乎还在注视着你...",
 
 
     "EVA_.title": "同步率测试",
