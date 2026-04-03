@@ -126,6 +126,8 @@ public sealed class BottleCardPool : CustomCardPoolModel
             ModelDb.Card<AmericanQuickDraw>(),
             ModelDb.Card<ChampagnePop>(),
             ModelDb.Card<CalmDownCalmDown>(),
+            ModelDb.Card<Meditation>(),
+            ModelDb.Card<InfiniteBullness>(),
         ];
     }
 }
