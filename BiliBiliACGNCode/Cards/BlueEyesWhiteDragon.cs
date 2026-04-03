@@ -28,8 +28,7 @@ public sealed class BlueEyesWhiteDragon : CardBaseModel
 
     public override int MaxUpgradeLevel => 0;
     protected override IEnumerable<DynamicVar> CanonicalVars => [new DynamicVar("Power", 2m), new DynamicVar("Gold", 870m)];
-    protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromPower<StranglePower>()];
-
+    protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromPower<StrengthPower>()];
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Eternal, CardKeyword.Exhaust, CardKeyword.Ethereal];
 
     public BlueEyesWhiteDragon() : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary) { }
