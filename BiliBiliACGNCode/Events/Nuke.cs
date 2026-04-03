@@ -5,6 +5,7 @@
 //* 描述：核武器！事件（第二层优先；实现保留）
 //*******************************************************
 
+using BiliBiliACGN.BiliBiliACGNCode.Utils;
 using BiliBiliACGN.BiliBiliACGNCode.Cards;
 using BiliBiliACGN.BiliBiliACGNCode.Potions;
 using MegaCrit.Sts2.Core.CardSelection;
@@ -17,6 +18,7 @@ using MegaCrit.Sts2.Core.Rewards;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Events;
 
+[EventPool(typeof(SharedEventPool))]
 public sealed class Nuke : EventBaseModel
 {
     public override bool IsShared => true;

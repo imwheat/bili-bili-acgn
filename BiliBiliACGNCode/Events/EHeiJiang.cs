@@ -4,6 +4,7 @@
 //* 创建时间：2026/04/01 18:43:00 星期三
 //* 描述：诶嘿酱事件
 //*******************************************************
+using BiliBiliACGN.BiliBiliACGNCode.Utils;
 using BiliBiliACGN.BiliBiliACGNCode.Relics;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Events;
@@ -11,6 +12,7 @@ using MegaCrit.Sts2.Core.HoverTips;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Events;
 
+[EventPool(typeof(SharedEventPool))]
 public sealed class EHeiJiang : EventBaseModel
 {
     public override bool IsShared => true;

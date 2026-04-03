@@ -4,6 +4,7 @@
 //* 创建时间：2026/04/01 18:43:00 星期三
 //* 描述：智障女神事件
 //*******************************************************
+using BiliBiliACGN.BiliBiliACGNCode.Utils;
 using BiliBiliACGN.BiliBiliACGNCode.Cards;
 using BiliBiliACGN.BiliBiliACGNCode.Relics;
 using MegaCrit.Sts2.Core.Commands;
@@ -14,6 +15,7 @@ using MegaCrit.Sts2.Core.Models;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Events;
 
+[EventPool(typeof(SharedEventPool))]
 public sealed class BagaMegami : EventBaseModel
 {
     public override bool IsShared => false;

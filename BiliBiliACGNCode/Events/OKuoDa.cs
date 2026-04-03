@@ -4,6 +4,7 @@
 //* 创建时间：2026/04/01 18:43:00 星期三
 //* 描述：哦跨哒事件(Pop子与Pipi美)
 //*******************************************************
+using BiliBiliACGN.BiliBiliACGNCode.Utils;
 using BiliBiliACGN.BiliBiliACGNCode.Core.Models.Encounters;
 using BiliBiliACGN.BiliBiliACGNCode.Relics;
 using MegaCrit.Sts2.Core.Commands;
@@ -13,6 +14,7 @@ using MegaCrit.Sts2.Core.Rewards;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Events;
 
+[EventPool(typeof(SharedEventPool))]
 public sealed class OKuoDa : EventBaseModel
 {
     public override bool IsShared => true;

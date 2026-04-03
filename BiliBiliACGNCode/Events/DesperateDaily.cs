@@ -4,6 +4,7 @@
 //* 创建时间：2026/04/01 18:43:00 星期三
 //* 描述：绝望日常事件
 //*******************************************************
+using BiliBiliACGN.BiliBiliACGNCode.Utils;
 using BiliBiliACGN.BiliBiliACGNCode.Cards;
 using BiliBiliACGN.BiliBiliACGNCode.Relics;
 using Godot;
@@ -15,6 +16,7 @@ using MegaCrit.Sts2.Core.Runs;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Events;
 
+[EventPool(typeof(SharedEventPool))]
 public sealed class DesperateDaily : EventBaseModel
 {
     public override bool IsShared => false;

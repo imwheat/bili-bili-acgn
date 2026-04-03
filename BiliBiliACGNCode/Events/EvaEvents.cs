@@ -4,10 +4,12 @@
 //* 创建时间：2026/04/01 18:43:00 星期三
 //* 描述：EVA事件
 //*******************************************************
+using BiliBiliACGN.BiliBiliACGNCode.Utils;
 using MegaCrit.Sts2.Core.Events;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Events;
 
+[EventPool(typeof(SharedEventPool))]
 public sealed class EvaEvents : EventBaseModel
 {
     public override bool IsShared => true;

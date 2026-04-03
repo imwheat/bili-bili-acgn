@@ -5,6 +5,7 @@
 //* 描述：奇怪的低语
 //*******************************************************
 
+using BiliBiliACGN.BiliBiliACGNCode.Utils;
 using BiliBiliACGN.BiliBiliACGNCode.Core.Models.Encounters;
 using BiliBiliACGN.BiliBiliACGNCode.Relics;
 using MegaCrit.Sts2.Core.Assets;
@@ -18,6 +19,7 @@ using MegaCrit.Sts2.Core.Rewards;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Events;
 
+[EventPool(typeof(SharedEventPool))]
 public sealed class StrangeMurmur : EventBaseModel
 {
     public override bool IsShared => true;
