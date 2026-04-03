@@ -21,10 +21,10 @@ public sealed class AngerPower : PowerBaseModel
     public override PowerType Type => PowerType.Buff;
 
     public override PowerStackType StackType => PowerStackType.Counter;
-    public override async Task BeforeApplied(Creature target, decimal amount, Creature? applier, CardModel? cardSource)
+    public override async Task AfterPowerAmountChanged(PowerModel power, decimal amount, Creature? applier, CardModel? cardSource)
     {
         // 如果施加者是玩家，则施加红温充能
-        if(applier == base.Owner){
+        if(applier == base.Owner && power is AngerPower){
             if(amount > 0){
                 await PowerCmd.Apply<AngerChargePower>(base.Owner, amount, base.Owner, cardSource);
             }

@@ -48,7 +48,7 @@ public sealed class ChairTuberPower : PowerBaseModel
     }
     public override async Task AfterCardDrawn(PlayerChoiceContext choiceContext, CardModel card, bool fromHandDraw)
     {
-        if(currentAmount < base.Amount){
+        if(currentAmount < base.Amount && card.Owner == base.Owner.Player){
             // 自动打出有一说一的卡牌
             if(card.Keywords.Contains(CustomKeyWords.YYSY) && !AutoplayingCards.Contains(card)){
                 currentAmount++;

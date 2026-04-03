@@ -23,6 +23,10 @@ public sealed class AddYYSYTempPower : PowerBaseModel
 
     public override async Task AfterCardDrawnEarly(PlayerChoiceContext choiceContext, CardModel card, bool fromHandDraw)
     {
+        // 不是自己抽的牌，不处理
+        if(card.Owner.Creature != base.Owner){
+            return;
+        }
         if(card.Keywords.Contains(CustomKeyWords.YYSY)){
             return;
         }

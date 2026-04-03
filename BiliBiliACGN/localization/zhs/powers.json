@@ -81,7 +81,7 @@
   "BILIBILIACGN-CHAMPAGNE_POP_POWER.description": "你的下一张有一说一，耗能变成0。",
   "BILIBILIACGN-CHAMPAGNE_POP_POWER.smartDescription": "你的下[blue]{Amount}[/blue]张[gold]有一说一[/gold]的牌，耗能变成0。",
   "BILIBILIACGN-HAIL_OF_BLADES_POWER.title": "丛刃",
-  "BILIBILIACGN-HAIL_OF_BLADES_POWER.description": "红怒时所有攻击卡卡费-1。",
+  "BILIBILIACGN-HAIL_OF_BLADES_POWER.description": "红怒时所有攻击牌卡费-1。",
   "BILIBILIACGN-HAIL_OF_BLADES_POWER.smartDescription": "[gold]红怒[/gold]时所有攻击牌能量需求减少[blue]{Amount}[/blue]点。",
   "BILIBILIACGN-KAI_YUN_POWER.title": "开云",
   "BILIBILIACGN-KAI_YUN_POWER.description": "本回合每打出1张牌，本回合获得1点唐氏。",

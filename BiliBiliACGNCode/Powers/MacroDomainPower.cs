@@ -45,16 +45,15 @@ public sealed class MacroDomainPower : PowerBaseModel
     public override async Task AfterTurnEnd(PlayerChoiceContext choiceContext, CombatSide side)
     {
         // 每回合结束时，减少1点
-        if (side == base.Owner.Side)
-		{
-			Flash();
-			await PowerCmd.Apply<MacroDomainPower>(base.Owner, -1, base.Owner, null);
-		}
+        if (side == CombatSide.Enemy)
+        {
+            await PowerCmd.TickDownDuration(this);
+        }
     }
     public override async Task AfterCardDrawn(PlayerChoiceContext choiceContext, CardModel card, bool fromHandDraw)
     {
         // 自动打出有一说一的卡牌
-        if(card.Keywords.Contains(CustomKeyWords.YYSY) && !AutoplayingCards.Contains(card)){
+        if(card.Owner.Creature == base.Owner && card.Keywords.Contains(CustomKeyWords.YYSY) && !AutoplayingCards.Contains(card)){
             AutoplayingCards.Add(card);
             await CardCmd.AutoPlay(choiceContext, card, null);
             AutoplayingCards.Remove(card);

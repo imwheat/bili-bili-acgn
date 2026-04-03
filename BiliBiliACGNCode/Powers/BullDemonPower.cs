@@ -4,7 +4,11 @@
 //* 创建时间：2026/04/03 12:00:00 星期五
 //* 描述：能力 牛魔形态
 //*******************************************************
+using BiliBiliACGN.BiliBiliACGNCode.Cards;
+using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Powers;
+using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Powers;
 
@@ -16,5 +20,11 @@ public sealed class BullDemonPower : PowerBaseModel
 
     public override PowerStackType StackType => PowerStackType.Counter;
 
-    //TODO: 每打出一张有一说一获得 Amount 点「唐氏」（需对接项目内唐氏 Power/机制）
+    // 每打出一张有一说一获得 Amount 点「唐氏」
+    public override async Task AfterCardPlayed(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+    {
+        if(cardPlay.Card.Keywords.Contains(CustomKeyWords.YYSY) && cardPlay.Card.Owner == base.Owner.Player){
+            await PowerCmd.Apply<TangShiPower>(base.Owner, base.Amount, base.Owner, null);
+        }
+    }
 }

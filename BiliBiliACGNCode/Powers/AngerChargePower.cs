@@ -6,10 +6,7 @@
 //*******************************************************
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.ValueProps;
 using MegaCrit.Sts2.Core.Entities.Creatures;
-using BaseLib.Extensions;
-using BiliBiliACGN.BiliBiliACGNCode.Cards;
 using MegaCrit.Sts2.Core.Commands;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Powers; 
@@ -26,12 +23,12 @@ public sealed class AngerChargePower : PowerBaseModel
 
     public override PowerStackType StackType => PowerStackType.Counter;
 
-    public override async Task AfterApplied(Creature? applier, CardModel? cardSource)
+    public override async Task AfterPowerAmountChanged(PowerModel power, decimal amount, Creature? applier, CardModel? cardSource)
     {
         // 如果充能值大于最大充能值，则移除
-        while(base.Amount >= MAXCHARGE){
-            await PowerCmd.Apply<AngerChargePower>(base.Owner, -MAXCHARGE, base.Owner, cardSource);
+        if(base.Amount >= MAXCHARGE && power is AngerChargePower){
             await PowerCmd.Apply<RagePower>(base.Owner, 1, base.Owner, cardSource);
+            await PowerCmd.Apply<AngerChargePower>(base.Owner, -MAXCHARGE, base.Owner, cardSource);
         }
     }
 

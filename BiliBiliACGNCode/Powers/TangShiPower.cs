@@ -40,7 +40,10 @@ public sealed class TangShiPower : PowerBaseModel
     }
     public override decimal ModifyBlockAdditive(Creature target, decimal block, ValueProp props, CardModel? cardSource, CardPlay? cardPlay)
     {
-
+        if(cardSource?.Owner != base.Owner.Player)
+        {
+            return 0m;
+        }
         if (cardSource == null)
 		{
 			return 0m;

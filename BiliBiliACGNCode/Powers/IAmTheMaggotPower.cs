@@ -26,6 +26,9 @@ public sealed class IAmTheMaggotPower : PowerBaseModel
 
     public override async Task AfterPlayerTurnStart(PlayerChoiceContext choiceContext, Player player)
     {
+        if(base.Owner.Player != player){
+            return;
+        }
         var pile = PileType.Hand.GetPile(player);
         if (pile != null){
             // 获取所有没有有一说一的手牌

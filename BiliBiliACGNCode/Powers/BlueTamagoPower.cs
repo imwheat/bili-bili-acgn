@@ -4,7 +4,10 @@
 //* 创建时间：2026/04/03 12:00:00 星期五
 //* 描述：能力 蓝色团子
 //*******************************************************
+using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Powers;
+using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Powers;
 
@@ -16,5 +19,12 @@ public sealed class BlueTamagoPower : PowerBaseModel
 
     public override PowerStackType StackType => PowerStackType.Counter;
 
-    //TODO: 回合开始时额外抽 Amount 张牌
+    // 回合开始时额外抽 Amount 张牌
+    public override async Task AfterPlayerTurnStart(PlayerChoiceContext choiceContext, Player player)
+    {
+        if(player == base.Owner.Player){
+            await CardPileCmd.Draw(choiceContext, base.Amount, player);
+        }
+    }
+
 }
