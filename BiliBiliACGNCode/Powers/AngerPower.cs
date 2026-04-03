@@ -10,6 +10,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using BaseLib.Extensions;
 using BiliBiliACGN.BiliBiliACGNCode.Cards;
+using MegaCrit.Sts2.Core.Commands;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Powers;
 
@@ -20,22 +21,15 @@ public sealed class AngerPower : PowerBaseModel
     public override PowerType Type => PowerType.Buff;
 
     public override PowerStackType StackType => PowerStackType.Counter;
-
-    public override decimal ModifyDamageAdditive(Creature? target, decimal amount, ValueProp props, Creature? dealer, CardModel? cardSource)
+    public override async Task BeforeApplied(Creature target, decimal amount, Creature? applier, CardModel? cardSource)
     {
-        if (base.Owner != dealer || cardSource == null)
-		{
-			return 0m;
-		}
-		if (!props.IsPoweredAttack_())
-		{
-			return 0m;
-		}
-        if(cardSource.Keywords.Contains(CustomKeyWords.Anger))
-        {
-            return base.Amount;
+        // 如果施加者是玩家，则施加红温充能
+        if(applier == base.Owner){
+            if(amount > 0){
+                await PowerCmd.Apply<AngerChargePower>(base.Owner, amount, base.Owner, cardSource);
+            }
         }
-        return 0m;
     }
+
 
 }
