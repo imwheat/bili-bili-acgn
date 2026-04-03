@@ -11,6 +11,8 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
 using BottleRagePower = BiliBiliACGN.BiliBiliACGNCode.Powers.RagePower;
+using MegaCrit.Sts2.Core.Commands;
+using BiliBiliACGN.BiliBiliACGNCode.Powers;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -28,8 +30,9 @@ public sealed class BullTexasGuillotine : CardBaseModel
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust, CardKeyword.Retain];
 
     #region 卡牌属性配置
-    // TODO: 将 energyCost 改为 STS2 中「X 费」规定的 canonical 数值（当前为占位，避免未知 API 下编译/运行异常）
-    private const int energyCost = 1;
+    private const int energyCost = -1;
+    protected override bool HasEnergyCostX => true;
+
     private const CardType type = CardType.Attack;
     private const CardRarity rarity = CardRarity.Rare;
     private const TargetType targetType = TargetType.AnyEnemy;
@@ -41,8 +44,16 @@ public sealed class BullTexasGuillotine : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 读取本次打出消耗的 X（或 CardPlay 上的能量信息）；伤害 = 红温层数 × X ×（有 BottleRagePower 则 2 否则 1）
-        await Task.CompletedTask;
+        // 伤害 = 红温层数 × X(+1) ×（有 红温 则 2倍）
+        decimal num = ResolveEnergyXValue();
+        if(base.IsUpgraded) ++num;
+        if(base.Owner.Creature.HasPower<BottleRagePower>()) num *= 2m;
+        decimal dmg = base.Owner.Creature.GetPowerAmount<AngerPower>() * num;
+        
+        await DamageCmd.Attack(dmg)
+            .FromCard(this)
+            .Targeting(cardPlay.Target)
+            .Execute(choiceContext);
     }
 
     protected override void OnUpgrade()

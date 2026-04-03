@@ -2,7 +2,7 @@
 //* 文件：CloseDoorReleaseSa(关门放萨)
 //* 作者：wheat
 //* 创建时间：2026/04/03
-//* 描述：造成{Damage:diff()}点伤害。你每有{PerAnger:diff()}层[gold]红温值[/gold]，伤害+{AngerBonus:diff()}。
+//* 描述：造成{Damage:diff()}点伤害。你每有{PerAnger:diff()}层[gold]红温[/gold]，伤害+{AngerBonus:diff()}。
 //*******************************************************
 
 using BaseLib.Utils;
@@ -13,6 +13,8 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
 using BiliBiliACGN.BiliBiliACGNCode.Powers;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Entities.Creatures;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -31,9 +33,10 @@ public sealed class CloseDoorReleaseSa : CardBaseModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(6m, ValueProp.Move),
-        new DynamicVar("PerAnger", 1m),
-        new DynamicVar("AngerBonus", 2m)
+        new CalculationBaseVar(6m),
+		new ExtraDamageVar(2m),
+        // 伤害 = Damage + Anger层数 * AngerBonus（Anger 来自 AngerPower）
+        new CalculatedDamageVar(ValueProp.Move).WithMultiplier((CardModel card, Creature? _) => card.Owner.Creature.GetPowerAmount<AngerPower>())
     ];
 
     public CloseDoorReleaseSa() : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary) { }
@@ -48,6 +51,6 @@ public sealed class CloseDoorReleaseSa : CardBaseModel
 
     protected override void OnUpgrade()
     {
-        base.DynamicVars["Damage"].UpgradeValueBy(2m);
+        base.DynamicVars.ExtraDamage.UpgradeValueBy(1m);
     }
 }

@@ -12,6 +12,8 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using MegaCrit.Sts2.Core.Commands;
+using BiliBiliACGN.BiliBiliACGNCode.Powers;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -40,8 +42,8 @@ public sealed class AnimeSword : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 施加 AnimeSwordPower（Amount=Damage，监听获得红温）
-        await Task.CompletedTask;
+        // 获得动漫区的剑BUFF
+        await PowerCmd.Apply<AnimeSwordPower>(base.Owner.Creature, base.DynamicVars["Damage"].BaseValue, base.Owner.Creature, null);
     }
 
     protected override void OnUpgrade()

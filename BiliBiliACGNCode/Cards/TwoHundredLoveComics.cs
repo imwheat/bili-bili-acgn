@@ -11,6 +11,11 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.Combat;
+using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Combat.History.Entries;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -26,8 +31,9 @@ public sealed class TwoHundredLoveComics : CardBaseModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(8m, ValueProp.Move),
-        new DynamicVar("BonusDamage", 3m)
+		new CalculationBaseVar(8m),
+		new ExtraDamageVar(3m),
+		new CalculatedDamageVar(ValueProp.Move).WithMultiplier((CardModel card, Creature? _) => CombatManager.Instance.History.Entries.OfType<CardDrawnEntry>().Count((CardDrawnEntry e) => e.HappenedThisTurn(card.CombatState) && e.Actor == card.Owner.Creature && !e.FromHandDraw))
     ];
 
     public TwoHundredLoveComics() : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary) { }
@@ -36,8 +42,10 @@ public sealed class TwoHundredLoveComics : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 基础伤害 + 本回合抽牌次数 * BonusDamage（需在打出时结算或预计算）
-        await Task.CompletedTask;
+        // 造成伤害
+		await DamageCmd.Attack(base.DynamicVars.CalculatedDamage).FromCard(this).Targeting(cardPlay.Target)
+			.WithHitFx("vfx/vfx_attack_slash")
+			.Execute(choiceContext);
     }
 
     protected override void OnUpgrade()

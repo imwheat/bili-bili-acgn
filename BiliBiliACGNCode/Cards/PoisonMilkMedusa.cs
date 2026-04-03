@@ -9,6 +9,7 @@ using BaseLib.Utils;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using MegaCrit.Sts2.Core.Commands;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -30,8 +31,11 @@ public sealed class PoisonMilkMedusa : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 对所有敌人施加「本回合跳过」状态（需查 STS2 多人/单人下敌人回合跳过 API）
-        await Task.CompletedTask;
+        // 对所有敌人施加「眩晕」状态
+        foreach (var enemy in base.CombatState.HittableEnemies)
+        {
+            await CreatureCmd.Stun(enemy);
+        }
     }
 
     protected override void OnUpgrade()

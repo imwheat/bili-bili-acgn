@@ -2,7 +2,7 @@
 //* 文件：BurnZero(烧0)
 //* 作者：wheat
 //* 创建时间：2026/04/03
-//* 描述：消耗。获得{Power:diff()}层[gold]红温值[/gold]。
+//* 描述：获得{Power:diff()}层[gold]红温[/gold]。
 //*******************************************************
 
 using BaseLib.Utils;
@@ -12,6 +12,7 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
 using BiliBiliACGN.BiliBiliACGNCode.Powers;
+using MegaCrit.Sts2.Core.Commands;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -40,8 +41,8 @@ public sealed class BurnZero : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 获得红温层数
-        await Task.CompletedTask;
+        // 获得{Power:diff()}层红温
+        await PowerCmd.Apply<AngerPower>(base.Owner.Creature, base.DynamicVars["Power"].BaseValue, base.Owner.Creature, null);
     }
 
     protected override void OnUpgrade()

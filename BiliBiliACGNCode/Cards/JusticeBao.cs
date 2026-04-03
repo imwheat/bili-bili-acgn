@@ -13,6 +13,7 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
 using BiliBiliACGN.BiliBiliACGNCode.Powers;
+using MegaCrit.Sts2.Core.Commands;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -21,7 +22,10 @@ public sealed class JusticeBao : CardBaseModel
 {
     #region 卡牌关键词与悬停
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromPower<RagePower>()];
+    // 红怒状态发光
+    protected override bool ShouldGlowGoldInternal => base.Owner.Creature.GetPower<RagePower>() != null;
     #endregion
+
     #region 卡牌属性配置
     private const int energyCost = 1;
     private const CardType type = CardType.Attack;
@@ -40,8 +44,15 @@ public sealed class JusticeBao : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 伤害；若 RagePower 存在则打出抽牌堆顶牌（需合法目标/费用等规则）
-        await Task.CompletedTask;
+        // 造成伤害，若 RagePower 存在则打出抽牌堆顶牌
+        await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue)
+            .FromCard(this)
+            .Targeting(cardPlay.Target)
+            .Execute(choiceContext);
+        // 若 RagePower 存在则打出抽牌堆顶牌
+        if(base.Owner.Creature.HasPower<RagePower>()){
+            await CardPileCmd.AutoPlayFromDrawPile(choiceContext, base.Owner, 1, CardPilePosition.Top, forceExhaust: false);
+        }
     }
 
     protected override void OnUpgrade()

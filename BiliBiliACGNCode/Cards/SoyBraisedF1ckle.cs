@@ -1,11 +1,13 @@
 //****************** 代码文件申明 ***********************
-//* 文件：BraisedSlamDunk(红烧飞扣)
+//* 文件：SoyBraisedF1ckle(红烧飞扣)
 //* 作者：wheat
 //* 创建时间：2026/04/03
 //* 描述：战斗结束后回复{Heal:diff()}点生命。
 //*******************************************************
 
 using BaseLib.Utils;
+using BiliBiliACGN.BiliBiliACGNCode.Powers;
+using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
@@ -14,7 +16,7 @@ using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
 [Pool(typeof(BottleCardPool))]
-public sealed class BraisedSlamDunk : CardBaseModel
+public sealed class SoyBraisedF1ckle : CardBaseModel
 {
     #region 卡牌属性配置
     private const int energyCost = 1;
@@ -28,14 +30,14 @@ public sealed class BraisedSlamDunk : CardBaseModel
         new HealVar(7m)
     ];
 
-    public BraisedSlamDunk() : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary) { }
+    public SoyBraisedF1ckle() : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary) { }
 
     #endregion
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: Power：战斗结束（胜利）时治疗 Heal
-        await Task.CompletedTask;
+        // 添加红烧飞扣BUFF
+        await PowerCmd.Apply<SoyBraisedF1cklePower>(base.Owner.Creature, base.DynamicVars["Heal"].BaseValue, base.Owner.Creature, null);
     }
 
     protected override void OnUpgrade()

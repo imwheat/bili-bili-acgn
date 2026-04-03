@@ -10,6 +10,9 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using MegaCrit.Sts2.Core.Factories;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Commands;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -33,8 +36,16 @@ public sealed class YouCaughtItToo : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 从池/牌库随机 Attack 卡复制入手并添加 YYSY
-        await Task.CompletedTask;
+        // 从池/牌库随机 Attack 卡复制入手并添加 YYSY
+		CardModel cardModel = CardFactory.GetDistinctForCombat(base.Owner, from c in base.Owner.Character.CardPool.GetUnlockedCards(base.Owner.UnlockState, base.Owner.RunState.CardMultiplayerConstraint)
+			where c.Type == CardType.Attack
+			select c, 1, base.Owner.RunState.Rng.CombatCardGeneration).FirstOrDefault();
+		if (cardModel != null)
+		{
+            cardModel.AddKeyword(CustomKeyWords.YYSY);
+			cardModel.SetToFreeThisTurn();
+			await CardPileCmd.AddGeneratedCardToCombat(cardModel, PileType.Hand, addedByPlayer: true);
+		}
     }
 
     protected override void OnUpgrade()

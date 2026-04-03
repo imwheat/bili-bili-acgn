@@ -2,7 +2,7 @@
 //* 文件：KaiYun(开云)
 //* 作者：wheat
 //* 创建时间：2026/04/03
-//* 描述：保留。本回合你每打出1张牌，本回合获得{Tang:diff()}层[gold]唐氏[/gold]。
+//* 描述：本回合你每打出1张牌，本回合获得{Tang:diff()}层[gold]唐氏[/gold]。
 //*******************************************************
 
 using BaseLib.Utils;
@@ -10,13 +10,14 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using MegaCrit.Sts2.Core.Commands;
+using BiliBiliACGN.BiliBiliACGNCode.Powers;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
 [Pool(typeof(BottleCardPool))]
 public sealed class KaiYun : CardBaseModel
 {
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Retain];
 
     #region 卡牌属性配置
     private const int energyCost = 1;
@@ -27,7 +28,7 @@ public sealed class KaiYun : CardBaseModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DynamicVar("Tang", 1m)
+        new DynamicVar("KaiYun", 1m)
     ];
 
     public KaiYun() : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary) { }
@@ -36,13 +37,13 @@ public sealed class KaiYun : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 本回合监听 AfterCardPlayed：每打出一张牌对 Owner 施加本回合 Tang 层 GetTangPower（或 OxCall 同款机制）
-        await Task.CompletedTask;
+        // 获得开云BUFF
+        await PowerCmd.Apply<KaiYunPower>(base.Owner.Creature, base.DynamicVars["KaiYun"].BaseValue, base.Owner.Creature, null);
     }
 
     protected override void OnUpgrade()
     {
         base.EnergyCost.UpgradeBy(-1);
-        base.DynamicVars["Tang"].UpgradeValueBy(1m);
+        AddKeyword(CardKeyword.Retain);
     }
 }

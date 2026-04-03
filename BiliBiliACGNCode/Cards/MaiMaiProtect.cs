@@ -1,8 +1,8 @@
 //****************** 代码文件申明 ***********************
-//* 文件：DelusionTax(妄想税)
+//* 文件：MaiMaiShelter(脉脉庇护)
 //* 作者：wheat
 //* 创建时间：2026/04/03
-//* 描述：消耗。从抽牌堆选取{Cards:diff()}张牌加入手牌，并为其添加[gold]有一说一[/gold]。
+//* 描述：每个回合失去{AngerLoss:diff()}层[gold]红温值[/gold]，获得{Energy:diff()}点能量。
 //*******************************************************
 
 using BaseLib.Utils;
@@ -11,43 +11,37 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using BiliBiliACGN.BiliBiliACGNCode.Powers;
+using MegaCrit.Sts2.Core.Commands;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
 [Pool(typeof(BottleCardPool))]
-public sealed class DelusionTax : CardBaseModel
+public sealed class MaiMaiProtect : CardBaseModel
 {
     #region 卡牌关键词与悬停
-    protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromKeyword(CustomKeyWords.YYSY)];
+    protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromKeyword(CustomKeyWords.Anger)];
     #endregion
-
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [CustomKeyWords.YYSY, CardKeyword.Exhaust];
-
     #region 卡牌属性配置
     private const int energyCost = 1;
-    private const CardType type = CardType.Skill;
-    private const CardRarity rarity = CardRarity.Rare;
+    private const CardType type = CardType.Power;
+    private const CardRarity rarity = CardRarity.Uncommon;
     private const TargetType targetType = TargetType.Self;
     private const bool shouldShowInCardLibrary = true;
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new CardsVar(2)
+        new DynamicVar("AngerLoss", 1m),
+        new DynamicVar("Energy", 1m)
     ];
 
-    public DelusionTax() : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary) { }
+    public MaiMaiProtect() : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary) { }
 
     #endregion
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 多选抽牌堆 Cards 张；移入手牌并 AddKeyword(CustomKeyWords.YYSY) 或等价
-        await Task.CompletedTask;
-    }
-
-    protected override void OnUpgrade()
-    {
-        base.EnergyCost.UpgradeBy(-1);
-        base.DynamicVars["Cards"].UpgradeValueBy(1m);
+        // 添加脉脉庇护BUFF
+        await PowerCmd.Apply<MaiMaiProtectPower>(base.Owner.Creature, base.DynamicVars["AngerLoss"].BaseValue, base.Owner.Creature, null);
     }
 }

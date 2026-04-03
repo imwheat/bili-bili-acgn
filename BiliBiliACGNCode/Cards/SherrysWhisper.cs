@@ -12,6 +12,7 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
 using BiliBiliACGN.BiliBiliACGNCode.Powers;
+using MegaCrit.Sts2.Core.Commands;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -41,8 +42,20 @@ public sealed class SherrysWhisper : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 按本回合/即时消耗的红温值换算能量（AngerPerEnergy、上限 MaxEnergy）
-        await Task.CompletedTask;
+        // 播放动画
+		await CreatureCmd.TriggerAnim(base.Owner.Creature, "Cast", base.Owner.Character.CastAnimDelay);
+        // 按本回合/即时消耗的红温值换算能量（AngerPerEnergy、上限 MaxEnergy）
+        int anger = base.Owner.Creature.GetPowerAmount<AngerPower>();
+        int energy = anger / (int)base.DynamicVars["AngerPerEnergy"].BaseValue;
+        if (energy > base.DynamicVars["MaxEnergy"].BaseValue)
+        {
+            energy = (int)base.DynamicVars["MaxEnergy"].BaseValue;
+        }
+        if(energy > 0){
+            await PlayerCmd.GainEnergy(energy, base.Owner);
+            // 消耗红温
+            await PowerCmd.Apply<AngerPower>(base.Owner.Creature, -energy * (int)base.DynamicVars["AngerPerEnergy"].BaseValue, base.Owner.Creature, null);
+        }
     }
 
     protected override void OnUpgrade()

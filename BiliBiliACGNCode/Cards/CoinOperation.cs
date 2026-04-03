@@ -11,6 +11,9 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.ValueProps;
+using BiliBiliACGN.BiliBiliACGNCode.Powers;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -39,8 +42,9 @@ public sealed class CoinOperation : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 失去 HpLoss 点生命，获得 Power 层红温值（AngerPower）
-        await Task.CompletedTask;
+        // 失去 HpLoss 点生命，获得 Power 层红温值（AngerPower）
+        await CreatureCmd.Damage(choiceContext, base.Owner.Creature, base.DynamicVars["HpLoss"].BaseValue, ValueProp.Unblockable | ValueProp.Unpowered | ValueProp.Move, this);
+        await PowerCmd.Apply<AngerPower>(base.Owner.Creature, base.DynamicVars["Power"].BaseValue, base.Owner.Creature, null);
     }
 
     protected override void OnUpgrade()

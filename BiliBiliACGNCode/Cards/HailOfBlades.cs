@@ -12,6 +12,7 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
 using BiliBiliACGN.BiliBiliACGNCode.Powers;
+using MegaCrit.Sts2.Core.Commands;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -39,8 +40,8 @@ public sealed class HailOfBlades : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 能力：仅在 RagePower 存在期间使 Attack 卡费 -EnergyReduce（Hook 卡牌费用）
-        await Task.CompletedTask;
+        // 添加丛刃BUFF
+        await PowerCmd.Apply<HailOfBladesPower>(base.Owner.Creature, 1, base.Owner.Creature, null);
     }
 
     protected override void OnUpgrade()

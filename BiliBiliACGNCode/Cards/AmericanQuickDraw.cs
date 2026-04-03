@@ -12,6 +12,10 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Combat;
+using MegaCrit.Sts2.Core.Combat.History.Entries;
+using MegaCrit.Sts2.Core.Commands;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -31,7 +35,6 @@ public sealed class AmericanQuickDraw : CardBaseModel
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(17m, ValueProp.Move),
-        new DynamicVar("EnergyReduce", 1m)
     ];
 
     public AmericanQuickDraw() : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary) { }
@@ -40,12 +43,47 @@ public sealed class AmericanQuickDraw : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 伤害；本牌实际费用需 Hook（本回合已打出 YYSY 张数 * EnergyReduce）
-        await Task.CompletedTask;
+		ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
+		await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue).FromCard(this).Targeting(cardPlay.Target)
+			.WithHitFx("vfx/vfx_attack_slash")
+			.Execute(choiceContext);
     }
 
     protected override void OnUpgrade()
     {
         base.DynamicVars["Damage"].UpgradeValueBy(5m);
     }
+    public override Task AfterCardEnteredCombat(CardModel card)
+	{
+		if (card != this)
+		{
+			return Task.CompletedTask;
+		}
+		if (base.IsClone)
+		{
+			return Task.CompletedTask;
+		}
+		int amount = CombatManager.Instance.History.CardPlaysFinished.Count((CardPlayFinishedEntry e) => e.CardPlay.Card.Keywords.Contains(CustomKeyWords.YYSY) && e.CardPlay.Card.Owner == base.Owner && e.HappenedThisTurn(base.CombatState));
+		ReduceCostBy(amount);
+		return Task.CompletedTask;
+	}
+
+	public override Task AfterCardPlayed(PlayerChoiceContext context, CardPlay cardPlay)
+	{
+		if (cardPlay.Card.Owner != base.Owner)
+		{
+			return Task.CompletedTask;
+		}
+		if (cardPlay.Card.Type != CardType.Skill)
+		{
+			return Task.CompletedTask;
+		}
+		ReduceCostBy(1);
+		return Task.CompletedTask;
+	}
+
+	private void ReduceCostBy(int amount)
+	{
+		base.EnergyCost.AddThisTurn(-amount);
+	}
 }

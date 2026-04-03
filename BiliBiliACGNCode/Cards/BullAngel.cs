@@ -11,6 +11,8 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using MegaCrit.Sts2.Core.Commands;
+using BiliBiliACGN.BiliBiliACGNCode.Powers;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -38,8 +40,8 @@ public sealed class BullAngel : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 施加 Power：监听打出 YYSY 牌则抽 Cards 张
-        await Task.CompletedTask;
+        // 添加牛天使BUFF
+        await PowerCmd.Apply<AngelCowPower>(base.Owner.Creature, base.DynamicVars["Cards"].BaseValue, base.Owner.Creature, null);
     }
 
     protected override void OnUpgrade()

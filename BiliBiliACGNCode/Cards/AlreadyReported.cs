@@ -11,6 +11,8 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.HoverTips;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -23,6 +25,7 @@ public sealed class AlreadyReported : CardBaseModel
     private const CardRarity rarity = CardRarity.Common;
     private const TargetType targetType = TargetType.Self;
     private const bool shouldShowInCardLibrary = true;
+    protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.Static(StaticHoverTip.Block)];
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
@@ -36,8 +39,9 @@ public sealed class AlreadyReported : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 格挡 + 抽 Cards 张
-        await Task.CompletedTask;
+        // 获得 Block 格挡，抽取 Cards 张牌
+        await CreatureCmd.GainBlock(base.Owner.Creature, base.DynamicVars.Block.BaseValue, base.DynamicVars.Block.Props, cardPlay);
+        await CardPileCmd.Draw(choiceContext, base.DynamicVars.Cards.BaseValue, base.Owner);
     }
 
     protected override void OnUpgrade()

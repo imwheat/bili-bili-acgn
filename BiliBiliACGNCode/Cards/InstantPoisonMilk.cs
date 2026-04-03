@@ -12,6 +12,7 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using MegaCrit.Sts2.Core.Commands;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -40,8 +41,12 @@ public sealed class InstantPoisonMilk : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 抽 1 张；若抽到牌含 YYSY 关键字则格挡
-        await Task.CompletedTask;
+        // 抽取{Cards:diff()}张牌
+        await CardPileCmd.Draw(choiceContext, base.DynamicVars["Cards"].BaseValue, base.Owner);
+        // 若抽到牌含 YYSY 关键字则格挡
+        if(cardPlay.Card.Keywords.Contains(CustomKeyWords.YYSY)){
+            await CreatureCmd.GainBlock(base.Owner.Creature, base.DynamicVars.Block.BaseValue, base.DynamicVars.Block.Props, cardPlay);
+        }
     }
 
     protected override void OnUpgrade()

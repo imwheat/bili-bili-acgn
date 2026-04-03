@@ -11,6 +11,9 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using MegaCrit.Sts2.Core.CardSelection;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Commands;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -38,8 +41,16 @@ public sealed class SacrificeCyberParents : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 选择手牌消耗（Exhaust）；全体伤害
-        await Task.CompletedTask;
+        // 在你的手牌中选择消耗一张手牌，对所有敌人造成伤害
+        CardModel cardModel = (await CardSelectCmd.FromHand(prefs: new CardSelectorPrefs(CardSelectorPrefs.ExhaustSelectionPrompt, 1), context: choiceContext, player: base.Owner, filter: null, source: this)).FirstOrDefault();
+        if (cardModel != null)
+        {
+            await CardCmd.Exhaust(choiceContext, cardModel);
+        }
+        await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue)
+            .FromCard(this)
+            .TargetingAllOpponents(base.CombatState)
+            .Execute(choiceContext);
     }
 
     protected override void OnUpgrade()

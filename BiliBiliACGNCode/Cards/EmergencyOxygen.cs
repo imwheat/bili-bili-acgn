@@ -11,6 +11,9 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
 using BiliBiliACGN.BiliBiliACGNCode.Powers;
+using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.ValueProps;
+using MegaCrit.Sts2.Core.Commands;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -23,6 +26,14 @@ public sealed class EmergencyOxygen : CardBaseModel
         HoverTipFactory.FromKeyword(CustomKeyWords.Anger),
         HoverTipFactory.FromPower<RagePower>()
     ];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [
+        new CalculationBaseVar(0m),
+		new CalculationExtraVar(1m),
+        new CalculatedBlockVar(ValueProp.Move).WithMultiplier((_, creature) => {
+            return creature?.GetPower<AngerPower>()?.Amount ?? 0m;
+        })
+    ];
+
     #endregion
     #region 卡牌属性配置
     private const int energyCost = 1;
@@ -37,8 +48,10 @@ public sealed class EmergencyOxygen : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 移除 RagePower；按当前 AngerPower 层数获得格挡
-        await Task.CompletedTask;
+        // 获得等同于当前红温值层数的格挡
+		await CreatureCmd.GainBlock(base.Owner.Creature, base.DynamicVars.CalculatedBlock.Calculate(cardPlay.Target), base.DynamicVars.CalculatedBlock.Props, cardPlay);
+        // 移除红怒状态
+        await PowerCmd.Remove<RagePower>(base.Owner.Creature);
     }
 
     protected override void OnUpgrade()

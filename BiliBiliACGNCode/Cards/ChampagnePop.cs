@@ -12,6 +12,8 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using MegaCrit.Sts2.Core.Commands;
+using BiliBiliACGN.BiliBiliACGNCode.Powers;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -40,8 +42,11 @@ public sealed class ChampagnePop : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 伤害；施加玩家 Buff：下一张 YYSY 牌费用为 NextCost
-        await Task.CompletedTask;
+        // 造成伤害
+        await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue).FromCard(this).Targeting(cardPlay.Target)
+        .Execute(choiceContext);
+        // 施加BUFF
+        await PowerCmd.Apply<ChampagnePopPower>(base.Owner.Creature, 1, base.Owner.Creature, null);
     }
 
     protected override void OnUpgrade()

@@ -12,6 +12,7 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
 using BiliBiliACGN.BiliBiliACGNCode.Powers;
+using MegaCrit.Sts2.Core.Commands;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -20,6 +21,9 @@ public sealed class Roar : CardBaseModel
 {
     #region 卡牌关键词与悬停
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromPower<RagePower>()];
+    // 红怒状态高亮
+    protected override bool ShouldGlowGoldInternal => base.Owner.Creature.HasPower<RagePower>();
+
     #endregion
     #region 卡牌属性配置
     private const int energyCost = 1;
@@ -31,7 +35,7 @@ public sealed class Roar : CardBaseModel
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new CardsVar(2),
-        new DynamicVar("RageCards", 3m)
+        new DynamicVar("RageCards", 1m)
     ];
 
     public Roar() : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary) { }
@@ -40,8 +44,14 @@ public sealed class Roar : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 抽牌张数视是否拥有 bottle RagePower 取 Cards 或 RageCards
-        await Task.CompletedTask;
+        decimal value = base.DynamicVars["Cards"].BaseValue;
+        // [gold]红怒[/gold]状态下额外抽取{RageCards:diff()}张
+        if (base.Owner.Creature.HasPower<RagePower>())
+        {
+            value += base.DynamicVars["RageCards"].BaseValue;
+        }
+        // 立即抽取{Cards:diff()}张牌
+        await CardPileCmd.Draw(choiceContext, value, base.Owner);
     }
 
     protected override void OnUpgrade()

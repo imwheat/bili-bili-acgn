@@ -13,6 +13,9 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
 using BiliBiliACGN.BiliBiliACGNCode.Powers;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.Commands;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -40,11 +43,18 @@ public sealed class ImOut : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 造成伤害
-        // TODO: 订阅进入红怒（获得 RagePower 等时机）：若此牌实例在弃牌堆则移入手牌
-        await Task.CompletedTask;
+        await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue)
+            .FromCard(this)
+            .Targeting(cardPlay.Target)
+            .Execute(choiceContext);
     }
-
+    public override async Task AfterPowerAmountChanged(PowerModel power, decimal amount, Creature? applier, CardModel? cardSource)
+    {
+        // 如果进入红怒，这张牌从弃牌堆移回手牌
+        if(power is RagePower && base.Pile.Type != PileType.Hand){
+            await CardPileCmd.Add(this, PileType.Hand);
+        }
+    }
     protected override void OnUpgrade()
     {
         base.DynamicVars["Damage"].UpgradeValueBy(2m);

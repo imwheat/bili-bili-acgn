@@ -11,6 +11,9 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.CardSelection;
+using MegaCrit.Sts2.Core.Models;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -35,8 +38,19 @@ public sealed class OutsiderMe : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 伤害；从弃牌堆选择/指定一张置顶抽牌堆
-        await Task.CompletedTask;
+        // 造成伤害，从弃牌堆选择一张牌放到抽牌堆顶部
+        await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue)
+            .FromCard(this)
+            .Targeting(cardPlay.Target)
+            .Execute(choiceContext);
+        // 从弃牌堆选择一张牌放到抽牌堆顶部
+        CardSelectorPrefs prefs = new CardSelectorPrefs(base.SelectionScreenPrompt, 1);
+		CardPile pile = PileType.Discard.GetPile(base.Owner);
+		CardModel cardModel = (await CardSelectCmd.FromSimpleGrid(choiceContext, pile.Cards, base.Owner, prefs)).FirstOrDefault();
+		if (cardModel != null)
+		{
+			await CardPileCmd.Add(cardModel, PileType.Draw, CardPilePosition.Top);
+		}
     }
 
     protected override void OnUpgrade()

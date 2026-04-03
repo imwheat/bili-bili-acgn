@@ -10,6 +10,7 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using MegaCrit.Sts2.Core.Commands;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -38,8 +39,9 @@ public sealed class HonestPickUp : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 金币 + 能量
-        await Task.CompletedTask;
+        // 金币 + 能量
+        await PlayerCmd.GainGold(base.DynamicVars["Gold"].BaseValue, base.Owner);
+        await PlayerCmd.GainEnergy(base.DynamicVars["Energy"].BaseValue, base.Owner);
     }
 
     protected override void OnUpgrade()

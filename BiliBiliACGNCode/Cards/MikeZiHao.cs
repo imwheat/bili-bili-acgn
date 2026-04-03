@@ -1,8 +1,8 @@
 //****************** 代码文件申明 ***********************
-//* 文件：MaiMaiShelter(脉脉庇护)
+//* 文件：MikeZihao(麦克子豪)
 //* 作者：wheat
 //* 创建时间：2026/04/03
-//* 描述：每个回合失去{AngerLoss:diff()}层[gold]红温值[/gold]，获得{Energy:diff()}点能量。
+//* 描述：每当你进入[gold]红怒[/gold]，获得{Strength:diff()}点[gold]力量[/gold]。
 //*******************************************************
 
 using BaseLib.Utils;
@@ -10,16 +10,23 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models.Powers;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using BottleRagePower = BiliBiliACGN.BiliBiliACGNCode.Powers.RagePower;
 using BiliBiliACGN.BiliBiliACGNCode.Powers;
+using MegaCrit.Sts2.Core.Commands;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
 [Pool(typeof(BottleCardPool))]
-public sealed class MaiMaiShelter : CardBaseModel
+public sealed class MikeZiHao : CardBaseModel
 {
     #region 卡牌关键词与悬停
-    protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromKeyword(CustomKeyWords.Anger)];
+    protected override IEnumerable<IHoverTip> ExtraHoverTips =>
+    [
+        HoverTipFactory.FromPower<BottleRagePower>(),
+        HoverTipFactory.FromPower<StrengthPower>()
+    ];
     #endregion
     #region 卡牌属性配置
     private const int energyCost = 1;
@@ -30,17 +37,21 @@ public sealed class MaiMaiShelter : CardBaseModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DynamicVar("AngerLoss", 1m),
-        new DynamicVar("Energy", 1m)
+        new DynamicVar("Strength", 3m)
     ];
 
-    public MaiMaiShelter() : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary) { }
+    public MikeZiHao() : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary) { }
 
     #endregion
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: Power：回合开始时失去 AngerLoss 层红温并获得 Energy 能量
-        await Task.CompletedTask;
+        // 添加麦克子豪BUFF
+        await PowerCmd.Apply<MikeZiHaoPower>(base.Owner.Creature, base.DynamicVars["Strength"].BaseValue, base.Owner.Creature, null);
+    }
+
+    protected override void OnUpgrade()
+    {
+        base.DynamicVars["Strength"].UpgradeValueBy(1m);
     }
 }

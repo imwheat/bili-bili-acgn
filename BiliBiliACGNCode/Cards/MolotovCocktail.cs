@@ -11,6 +11,10 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using MegaCrit.Sts2.Core.Combat.History.Entries;
+using MegaCrit.Sts2.Core.Combat;
+using BiliBiliACGN.BiliBiliACGNCode.Utils;
+using MegaCrit.Sts2.Core.Commands;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -23,6 +27,8 @@ public sealed class MolotovCocktail : CardBaseModel
     private const CardRarity rarity = CardRarity.Common;
     private const TargetType targetType = TargetType.AnyEnemy;
     private const bool shouldShowInCardLibrary = true;
+    protected override bool ShouldGlowGoldInternal => WasLastCardPlayedAttack;
+    private bool WasLastCardPlayedAttack => CombatHistory.CheckLastCardPlayedType(base.Owner, this, CardType.Attack);
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
@@ -36,7 +42,14 @@ public sealed class MolotovCocktail : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 伤害；监听/查询上一张打出牌类型，若为 Attack 则在打出流程结束后获得 Energy（常用 CardPlayFinishedEntry 或战斗记录）
+        // 造成伤害，若上一张打出的牌是攻击牌，打出后获得 Energy
+        await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue)
+            .FromCard(this)
+            .Targeting(cardPlay.Target)
+            .Execute(choiceContext);
+        if(WasLastCardPlayedAttack){
+            await PlayerCmd.GainEnergy(base.DynamicVars.Energy.BaseValue, base.Owner);
+        }
         await Task.CompletedTask;
     }
 

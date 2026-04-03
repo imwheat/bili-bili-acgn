@@ -11,6 +11,11 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.Nodes.Rooms;
+using MegaCrit.Sts2.Core.Helpers;
+using MegaCrit.Sts2.Core.Nodes.Vfx;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -18,7 +23,7 @@ namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 public sealed class BlowWithThemAll : CardBaseModel
 {
     #region 卡牌关键词与悬停
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust, CardKeyword.Innate];
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
     #endregion
     #region 卡牌属性配置
     private const int energyCost = 0;
@@ -38,12 +43,21 @@ public sealed class BlowWithThemAll : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 全体伤害（可能伴随自伤等，规则待定）
-        await Task.CompletedTask;
+        // 爆炸效果
+        IReadOnlyList<Creature> targets = base.CombatState.HittableEnemies;
+		foreach (Creature item in targets)
+		{
+			NCombatRoom.Instance?.CombatVfxContainer.AddChildSafely(NFireSmokePuffVfx.Create(item));
+		}
+		await Cmd.CustomScaledWait(0.2f, 0.3f);
+        // 造成伤害
+        await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue).FromCard(this).TargetingAllOpponents(base.CombatState)
+            .Execute(choiceContext);
     }
 
     protected override void OnUpgrade()
     {
         base.DynamicVars["Damage"].UpgradeValueBy(4m);
+        base.AddKeyword(CardKeyword.Innate);
     }
 }

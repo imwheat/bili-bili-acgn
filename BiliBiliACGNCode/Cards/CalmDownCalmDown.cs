@@ -10,6 +10,8 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.Commands;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -18,6 +20,8 @@ public sealed class CalmDownCalmDown : CardBaseModel
 {
     #region 卡牌关键词与悬停
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
+    public override CardMultiplayerConstraint MultiplayerConstraint => CardMultiplayerConstraint.MultiplayerOnly;
+
     #endregion
     #region 卡牌属性配置
     private const int energyCost = 1;
@@ -37,12 +41,17 @@ public sealed class CalmDownCalmDown : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 多人模式为每位玩家回复 Energy；单机仅自己（或按项目多人 API）
-        await Task.CompletedTask;
+        IEnumerable<Creature> enumerable = from c in base.CombatState.GetTeammatesOf(base.Owner.Creature)
+		where c != null && c.IsAlive && c.IsPlayer
+		select c;
+		foreach (Creature item in enumerable)
+		{
+            await PlayerCmd.GainEnergy(base.DynamicVars.Energy.BaseValue, item.Player);
+		}
     }
 
     protected override void OnUpgrade()
     {
-        base.EnergyCost.UpgradeBy(-1);
+        base.DynamicVars["Energy"].UpgradeValueBy(1m);
     }
 }

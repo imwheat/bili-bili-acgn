@@ -10,6 +10,9 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using MegaCrit.Sts2.Core.Commands;
+using BiliBiliACGN.BiliBiliACGNCode.Powers;
+using MegaCrit.Sts2.Core.HoverTips;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -18,6 +21,7 @@ public sealed class OxCall : CardBaseModel
 {
     #region 卡牌关键词与悬停
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
+    protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromPower<GetTangPower>()];
     #endregion
     #region 卡牌属性配置
     private const int energyCost = 1;
@@ -37,8 +41,12 @@ public sealed class OxCall : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 对所有敌人施加本回合变唐效果（数值 Tang，机制待定）
-        await Task.CompletedTask;
+        // 对所有敌人施加本回合变唐效果
+        if(base.CombatState != null){
+        foreach(var enemy in base.CombatState.HittableEnemies){
+                await PowerCmd.Apply<GetTangPower>(enemy, base.DynamicVars["Tang"].BaseValue, base.Owner.Creature, null);
+            }
+        }
     }
 
     protected override void OnUpgrade()

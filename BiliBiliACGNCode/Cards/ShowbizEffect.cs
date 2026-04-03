@@ -11,6 +11,10 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.CardSelection;
+using BiliBiliACGN.BiliBiliACGNCode.Powers;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -39,8 +43,15 @@ public sealed class ShowbizEffect : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 打开选择 UI 消耗 1 张手牌；获得 Anger 层红温
-        await Task.CompletedTask;
+        // 消耗1张手牌。获得{Anger:diff()}点[gold]红温值[/gold]。
+        // 选择1张手牌并消耗
+        CardModel cardModel = (await CardSelectCmd.FromHand(prefs: new CardSelectorPrefs(CardSelectorPrefs.ExhaustSelectionPrompt, 1), context: choiceContext, player: base.Owner, filter: null, source: this)).FirstOrDefault();
+        if (cardModel != null)
+        {
+            await CardCmd.Exhaust(choiceContext, cardModel);
+        }
+        // 获得{Anger:diff()}点[gold]红温[/gold]。
+        await PowerCmd.Apply<AngerPower>(base.Owner.Creature, base.DynamicVars["Anger"].BaseValue, base.Owner.Creature, null);
     }
 
     protected override void OnUpgrade()

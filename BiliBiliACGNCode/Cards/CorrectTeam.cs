@@ -12,6 +12,8 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
 using BottleRagePower = BiliBiliACGN.BiliBiliACGNCode.Powers.RagePower;
+using BiliBiliACGN.BiliBiliACGNCode.Powers;
+using MegaCrit.Sts2.Core.Commands;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -21,8 +23,6 @@ public sealed class CorrectTeam : CardBaseModel
     #region 卡牌关键词与悬停
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromPower<BottleRagePower>()];
     #endregion
-
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Retain];
 
     #region 卡牌属性配置
     private const int energyCost = 2;
@@ -34,7 +34,7 @@ public sealed class CorrectTeam : CardBaseModel
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DynamicVar("MaxEnergy", 1m),
-        new DynamicVar("DrawInRage", 1m)
+        new DynamicVar("DrawInRage", 2m)
     ];
 
     public CorrectTeam() : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary) { }
@@ -43,12 +43,13 @@ public sealed class CorrectTeam : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 本战斗能量上限 +MaxEnergy；施加 CorrectTeamPower（DrawInRage 用于红怒额外抽牌）
-        await Task.CompletedTask;
+        // 添加正确车队BUFF
+        await PowerCmd.Apply<CorrectTeamPower>(base.Owner.Creature, base.DynamicVars["Powers"].BaseValue, base.Owner.Creature, null);
     }
 
     protected override void OnUpgrade()
     {
-        base.DynamicVars["DrawInRage"].UpgradeValueBy(1m);
+        base.EnergyCost.UpgradeBy(-1);
+        base.AddKeyword(CardKeyword.Retain);
     }
 }

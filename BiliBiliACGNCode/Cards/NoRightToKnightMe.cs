@@ -2,7 +2,7 @@
 //* 文件：NoRightToKnightMe(无权为我授勋)
 //* 作者：wheat
 //* 创建时间：2026/04/03
-//* 描述：消耗，保留。进入[gold]红怒[/gold]。获得等同于当前[gold]红温值[/gold]的[gold]力量[/gold]。下一回合[gold]死亡[/gold]。
+//* 描述：进入[gold]红怒[/gold]。获得等同于当前[gold]红温[/gold]的[gold]力量[/gold]。下一回合[gold]死亡[/gold]。
 //*******************************************************
 
 using BaseLib.Utils;
@@ -12,6 +12,8 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
 using BottleRagePower = BiliBiliACGN.BiliBiliACGNCode.Powers.RagePower;
+using MegaCrit.Sts2.Core.Commands;
+using BiliBiliACGN.BiliBiliACGNCode.Powers;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -26,7 +28,7 @@ public sealed class NoRightToKnightMe : CardBaseModel
     ];
     #endregion
 
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust, CardKeyword.Retain];
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
 
     #region 卡牌属性配置
     private const int energyCost = 0;
@@ -37,7 +39,6 @@ public sealed class NoRightToKnightMe : CardBaseModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DynamicVar("DeathTurnDelay", 1m)
     ];
 
     public NoRightToKnightMe() : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary) { }
@@ -46,11 +47,15 @@ public sealed class NoRightToKnightMe : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 触发进入红怒（RagePower/AngerCharge 满层逻辑）；按红温层数获得力量；施加下回合结束时即死的标记 Power 或 Buff
-        await Task.CompletedTask;
+        // 进入[gold]红怒[/gold]。获得等同于当前[gold]红温[/gold]的[gold]力量[/gold]。下一回合[gold]死亡[/gold]。
+        await CreatureCmd.TriggerAnim(base.Owner.Creature, "Cast", base.Owner.Character.CastAnimDelay);
+        await PowerCmd.Apply<BottleRagePower>(base.Owner.Creature, base.Owner.Creature.GetPower<BottleRagePower>()?.Amount ?? 0m, base.Owner.Creature, null);
+        // 添加NoRightToKnightMe BUFF
+        await PowerCmd.Apply<NoRightToKnightMePower>(base.Owner.Creature, 1, base.Owner.Creature, null);
     }
 
     protected override void OnUpgrade()
     {
+        AddKeyword(CardKeyword.Retain);
     }
 }

@@ -10,6 +10,8 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using MegaCrit.Sts2.Core.Commands;
+using BiliBiliACGN.BiliBiliACGNCode.Powers;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -35,11 +37,13 @@ public sealed class SmNiuGe : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 读取 AngerPower 当前层数并 Apply 差值使层数变为 2 倍（或 Remove+Apply）
-        await Task.CompletedTask;
+        // 将你的[gold]红温[/gold]层数翻倍
+        await CreatureCmd.TriggerAnim(base.Owner.Creature, "Cast", base.Owner.Character.CastAnimDelay);
+        await PowerCmd.Apply<AngerPower>(base.Owner.Creature, base.Owner.Creature.GetPower<AngerPower>()?.Amount ?? 0m, base.Owner.Creature, null);
     }
 
     protected override void OnUpgrade()
     {
+        RemoveKeyword(CardKeyword.Exhaust);
     }
 }

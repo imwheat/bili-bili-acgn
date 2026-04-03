@@ -10,9 +10,10 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.ValueProps;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
 using BiliBiliACGN.BiliBiliACGNCode.Powers;
+using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.ValueProps;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -22,8 +23,9 @@ public sealed class OnlyTailwindGames : CardBaseModel
     #region 卡牌关键词与悬停
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
-        HoverTipFactory.FromKeyword(CustomKeyWords.Anger),
-        HoverTipFactory.FromPower<RagePower>()
+        HoverTipFactory.Static(StaticHoverTip.Block),
+        HoverTipFactory.FromPower<RagePower>(),
+        HoverTipFactory.FromPower<SwallowPridePower>()
     ];
     #endregion
     #region 卡牌属性配置
@@ -35,8 +37,8 @@ public sealed class OnlyTailwindGames : CardBaseModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DynamicVar("SwallowPride", 2m),
-        new DynamicVar("RageEnergy", 2m),
+        new DynamicVar("Powers", 2m),
+        new EnergyVar(2),
         new BlockVar(4m, ValueProp.Move)
     ];
 
@@ -46,8 +48,8 @@ public sealed class OnlyTailwindGames : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 获得 SwallowPride 层忍气吞声（需 Power）；获得 Block 格挡；监听进入红怒时获得 RageEnergy 能量
-        await Task.CompletedTask;
+        // 获得 SwallowPride 层忍气吞声
+        await PowerCmd.Apply<SwallowPridePower>(base.Owner.Creature, base.DynamicVars["Powers"].BaseValue, base.Owner.Creature, null);
     }
 
     protected override void OnUpgrade()

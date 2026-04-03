@@ -11,6 +11,9 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using MegaCrit.Sts2.Core.Models.Powers;
+using MegaCrit.Sts2.Core.Commands;
+using BiliBiliACGN.BiliBiliACGNCode.Powers;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -39,8 +42,11 @@ public sealed class StreamEndManhwa : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 下回合能量 +NextEnergy；获得 Power 层红温
-        await Task.CompletedTask;
+        // 下回合能量 +NextEnergy；获得 Power 层红温
+        if(base.Owner != null){
+            await PowerCmd.Apply<EnergyNextTurnPower>(base.Owner.Creature, base.DynamicVars["NextEnergy"].BaseValue, base.Owner.Creature, null);
+            await PowerCmd.Apply<AngerPower>(base.Owner.Creature, base.DynamicVars["Power"].BaseValue, base.Owner.Creature, null);
+        }
     }
 
     protected override void OnUpgrade()

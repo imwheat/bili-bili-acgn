@@ -12,6 +12,7 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
 using BiliBiliACGN.BiliBiliACGNCode.Powers;
+using MegaCrit.Sts2.Core.Commands;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -31,7 +32,6 @@ public sealed class RedBullCard : CardBaseModel
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DynamicVar("AngerPerEnergy", 4m),
-        new DynamicVar("Energy", 1m)
     ];
 
     public RedBullCard() : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary) { }
@@ -40,8 +40,8 @@ public sealed class RedBullCard : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: Power：监听累计获得红温，每满 AngerPerEnergy 回复 Energy 点能量
-        await Task.CompletedTask;
+        // 添加红牛BUFF
+        await PowerCmd.Apply<RedBullPower>(base.Owner.Creature, base.DynamicVars["AngerPerEnergy"].BaseValue, base.Owner.Creature, null);
     }
 
     protected override void OnUpgrade()

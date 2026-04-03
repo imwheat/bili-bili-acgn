@@ -13,6 +13,7 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.Powers;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
 using BottleRagePower = BiliBiliACGN.BiliBiliACGNCode.Powers.RagePower;
+using MegaCrit.Sts2.Core.Commands;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -25,6 +26,9 @@ public sealed class RefutationalPersonality : CardBaseModel
         HoverTipFactory.FromPower<ThornsPower>(),
         HoverTipFactory.FromPower<BottleRagePower>()
     ];
+    // 红怒时发光
+    protected override bool ShouldGlowGoldInternal => base.Owner.Creature.HasPower<BottleRagePower>();
+
     #endregion
     #region 卡牌属性配置
     private const int energyCost = 1;
@@ -36,7 +40,7 @@ public sealed class RefutationalPersonality : CardBaseModel
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DynamicVar("Thorns", 2m),
-        new DynamicVar("ThornsRage", 4m)
+        new DynamicVar("ThornsRage", 2m)
     ];
 
     public RefutationalPersonality() : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary) { }
@@ -45,8 +49,9 @@ public sealed class RefutationalPersonality : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 施加荆棘层数视是否 RagePower 取 Thorns 或 ThornsRage
-        await Task.CompletedTask;
+        decimal value = base.Owner.Creature.HasPower<BottleRagePower>() ? base.DynamicVars["ThornsRage"].BaseValue : base.DynamicVars["Thorns"].BaseValue;
+        // 添加荆棘BUFF
+        await PowerCmd.Apply<ThornsPower>(base.Owner.Creature, value, base.Owner.Creature, null);
     }
 
     protected override void OnUpgrade()

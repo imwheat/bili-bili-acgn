@@ -10,13 +10,14 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using BiliBiliACGN.BiliBiliACGNCode.Powers;
+using MegaCrit.Sts2.Core.Commands;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
 [Pool(typeof(BottleCardPool))]
 public sealed class BlueTamago : CardBaseModel
 {
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Innate];
 
     #region 卡牌属性配置
     private const int energyCost = 1;
@@ -36,12 +37,13 @@ public sealed class BlueTamago : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 施加 BlueTamagoPower（回合开始额外抽 Cards）
-        await Task.CompletedTask;
+        // 添加蓝色团子BUFF
+        await PowerCmd.Apply<BlueTamagoPower>(base.Owner.Creature, base.DynamicVars["Cards"].BaseValue, base.Owner.Creature, null);
     }
 
     protected override void OnUpgrade()
     {
         base.DynamicVars["Cards"].UpgradeValueBy(1m);
+        base.AddKeyword(CardKeyword.Innate);
     }
 }

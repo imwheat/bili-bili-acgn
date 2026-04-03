@@ -12,6 +12,7 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
 using BiliBiliACGN.BiliBiliACGNCode.Powers;
+using MegaCrit.Sts2.Core.Commands;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -20,6 +21,16 @@ public sealed class HappyWaterBuffalo : CardBaseModel
 {
     #region 卡牌关键词与悬停
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromKeyword(CustomKeyWords.Anger)];
+    // 红温大于等于 AngerCost 时可打
+    protected override bool IsPlayable{
+        get{
+            if(base.Owner.Creature.GetPowerAmount<AngerPower>() >= base.DynamicVars["AngerCost"].BaseValue){
+            return true;
+            }
+            return false;
+        }
+    }
+
     #endregion
     #region 卡牌属性配置
     private const int energyCost = 0;
@@ -39,8 +50,10 @@ public sealed class HappyWaterBuffalo : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 消耗 AngerCost 层红温；施加伤害减半（可用临时 Power / PlayerBuff）
-        await Task.CompletedTask;
+        // 消耗{AngerCost:diff()}点红温
+        await PowerCmd.Apply<AngerPower>(base.Owner.Creature, -base.DynamicVars["AngerCost"].BaseValue, base.Owner.Creature, null);
+        // 获得[gold]受到的伤害减半[/gold]Buff
+        await PowerCmd.Apply<HappyWaterCowPower>(base.Owner.Creature, 1, base.Owner.Creature, null);
     }
 
     protected override void OnUpgrade()

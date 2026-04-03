@@ -2,7 +2,7 @@
 //* 文件：WhiteDoveWing(白鸽之翼)
 //* 作者：wheat
 //* 创建时间：2026/04/03
-//* 描述：获得{Block:diff()}点格挡。（效果同[gold]武装[/gold]，基础格挡为 9，升级规则待定。）
+//* 描述：获得{Block:diff()}点格挡。（\n[gold]升级[/gold]你[gold]手牌[/gold]中的{IfUpgraded:show:所有牌|一张牌}。
 //*******************************************************
 
 using BaseLib.Utils;
@@ -11,6 +11,8 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Models;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -35,8 +37,20 @@ public sealed class WhiteDoveWing : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 等同武装：格挡 + 升级手牌格挡等（数值以 Block 为基准）
-        await Task.CompletedTask;
+		await CreatureCmd.GainBlock(base.Owner.Creature, base.DynamicVars.Block, cardPlay);
+		if (base.IsUpgraded)
+		{
+			foreach (CardModel item in PileType.Hand.GetPile(base.Owner).Cards.Where((CardModel c) => c.IsUpgradable))
+			{
+				CardCmd.Upgrade(item);
+			}
+			return;
+		}
+		CardModel cardModel = await CardSelectCmd.FromHandForUpgrade(choiceContext, base.Owner, this);
+		if (cardModel != null)
+		{
+			CardCmd.Upgrade(cardModel);
+		}
     }
 
     protected override void OnUpgrade()

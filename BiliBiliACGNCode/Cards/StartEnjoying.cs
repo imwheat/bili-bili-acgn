@@ -11,6 +11,7 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
 using BiliBiliACGN.BiliBiliACGNCode.Powers;
+using MegaCrit.Sts2.Core.Commands;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -37,8 +38,8 @@ public sealed class StartEnjoying : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 施加 Power：监听进入红怒，自动从手牌打出一张 YYSY（需合法费用/目标）
-        await Task.CompletedTask;
+        // 添加开始享受BUFF
+        await PowerCmd.Apply<EnjoyPower>(base.Owner.Creature, 1, base.Owner.Creature, null);
     }
 
     protected override void OnUpgrade()

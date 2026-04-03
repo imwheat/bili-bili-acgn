@@ -11,6 +11,8 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using BiliBiliACGN.BiliBiliACGNCode.Powers;
+using MegaCrit.Sts2.Core.Commands;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -18,10 +20,10 @@ namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 public sealed class BullDemonForm : CardBaseModel
 {
     #region 卡牌关键词与悬停
-    protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromKeyword(CustomKeyWords.YYSY)];
+    protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromKeyword(CustomKeyWords.YYSY), HoverTipFactory.FromPower<YYSYPower>()];
     #endregion
 
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [CustomKeyWords.YYSY, CardKeyword.Retain];
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CustomKeyWords.YYSY];
 
     #region 卡牌属性配置
     private const int energyCost = 3;
@@ -32,7 +34,7 @@ public sealed class BullDemonForm : CardBaseModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DynamicVar("Stacks", 1m)
+        new DynamicVar("Powers", 1m)
     ];
 
     public BullDemonForm() : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary) { }
@@ -41,12 +43,13 @@ public sealed class BullDemonForm : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 施加 BullDemonPower（Amount=Stacks）；Power 内监听打出 YYSY 时叠唐氏（GetTangPower 等）
-        await Task.CompletedTask;
+        // 获得牛魔形态BUFF
+        await PowerCmd.Apply<BullDemonPower>(base.Owner.Creature, base.DynamicVars["Powers"].IntValue, base.Owner.Creature, null);
     }
 
     protected override void OnUpgrade()
     {
         base.EnergyCost.UpgradeBy(-1);
+        base.AddKeyword(CardKeyword.Retain);
     }
 }

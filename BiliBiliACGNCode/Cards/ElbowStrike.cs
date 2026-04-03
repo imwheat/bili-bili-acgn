@@ -11,13 +11,13 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using MegaCrit.Sts2.Core.Commands;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
 [Pool(typeof(BottleCardPool))]
 public sealed class ElbowStrike : CardBaseModel
 {
-    protected override HashSet<CardTag> CanonicalTags => [CardTag.Strike];
     #region 卡牌属性配置
     private const int energyCost = 1;
     private const CardType type = CardType.Attack;
@@ -37,8 +37,12 @@ public sealed class ElbowStrike : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 伤害 + 抽牌
-        await Task.CompletedTask;
+        // 造成伤害，抽取牌
+        await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue)
+            .FromCard(this)
+            .Targeting(cardPlay.Target)
+            .Execute(choiceContext);
+        await CardPileCmd.Draw(choiceContext, base.DynamicVars.Cards.BaseValue, base.Owner);
     }
 
     protected override void OnUpgrade()

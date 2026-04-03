@@ -12,6 +12,9 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Entities.Creatures;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -30,7 +33,10 @@ public sealed class USForcesJapan : CardBaseModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(5m, ValueProp.Move)
+        new DamageVar(5m, ValueProp.Move),
+        new CalculationBaseVar(0m),
+		new CalculationExtraVar(1m),
+		new CalculatedVar("CalculatedHits").WithMultiplier((CardModel card, Creature? _) => PileType.Hand.GetPile(card.Owner).Cards.Count((CardModel c) => c.Keywords.Contains(CustomKeyWords.YYSY)))
     ];
 
     public USForcesJapan() : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary) { }
@@ -39,8 +45,11 @@ public sealed class USForcesJapan : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 伤害 = Damage * 手牌中 YYSY 牌数量（或按张数重复攻击，规则待定）
-        await Task.CompletedTask;
+        // 伤害 = Damage * 手牌中 YYSY 牌数量
+        await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue).WithHitCount((int)((CalculatedVar)base.DynamicVars["CalculatedHits"]).Calculate(cardPlay.Target)).FromCard(this)
+			.Targeting(cardPlay.Target)
+			.WithHitFx("vfx/vfx_attack_slash")
+			.Execute(choiceContext);
     }
 
     protected override void OnUpgrade()

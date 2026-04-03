@@ -2,7 +2,7 @@
 //* 文件：MyConfession(我的忏悔)
 //* 作者：wheat
 //* 创建时间：2026/04/03
-//* 描述：造成{Damage:diff()}点伤害，重复等同于[gold]红温值[/gold]次数的攻击，随后退出[gold]红怒[/gold]。消耗。
+//* 描述：造成{Damage:diff()}点伤害，重复等同于[gold]红温[/gold]次数的攻击，随后退出[gold]红怒[/gold]。消耗。
 //*******************************************************
 
 using BaseLib.Utils;
@@ -12,6 +12,8 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using BiliBiliACGN.BiliBiliACGNCode.Powers;
+using MegaCrit.Sts2.Core.Commands;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -33,7 +35,10 @@ public sealed class MyConfession : CardBaseModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(3m, ValueProp.Move)
+        new DamageVar(3m, ValueProp.Move),
+        new CalculationBaseVar(0m),
+        new CalculationExtraVar(1m),
+        new CalculatedVar("CalculatedTimes").WithMultiplier((card, creature) => card.Owner.Creature.GetPowerAmount<AngerPower>())
     ];
 
     public MyConfession() : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary) { }
@@ -42,8 +47,13 @@ public sealed class MyConfession : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 按当前 AngerPower 层数重复造成 Damage 次攻击；最后移除 RagePower（退出红怒）
-        await Task.CompletedTask;
+        // 按当前 AngerPower 层数重复造成 Damage 次攻击；最后移除 RagePower（退出红怒）
+        await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue)
+            .FromCard(this)
+            .Targeting(cardPlay.Target)
+            .WithHitCount(base.DynamicVars["CalculatedTimes"].IntValue)
+            .Execute(choiceContext);
+        await PowerCmd.Remove<RagePower>(base.Owner.Creature);
     }
 
     protected override void OnUpgrade()

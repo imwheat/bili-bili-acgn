@@ -11,6 +11,9 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using MegaCrit.Sts2.Core.Commands;
+using BiliBiliACGN.BiliBiliACGNCode.Powers;
+using MegaCrit.Sts2.Core.Models.Powers;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -18,7 +21,7 @@ namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 public sealed class BiggestWarCriminal : CardBaseModel
 {
     #region 卡牌关键词与悬停
-    protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromKeyword(CustomKeyWords.Anger)];
+    protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromKeyword(CustomKeyWords.Anger), HoverTipFactory.FromPower<StrengthPower>()];
     #endregion
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
@@ -41,11 +44,16 @@ public sealed class BiggestWarCriminal : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 获得 Anger 层红温；若 CardUpgradeLevel>0 则额外获得 2 点力量
-        await Task.CompletedTask;
+        // 获得 Anger 层红温；若 CardUpgradeLevel>0 则额外获得 2 点力量
+        await CreatureCmd.TriggerAnim(base.Owner.Creature, "Cast", base.Owner.Character.CastAnimDelay);
+        await PowerCmd.Apply<AngerPower>(base.Owner.Creature, base.DynamicVars["Anger"].BaseValue, base.Owner.Creature, null);
+        if(base.IsUpgraded){
+            await PowerCmd.Apply<StrengthPower>(base.Owner.Creature, 2m, base.Owner.Creature, null);
+        }
     }
 
     protected override void OnUpgrade()
     {
+        base.DynamicVars["Anger"].UpgradeValueBy(2m);
     }
 }

@@ -10,6 +10,8 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Models;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -36,8 +38,14 @@ public sealed class SacredSlash : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: Exhaust 手牌其余牌；洗牌/重置抽牌堆逻辑；抽 Cards 张
-        await Task.CompletedTask;
+        // 消耗手牌中剩余所有牌，重置卡组并抽取{Cards:diff()}张牌
+        List<CardModel> list = PileType.Hand.GetPile(base.Owner).Cards.ToList();
+		foreach (CardModel item in list)
+		{
+			await CardCmd.Exhaust(choiceContext, item);
+		}
+        await CardPileCmd.Shuffle(choiceContext, base.Owner);
+        await CardPileCmd.Draw(choiceContext, base.DynamicVars["Cards"].BaseValue, base.Owner);
     }
 
     protected override void OnUpgrade()

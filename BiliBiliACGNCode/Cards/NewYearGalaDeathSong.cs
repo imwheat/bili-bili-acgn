@@ -13,6 +13,7 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 using BiliBiliACGN.BiliBiliACGNCode.Cards.CardPool;
+using MegaCrit.Sts2.Core.Commands;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
@@ -41,8 +42,15 @@ public sealed class NewYearGalaDeathSong : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // TODO: 全体伤害 + 全体 VulnerablePower 层易伤
-        await Task.CompletedTask;
+        // 对所有敌人造成伤害，给予 VulnerablePower 层易伤
+        await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue)
+            .FromCard(this)
+            .TargetingAllOpponents(base.CombatState)
+            .Execute(choiceContext);
+        // 对所有敌人给予 VulnerablePower 层易伤
+        foreach(var enemy in base.CombatState.HittableEnemies){
+            await PowerCmd.Apply<VulnerablePower>(enemy, base.DynamicVars["VulnerablePower"].BaseValue, base.Owner.Creature, null);
+        }
     }
 
     protected override void OnUpgrade()
