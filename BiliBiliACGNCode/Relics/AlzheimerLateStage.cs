@@ -21,7 +21,7 @@ namespace BiliBiliACGN.BiliBiliACGNCode.Relics;
 [Pool(typeof(BottleRelicPool))]
 public sealed class AlzheimerLateStage : RelicBaseModel
 {
-    public override RelicRarity Rarity => RelicRarity.Ancient;
+    public override RelicRarity Rarity => RelicRarity.Starter;
     public override bool TryModifyRestSiteOptions(Player player, ICollection<RestSiteOption> options)
 	{
 		if (player != base.Owner)

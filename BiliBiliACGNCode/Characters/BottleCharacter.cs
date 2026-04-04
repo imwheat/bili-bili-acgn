@@ -61,6 +61,6 @@ public sealed class BottleCharacter : PlaceholderCharacterModel
     ];
 
     public override IReadOnlyList<RelicModel> StartingRelics => [
-        ModelDb.Relic<Alzheimer>()
+        ModelDb.Relic<Alzheimer>(),
     ];
 }   

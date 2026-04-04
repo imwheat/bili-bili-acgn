@@ -1,7 +1,10 @@
 {
     "BILIBILIACGN-ALZHEIMER.title": "阿尔茨海默症",
-    "BILIBILIACGN-ALZHEIMER.description": "在每场战斗开始时获得2点[gold]红温[/gold]，你可以在[gold]休息处[/gold]选择移除1张牌",
+    "BILIBILIACGN-ALZHEIMER.description": "在每场战斗开始时获得[blue]2[/blue]点[gold]红温[/gold]，你可以在[gold]休息处[/gold]选择[gold]移除[/gold]1张牌",
     "BILIBILIACGN-ALZHEIMER.flavor": "啊？！我忘了~\n12345678910",
+    "BILIBILIACGN-ALZHEIMER_LATE_STAGE.title": "阿尔茨海默症晚期",
+    "BILIBILIACGN-ALZHEIMER_LATE_STAGE.description": "在每场战斗开始时获得[blue]2[/blue]点[gold]红温[/gold]，每回合获得[blue]1[/blue]点[gold]红温[/gold]，你可以在[gold]休息处[/gold]选择[gold]移除[/gold]1张牌",
+    "BILIBILIACGN-ALZHEIMER_LATE_STAGE.flavor": "啊？！我忘了~\n12345678910",
     "BILIBILIACGN-SHERRY.title": "雪莉",
     "BILIBILIACGN-SHERRY.description": "获得1张[gold]啊~雪莉[/gold]，它可以为你助战。",
     "BILIBILIACGN-SHERRY.flavor": "啊~雪莉",
