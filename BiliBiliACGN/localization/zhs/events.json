@@ -70,7 +70,7 @@
     "DESPERATE_DAILY.title": "绝望的日常",
     "DESPERATE_DAILY.pages.INITIAL.description": "你走在无尽的废墟中，在这荒无人烟的地方没有什么食物，你已经2天没能吃上东西了。两个少女骑着摩托车经过，问你要不要一起吃最后的罐头。”",
     "DESPERATE_DAILY.pages.INITIAL.options.EAT.title": "自己吃了",
-    "DESPERATE_DAILY.pages.INITIAL.options.EAT.description": "恢复50%点生命值，但获得诅咒[red]{CurseTitle}[/red]",
+    "DESPERATE_DAILY.pages.INITIAL.options.EAT.description": "回复[green]50%[/green]点生命值，但获得诅咒[red]{CurseTitle}[/red]",
     "DESPERATE_DAILY.pages.EAT.END.description": "你吃了罐头，感觉自己恢复了一些体力。\n可是看着眼前两个少女饥饿的眼神...。\n你叹了口气，咽下心头这种不安，然后继续踏上了旅程...",
     "DESPERATE_DAILY.pages.INITIAL.options.LEAVE.title": "把罐头留给她们",
     "DESPERATE_DAILY.pages.INITIAL.options.LEAVE.description": "获得诅咒[red]{CurseTitle2}[/red]",

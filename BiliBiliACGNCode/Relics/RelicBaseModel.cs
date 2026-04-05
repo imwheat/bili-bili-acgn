@@ -22,6 +22,8 @@ public abstract class RelicBaseModel : CustomRelicModel
         }
     }
 
+    public object CombatState { get; internal set; }
+
     protected override string PackedIconOutlinePath
     {
         get
