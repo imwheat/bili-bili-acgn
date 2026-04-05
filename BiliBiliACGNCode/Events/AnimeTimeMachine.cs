@@ -9,6 +9,8 @@ using BiliBiliACGN.BiliBiliACGNCode.Relics;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Events;
 using MegaCrit.Sts2.Core.Models;
+using BiliBiliACGN.BiliBiliACGNCode.Cards;
+using MegaCrit.Sts2.Core.Entities.Cards;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Events;
 
@@ -17,17 +19,6 @@ public sealed class AnimeTimeMachine : EventBaseModel
 {
     public override bool IsShared => false;
     public override EventLayoutType LayoutType => EventLayoutType.Default;
-    /// <summary>
-    /// 随机获得的遗物列表
-    /// </summary>
-    private static readonly RelicModel[] _randomRelics = [
-        ModelDb.Relic<ElainasBroom>(),
-    ];
-    /// <summary>
-    /// 随机获得的卡牌列表
-    /// </summary>
-    private static readonly CardModel[] _randomCards = [
-    ];
     protected override IReadOnlyList<EventOption> GenerateInitialOptions()
     {
         return
@@ -40,16 +31,42 @@ public sealed class AnimeTimeMachine : EventBaseModel
     private async Task Drawer()
     {
         // 随机获得一张特殊卡牌
-        //CardModel card = base.Owner.RunState.CreateCard(base.Owner.RunState.Rng.Niche.NextItem(_randomCards));
-        //CardCmd.PreviewCardPileAdd(new List<CardPileAddResult>(){await CardPileCmd.Add(card, PileType.Deck)}, 2f);
-
+        CardModel card = null;
+        switch(base.Owner.RunState.Rng.Niche.NextInt(0, 3)){
+            case 0:
+                card = base.Owner.RunState.CreateCard<GuguGaga>(base.Owner);
+                break;
+            case 1:
+                card = base.Owner.RunState.CreateCard<SakiChan>(base.Owner);
+                break;
+            case 2:
+                card = base.Owner.RunState.CreateCard<Geass>(base.Owner);
+                break;
+        }
+        if(card != null){
+            CardCmd.PreviewCardPileAdd(new List<CardPileAddResult>(){await CardPileCmd.Add(card, PileType.Deck)}, 2f);
+        }
         await Leave();
     }
 
     private async Task Microwave()
     {
         // 随机获得一个特殊遗物
-        await RelicCmd.Obtain(base.Owner.RunState.Rng.Niche.NextItem(_randomRelics), base.Owner);
+        RelicModel relic = null;
+        switch(base.Owner.RunState.Rng.Niche.NextInt(0, 3)){
+            case 0:
+                relic = ModelDb.Relic<ElainasBroom>();
+                break;
+            case 1:
+                relic = ModelDb.Relic<DeathNote>();
+                break;
+            case 2:
+                relic = ModelDb.Relic<DeathRebirthCycle>();
+                break;
+        }
+        if(relic != null){
+            await RelicCmd.Obtain(relic, base.Owner);
+        }
         await Leave();
     }
     /// <summary>

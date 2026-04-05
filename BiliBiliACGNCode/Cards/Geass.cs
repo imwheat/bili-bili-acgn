@@ -15,7 +15,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace BiliBiliACGN.BiliBiliACGNCode.Cards;
 
 [Pool(typeof(EventCardPool))]
-public sealed class GeassCard : CardBaseModel
+public sealed class Geass : CardBaseModel
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
 
@@ -30,7 +30,7 @@ public sealed class GeassCard : CardBaseModel
         new DamageVar(20m, ValueProp.Move)
     ];
 
-    public GeassCard() : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary) { }
+    public Geass() : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary) { }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
