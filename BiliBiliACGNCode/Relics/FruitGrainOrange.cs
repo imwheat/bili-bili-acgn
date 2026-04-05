@@ -31,7 +31,7 @@ public sealed class FruitGrainOrange : RelicBaseModel
     /// <returns></returns>
     public override async Task AfterObtained()
     {
-        CardModel cardModel = (await CardSelectCmd.FromDeckForTransformation(base.Owner, new CardSelectorPrefs(CardSelectorPrefs.TransformSelectionPrompt, 1))).FirstOrDefault();
+        CardModel cardModel = (await CardSelectCmd.FromDeckForTransformation(base.Owner, new CardSelectorPrefs(CardSelectorPrefs.TransformSelectionPrompt, 0, 1))).FirstOrDefault();
 		if (cardModel != null)
 		{
 			await CardCmd.TransformToRandom(cardModel, base.Owner.RunState.Rng.CombatCardGeneration, CardPreviewStyle.EventLayout);

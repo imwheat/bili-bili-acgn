@@ -34,10 +34,13 @@ public sealed class WindIsRatherNoisy : CardBaseModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // 多选 UI 从消耗堆取牌入手牌
-		await CardPileCmd.Add(await CardSelectCmd.FromSimpleGrid(choiceContext, (from c in PileType.Exhaust.GetPile(base.Owner).Cards
+        var cards = (from c in PileType.Exhaust.GetPile(base.Owner).Cards
 				orderby c.Rarity, c.Id
-				select c).ToList(), base.Owner, new CardSelectorPrefs(base.SelectionScreenPrompt, 0, (int)base.DynamicVars.Cards.BaseValue)), PileType.Hand);
+                select c).ToList();
+        if(cards.Count > 0){
+            // 多选 UI 从消耗堆取牌入手牌
+            await CardPileCmd.Add(await CardSelectCmd.FromSimpleGrid(choiceContext, cards, base.Owner, new CardSelectorPrefs(base.SelectionScreenPrompt, 0, (int)base.DynamicVars.Cards.BaseValue)), PileType.Hand);
+        }
     }
 
     protected override void OnUpgrade()

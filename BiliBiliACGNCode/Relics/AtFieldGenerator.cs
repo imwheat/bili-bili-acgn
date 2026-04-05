@@ -41,15 +41,14 @@ public sealed class AtFieldGenerator : RelicBaseModel
 	}
     private void UpdateDisplay()
 	{
-		base.Status = IsActivating ? RelicStatus.Active : RelicStatus.Normal;
+		base.Status = IsActivating ? RelicStatus.Normal : RelicStatus.Disabled;
 	}
 
     public override async Task AfterDamageReceived(PlayerChoiceContext choiceContext, Creature target, DamageResult result, ValueProp props, Creature? dealer, CardModel? cardSource)
     {
-        if (target == base.Owner.Creature && result.UnblockedDamage > 0)
+        if (target == base.Owner.Creature)
 		{
-            Flash();
-            IsActivating = false;
+            IsActivating = result.UnblockedDamage <= 0;
 		}
     }
     public override async Task AfterTurnEnd(PlayerChoiceContext choiceContext, CombatSide side)
@@ -62,9 +61,7 @@ public sealed class AtFieldGenerator : RelicBaseModel
                 Flash();
                 await CreatureCmd.GainBlock(base.Owner.Creature, base.DynamicVars["Amount"].BaseValue, ValueProp.Unpowered, null);
             }
-		}else{
-            IsActivating = true;
-        }
+		}
     }
 
 }

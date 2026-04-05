@@ -5,6 +5,8 @@
 //* 描述：第{Turn:diff()}回合开始时，获得{Strength:diff()}层力量与{Block:diff()}点格挡。
 //*******************************************************
 using BaseLib.Utils;
+using Godot;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Relics;
@@ -20,7 +22,18 @@ namespace BiliBiliACGN.BiliBiliACGNCode.Relics;
 public sealed class MagicalPoweredArmor : RelicBaseModel
 {
     public override RelicRarity Rarity => RelicRarity.Rare;
-
+    public override bool ShowCounter => CombatManager.Instance.IsInProgress;
+    public override int DisplayAmount {
+        get
+        {
+            var combatState = base.Owner.Creature.CombatState;
+            if(combatState != null)
+            {
+                return Mathf.Max(0, (int)base.DynamicVars["Turn"].BaseValue - combatState.RoundNumber);
+            }
+            return 0;
+        }
+    }
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DynamicVar("Turn", 4m),

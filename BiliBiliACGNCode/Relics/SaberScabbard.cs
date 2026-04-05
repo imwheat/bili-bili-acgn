@@ -37,9 +37,9 @@ public sealed class SaberScabbard : RelicBaseModel
 		{
 			if (!IsActivating)
 			{
-				return AttacksPlayedThisTurn % base.DynamicVars.Cards.IntValue;
+				return AttacksPlayedThisTurn;
 			}
-			return base.DynamicVars.Cards.IntValue;
+			return 0;
 		}
 	}
 

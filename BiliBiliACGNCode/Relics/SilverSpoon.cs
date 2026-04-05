@@ -1,5 +1,5 @@
 //****************** 代码文件申明 ***********************
-//* 文件：SilverKeyRelic(银之匙)
+//* 文件：SilverSpoon(银勺)
 //* 作者：wheat
 //* 创建时间：2026/04/06
 //* 描述：当你打出消耗牌后，复制一张进入弃牌堆。
@@ -14,7 +14,7 @@ using MegaCrit.Sts2.Core.Models.RelicPools;
 namespace BiliBiliACGN.BiliBiliACGNCode.Relics;
 
 [Pool(typeof(SharedRelicPool))]
-public sealed class SilverKeyRelic : RelicBaseModel
+public sealed class SilverSpoon : RelicBaseModel
 {
     public override RelicRarity Rarity => RelicRarity.Rare;
 
@@ -30,6 +30,7 @@ public sealed class SilverKeyRelic : RelicBaseModel
         }
         // 复制一张进入弃牌堆
         var copy = cardPlay.Card.CreateClone();
-        await CardPileCmd.Add(copy, PileType.Discard);
+        CardCmd.PreviewCardPileAdd(await CardPileCmd.AddGeneratedCardToCombat(copy, PileType.Discard, addedByPlayer: true));
+        await Cmd.Wait(0.5f);
     }
 }

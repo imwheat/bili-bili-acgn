@@ -1,5 +1,5 @@
 //****************** 代码文件申明 ***********************
-//* 文件：ShoutingRoseLife(我在呐喊)
+//* 文件：IScream(我在呐喊)
 //* 作者：wheat
 //* 创建时间：2026/04/06
 //* 描述：同一回合打出{DefCount:diff()}张技能牌后，对随机敌人造成{Damage:diff()}点伤害。
@@ -19,7 +19,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace BiliBiliACGN.BiliBiliACGNCode.Relics;
 
 [Pool(typeof(SharedRelicPool))]
-public sealed class ShoutingRoseLife : RelicBaseModel
+public sealed class IScream : RelicBaseModel
 {
     public override RelicRarity Rarity => RelicRarity.Uncommon;
 
@@ -101,7 +101,7 @@ public sealed class ShoutingRoseLife : RelicBaseModel
 
 	public override async Task AfterCardPlayed(PlayerChoiceContext context, CardPlay cardPlay)
 	{
-		if (cardPlay.Card.Owner == base.Owner && CombatManager.Instance.IsInProgress && cardPlay.Card.Type == CardType.Attack)
+		if (cardPlay.Card.Owner == base.Owner && CombatManager.Instance.IsInProgress && cardPlay.Card.Type == CardType.Skill)
 		{
 			SkillCountThisTurn++;
 			int intValue = base.DynamicVars.Cards.IntValue;

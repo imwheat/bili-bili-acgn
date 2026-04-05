@@ -28,9 +28,11 @@ public sealed class DeathNoteH : CardBaseModel
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         // 对所有可命中敌人执行即死/强制击杀
-        ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
-        foreach(var enemy in base.CombatState.HittableEnemies){
-            await CreatureCmd.Kill(enemy, true);
+        var enemies = base.CombatState.HittableEnemies;
+        foreach(var enemy in enemies){
+            if(enemy != null && enemy.IsAlive){
+                await CreatureCmd.Kill(enemy, true);
+            }
         }
     }
 

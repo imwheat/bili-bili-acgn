@@ -40,10 +40,7 @@ public sealed class DeathNoteT : CardBaseModel
     {
         // 移除 AI；施加缩小；弃牌堆加入 DeathNoteH
         ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
-        if(cardPlay.Target.HasPower<ArtifactPower>())
-        {
-            await PowerCmd.Remove<ArtifactPower>(cardPlay.Target);
-        }
+        await PowerCmd.Remove<ArtifactPower>(cardPlay.Target);
         // 施加缩小
         await PowerCmd.Apply<ShrinkPower>(cardPlay.Target, base.DynamicVars["Shrink"].BaseValue, base.Owner.Creature, this);
         // 弃牌堆加入 DeathNoteH

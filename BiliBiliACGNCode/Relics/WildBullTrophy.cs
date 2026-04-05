@@ -33,7 +33,7 @@ public sealed class WildBullTrophy : RelicBaseModel
 	protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromKeyword(CustomKeyWords.YYSY), HoverTipFactory.FromPower<TangShiPower>()];
     private bool _isActivating;
 
-	private int _attacksPlayedThisTurn;
+	private int _yysyPlayedThisTurn;
 
 	public override bool ShowCounter => CombatManager.Instance.IsInProgress;
 
@@ -43,7 +43,7 @@ public sealed class WildBullTrophy : RelicBaseModel
 		{
 			if (!IsActivating)
 			{
-				return AttacksPlayedThisTurn % base.DynamicVars["YYSYCount"].IntValue;
+				return YysyPlayedThisTurn % base.DynamicVars["YYSYCount"].IntValue;
 			}
 			return base.DynamicVars["YYSYCount"].IntValue;
 		}
@@ -64,16 +64,16 @@ public sealed class WildBullTrophy : RelicBaseModel
 		}
 	}
 
-	private int AttacksPlayedThisTurn
+	private int YysyPlayedThisTurn
 	{
 		get
 		{
-			return _attacksPlayedThisTurn;
+			return _yysyPlayedThisTurn;
 		}
 		set
 		{
 			AssertMutable();
-			_attacksPlayedThisTurn = value;
+			_yysyPlayedThisTurn = value;
 			UpdateDisplay();
 		}
 	}
@@ -87,7 +87,7 @@ public sealed class WildBullTrophy : RelicBaseModel
 		else
 		{
 			int intValue = base.DynamicVars["YYSYCount"].IntValue;
-			base.Status = ((AttacksPlayedThisTurn % intValue == intValue - 1) ? RelicStatus.Active : RelicStatus.Normal);
+			base.Status = ((YysyPlayedThisTurn % intValue == intValue - 1) ? RelicStatus.Active : RelicStatus.Normal);
 		}
 		InvokeDisplayAmountChanged();
 	}
@@ -98,18 +98,18 @@ public sealed class WildBullTrophy : RelicBaseModel
 		{
 			return Task.CompletedTask;
 		}
-		AttacksPlayedThisTurn = 0;
+		YysyPlayedThisTurn = 0;
 		base.Status = RelicStatus.Normal;
 		return Task.CompletedTask;
 	}
 
 	public override async Task AfterCardPlayed(PlayerChoiceContext context, CardPlay cardPlay)
 	{
-		if (cardPlay.Card.Owner == base.Owner && CombatManager.Instance.IsInProgress && cardPlay.Card.Type == CardType.Attack)
+		if (cardPlay.Card.Owner == base.Owner && CombatManager.Instance.IsInProgress && cardPlay.Card.Keywords.Contains(CustomKeyWords.YYSY))
 		{
-			AttacksPlayedThisTurn++;
+			YysyPlayedThisTurn++;
 			int intValue = base.DynamicVars["YYSYCount"].IntValue;
-			if (AttacksPlayedThisTurn % intValue == 0)
+			if (YysyPlayedThisTurn % intValue == 0)
 			{
 				TaskHelper.RunSafely(DoActivateVisuals());
 				await PowerCmd.Apply<TangShiPower>(base.Owner.Creature, base.DynamicVars["Tang"].BaseValue, base.Owner.Creature, null);
@@ -128,7 +128,7 @@ public sealed class WildBullTrophy : RelicBaseModel
 	public override Task AfterCombatEnd(CombatRoom _)
 	{
 		base.Status = RelicStatus.Normal;
-		AttacksPlayedThisTurn = 0;
+		YysyPlayedThisTurn = 0;
 		IsActivating = false;
 		return Task.CompletedTask;
 	}

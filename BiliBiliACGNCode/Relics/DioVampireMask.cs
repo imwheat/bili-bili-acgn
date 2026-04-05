@@ -26,19 +26,15 @@ public sealed class DioVampireMask : RelicBaseModel
     public override async Task AfterObtained()
     {
         // 移除所有基础打击
-        var cardsToRemove = base.Owner.Deck.Cards.Where(card => card.Type == CardType.Attack && card.Rarity == CardRarity.Basic).ToList();
-        foreach (var cardToRemove in cardsToRemove)
-        {
-            base.Owner.Deck.RemoveInternal(cardToRemove, false);
-        }
+        var cardsToRemove = base.Owner.Deck.Cards.Where(card => card.Type == CardType.Attack && card.Tags.Contains(CardTag.Strike) && card.Rarity == CardRarity.Basic).ToList();
+        await CardPileCmd.RemoveFromDeck(cardsToRemove);
         // 获得嗜血啃咬*5
-        CardModel card = base.Owner.RunState.CreateCard<BloodyBite>(base.Owner);
 		CardCmd.PreviewCardPileAdd(new List<CardPileAddResult>(){
-            await CardPileCmd.Add(card, PileType.Deck), 
-            await CardPileCmd.Add(card, PileType.Deck),
-            await CardPileCmd.Add(card, PileType.Deck),
-            await CardPileCmd.Add(card, PileType.Deck),
-            await CardPileCmd.Add(card, PileType.Deck)}, 
+            await CardPileCmd.Add(base.Owner.RunState.CreateCard<BloodyBite>(base.Owner), PileType.Deck), 
+            await CardPileCmd.Add(base.Owner.RunState.CreateCard<BloodyBite>(base.Owner), PileType.Deck),
+            await CardPileCmd.Add(base.Owner.RunState.CreateCard<BloodyBite>(base.Owner), PileType.Deck),
+            await CardPileCmd.Add(base.Owner.RunState.CreateCard<BloodyBite>(base.Owner), PileType.Deck),
+            await CardPileCmd.Add(base.Owner.RunState.CreateCard<BloodyBite>(base.Owner), PileType.Deck)}, 
             2f);
     }
 }

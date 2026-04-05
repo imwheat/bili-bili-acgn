@@ -40,10 +40,7 @@ public sealed class DeathNoteD : CardBaseModel
     {
         // 移除 AI；施加脆弱；弃牌堆加入 DeathNoteE
         ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
-        if(cardPlay.Target.HasPower<ArtifactPower>())
-        {
-            await PowerCmd.Remove<ArtifactPower>(cardPlay.Target);
-        }
+        await PowerCmd.Remove<ArtifactPower>(cardPlay.Target);
         // 施加脆弱
         await PowerCmd.Apply<FrailPower>(cardPlay.Target, base.DynamicVars["Fragile"].BaseValue, base.Owner.Creature, this);
         // 弃牌堆加入 DeathNoteE

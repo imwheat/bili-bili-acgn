@@ -31,7 +31,7 @@ public sealed class SandevistanRelic : RelicBaseModel
 
     private bool _isActivating;
 
-	private int _attacksPlayedThisTurn;
+	private int _cardsPlayedThisTurn;
 
 	public override bool ShowCounter => CombatManager.Instance.IsInProgress;
 
@@ -41,7 +41,7 @@ public sealed class SandevistanRelic : RelicBaseModel
 		{
 			if (!IsActivating)
 			{
-				return AttacksPlayedThisTurn % base.DynamicVars.Cards.IntValue;
+				return CardsPlayedThisTurn % base.DynamicVars.Cards.IntValue;
 			}
 			return base.DynamicVars.Cards.IntValue;
 		}
@@ -61,16 +61,16 @@ public sealed class SandevistanRelic : RelicBaseModel
 		}
 	}
 
-	private int AttacksPlayedThisTurn
+	private int CardsPlayedThisTurn
 	{
 		get
 		{
-			return _attacksPlayedThisTurn;
+			return _cardsPlayedThisTurn;
 		}
 		set
 		{
 			AssertMutable();
-			_attacksPlayedThisTurn = value;
+			_cardsPlayedThisTurn = value;
 			UpdateDisplay();
 		}
 	}
@@ -84,7 +84,7 @@ public sealed class SandevistanRelic : RelicBaseModel
 		else
 		{
 			int intValue = base.DynamicVars.Cards.IntValue;
-			base.Status = ((AttacksPlayedThisTurn % intValue == intValue - 1) ? RelicStatus.Active : RelicStatus.Normal);
+			base.Status = ((CardsPlayedThisTurn % intValue == intValue - 1) ? RelicStatus.Active : RelicStatus.Normal);
 		}
 		InvokeDisplayAmountChanged();
 	}
@@ -95,18 +95,18 @@ public sealed class SandevistanRelic : RelicBaseModel
 		{
 			return Task.CompletedTask;
 		}
-		AttacksPlayedThisTurn = 0;
+		CardsPlayedThisTurn = 0;
 		base.Status = RelicStatus.Normal;
 		return Task.CompletedTask;
 	}
 
 	public override async Task AfterCardPlayed(PlayerChoiceContext context, CardPlay cardPlay)
 	{
-		if (cardPlay.Card.Owner == base.Owner && CombatManager.Instance.IsInProgress && cardPlay.Card.Type == CardType.Attack)
+		if (cardPlay.Card.Owner == base.Owner && CombatManager.Instance.IsInProgress)
 		{
-			AttacksPlayedThisTurn++;
+			CardsPlayedThisTurn++;
 			int intValue = base.DynamicVars.Cards.IntValue;
-			if (AttacksPlayedThisTurn % intValue == 0)
+			if (CardsPlayedThisTurn % intValue == 0)
 			{
 				TaskHelper.RunSafely(DoActivateVisuals());
                 var combatState = base.Owner.Creature.CombatState;
@@ -132,7 +132,7 @@ public sealed class SandevistanRelic : RelicBaseModel
 	public override Task AfterCombatEnd(CombatRoom _)
 	{
 		base.Status = RelicStatus.Normal;
-		AttacksPlayedThisTurn = 0;
+		CardsPlayedThisTurn = 0;
 		IsActivating = false;
 		return Task.CompletedTask;
 	}

@@ -24,37 +24,15 @@ namespace BiliBiliACGN.BiliBiliACGNCode.Relics;
 public sealed class AngryPop : RelicBaseModel
 {
     public override RelicRarity Rarity => RelicRarity.Event;
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new DynamicVar("Amount", 1m), new DynamicVar("StrengthApplied", 0m)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new DynamicVar("Amount", 1m)];
 	protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromPower<StrengthPower>()];
-    public override int DisplayAmount => (int)base.DynamicVars["StrengthApplied"].BaseValue;
-    public override bool ShowCounter => true;
 
-    public override Task BeforeCombatStart()
-    {
-        base.DynamicVars["StrengthApplied"].BaseValue = 0m;
-        InvokeDisplayAmountChanged();
-        return Task.CompletedTask;
-    }
     public override async Task AfterDamageReceived(PlayerChoiceContext choiceContext, Creature target, DamageResult result, ValueProp props, Creature? dealer, CardModel? cardSource)
     {
         if (target == base.Owner.Creature && result.UnblockedDamage > 0)
 		{
             Flash();
-			await PowerCmd.Apply<StrengthPower>(base.Owner.Creature, base.DynamicVars["Amount"].BaseValue, base.Owner.Creature, null);
-			base.DynamicVars["StrengthApplied"].BaseValue += base.DynamicVars["Amount"].BaseValue;
-            InvokeDisplayAmountChanged();
+			await PowerCmd.Apply<FlexPotionPower>(base.Owner.Creature, base.DynamicVars["Amount"].BaseValue, base.Owner.Creature, null);
 		}
     }
-    public override async Task AfterTurnEnd(PlayerChoiceContext choiceContext, CombatSide side)
-    {
-
-        if (side == base.Owner.Creature.Side)
-		{
-            Flash();
-			await PowerCmd.Apply<StrengthPower>(base.Owner.Creature, -base.DynamicVars["StrengthApplied"].BaseValue, base.Owner.Creature, null, silent: true);
-            base.DynamicVars["StrengthApplied"].BaseValue = 0m;
-            InvokeDisplayAmountChanged();
-		}
-    }
-
 }

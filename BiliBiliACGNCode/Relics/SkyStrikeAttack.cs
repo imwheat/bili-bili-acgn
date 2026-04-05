@@ -5,6 +5,7 @@
 //* 描述：第{Turn:diff()}回合开始时对所有敌人造成{Damage:diff()}点伤害，每多一名玩家额外{MultiDamage:diff()}点。
 //*******************************************************
 using BaseLib.Utils;
+using Godot;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -20,6 +21,18 @@ namespace BiliBiliACGN.BiliBiliACGNCode.Relics;
 public sealed class SkyStrikeAttack : RelicBaseModel
 {
     public override RelicRarity Rarity => RelicRarity.Rare;
+    public override bool ShowCounter => CombatManager.Instance.IsInProgress;
+    public override int DisplayAmount {
+        get
+        {
+            var combatState = base.Owner.Creature.CombatState;
+            if(combatState != null)
+            {
+                return Mathf.Max(0, (int)base.DynamicVars["Turn"].BaseValue - combatState.RoundNumber);
+            }
+            return 0;
+        }
+    }
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [

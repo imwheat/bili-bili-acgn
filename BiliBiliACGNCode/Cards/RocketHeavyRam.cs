@@ -34,7 +34,6 @@ public sealed class RocketHeavyRam : CardBaseModel
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         // 对所有敌人造成伤害；抽取{Cards:diff()}张牌
-        ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
         await DamageCmd.Attack(base.DynamicVars["Damage"].BaseValue)
             .FromCard(this)
             .TargetingAllOpponents(base.CombatState)

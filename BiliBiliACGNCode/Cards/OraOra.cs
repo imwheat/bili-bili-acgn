@@ -27,8 +27,8 @@ public sealed class OraOra : CardBaseModel
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(10m, ValueProp.Move),
-        new DynamicVar("XThreshold", 6m),
-        new DynamicVar("XMultiplier", 3m)
+        new DynamicVar("XThreshold", 5m),
+        new DynamicVar("XMultiplier", 2m)
     ];
 
     public OraOra() : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary) { }
@@ -44,11 +44,11 @@ public sealed class OraOra : CardBaseModel
         if(num >= base.DynamicVars["XThreshold"].BaseValue){
             num = (int)(num * base.DynamicVars["XMultiplier"].BaseValue);
         }
-
+        
         // 造成伤害 X 次
-        await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue).WithHitCount(num).FromCard(this)
+        await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue)
+            .WithHitCount(num).FromCard(this)
 			.Targeting(cardPlay.Target)
-			.WithHitFx("vfx/vfx_thrash")
 			.Execute(choiceContext);
     }
 

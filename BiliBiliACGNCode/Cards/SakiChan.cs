@@ -41,7 +41,7 @@ public sealed class SakiChan : CardBaseModel
         .Execute(choiceContext);
         // 将本牌复制置入抽牌堆
         CardModel card = CreateClone();
-		CardCmd.PreviewCardPileAdd(await CardPileCmd.AddGeneratedCardToCombat(card, PileType.Draw, true), 2.2f);
+		CardCmd.PreviewCardPileAdd(await CardPileCmd.AddGeneratedCardToCombat(card, PileType.Draw, true), 0.2f);
     }
 
     protected override void OnUpgrade()

@@ -44,6 +44,7 @@ public sealed class HaKaSeSneezingMachine : RelicBaseModel
                 // 给所有敌人添加3层虚弱
                 foreach(var enemy in combatState.HittableEnemies)
                 {
+                    await PowerCmd.Remove<ArtifactPower>(enemy);
                     await PowerCmd.Apply<WeakPower>(enemy, (int)base.DynamicVars["WeakAmount"].BaseValue, enemy, null);
                 }
                 // 有20%几率获得1层脆弱

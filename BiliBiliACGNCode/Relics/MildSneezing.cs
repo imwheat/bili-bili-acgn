@@ -29,11 +29,13 @@ public sealed class MildSneezing : RelicBaseModel
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DynamicVar("Fights", 3m),
-        new DynamicVar("SkipChance", 30m),
+        new DynamicVar("SkipChance", 10m),
         new DynamicVar("DiscardAmount", 1m),
     ];
     public override bool ShowCounter => true;
     public override int DisplayAmount => Fights;
+
+    public override bool IsUsedUp => Fights == 0;
 
     private int _fights = 3;
     [SavedProperty]
@@ -55,6 +57,10 @@ public sealed class MildSneezing : RelicBaseModel
     }
     public override async Task AfterPlayerTurnStart(PlayerChoiceContext choiceContext, Player player)
     {
+        if(IsUsedUp)
+        {
+            return;
+        }
         // 玩家回合开始时，判断是否跳过敌人回合
         if(player == base.Owner)
         {
@@ -78,14 +84,17 @@ public sealed class MildSneezing : RelicBaseModel
             }
         }
     }
-
     public override Task AfterCombatVictory(CombatRoom room)
     {
+        if(IsUsedUp)
+        {
+            return Task.CompletedTask;
+        }
         if(_fights > 0)
         {
             Fights--;
         }
-        return base.AfterCombatVictory(room);
+        return Task.CompletedTask;
     }
 
 }

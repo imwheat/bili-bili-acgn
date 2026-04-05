@@ -11,6 +11,7 @@ using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.RelicPools;
+using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace BiliBiliACGN.BiliBiliACGNCode.Relics;
@@ -35,6 +36,7 @@ public sealed class ShortRecorder : RelicBaseModel
 		{
 			AssertMutable();
 			_wasUsedThisCombat = value;
+            base.Status = _wasUsedThisCombat ? RelicStatus.Disabled : RelicStatus.Normal;
 		}
 	}
 
@@ -52,5 +54,10 @@ public sealed class ShortRecorder : RelicBaseModel
             await CreatureCmd.GainBlock(base.Owner.Creature, base.DynamicVars["Block"].BaseValue, base.DynamicVars.Block.Props, cardPlay);
             WasUsedThisCombat = true;
         }
+    }
+    public override Task AfterCombatEnd(CombatRoom room)
+    {
+        WasUsedThisCombat = false;
+        return Task.CompletedTask;
     }
 }

@@ -67,7 +67,7 @@ public sealed class ArcadeCabinet : RelicBaseModel
             _powerCountThisTurn++;
         }
         int min = Math.Min(_attackCountThisTurn, Math.Min(_skillCountThisTurn, _powerCountThisTurn));
-        if(min > _attackCountThisTurn)
+        if(min > _activeCountThisTurn)
         {
             Flash();
             _activeCountThisTurn = min;
